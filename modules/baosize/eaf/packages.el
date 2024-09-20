@@ -31,10 +31,3 @@
            :files ("*")
            :post-build
            (shell-command "python install-eaf.py --install-core-deps")))
-
-(package! eaf-browser
-  :recipe (:host github :repo "emacs-eaf/eaf-browser"
-           :files ("*")
-           :post-build
-           (+eaf-install-deps-for-app
-            (concat straight-base-dir "/straight/" straight-build-dir "/eaf-browser"))))

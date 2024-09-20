@@ -53,16 +53,18 @@
               (dir (if (doom-project-root) (doom-project-root)
                      (file-name-directory buffer-file-name))))
           (pcase major-mode
-            ('c-mode (run-in-vterm (concat "cd " dir " && "
-                                              "gcc -O2 -std=c11 "
+            ('c-mode (run-in-vterm (concat "cd '" dir "' && "
+                                              "gcc -O2 -std=c11 '"
                                               buffer-file-name
-                                              " -o /tmp/c-" filename
-                                              " && /tmp/c-" filename)))
-            ('c++-mode (run-in-eshell (concat "cd " dir " && "
-                                              "g++ -O2 -g3 -std=gnu++17 "
-                                              buffer-file-name
-                                              " -o /tmp/cpp-" filename
-                                              " && /tmp/cpp-" filename)))
+                                              "' -o '/tmp/c-" filename
+                                              "' && '/tmp/c-" filename
+                                              "'")))
+            ('c++-mode (run-in-vterm (concat "cd '" dir "' && "
+                                             "g++ -O2 -g3 -std=gnu++17 '"
+                                             buffer-file-name
+                                             "' -o '/tmp/cpp-" filename
+                                             "' && '/tmp/cpp-" filename
+                                             "'")))
             ('python-mode (run-in-vterm (concat "cd " dir " && "
                                                  "python " buffer-file-name)))
             (_ (message "not supported"))))
