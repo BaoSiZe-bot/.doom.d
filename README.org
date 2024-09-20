@@ -33,4 +33,7 @@ This file is an introduction for my config.
 Tested with emacs 31.0.50 (master branch).
 
 Doom Emacs supports 27.1+ now. 29+ is not supported but in fact works well.
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6cc719c (init repo.)
