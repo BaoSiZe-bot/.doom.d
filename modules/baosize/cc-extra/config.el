@@ -35,7 +35,6 @@
     (:prefix ("d" . "debug")
      :desc "Run cpp in gdb"
      :n "c" #'cpp-gdb)))
-
   (defun cpp-gdb ()
     (interactive)
     (if buffer-file-name

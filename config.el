@@ -9,8 +9,8 @@
 (setq user-full-name "Size Bao"
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
-      epa-file-encrypt-to user-mail-address
-      )
+      epa-file-encrypt-to user-mail-address)
+
 
 ;; System locale to use for formatting time values.
 ;;
@@ -34,7 +34,22 @@
 (setq doom-theme 'catppuccin)
 ;; auto mode case insensitive
 (setq auto-mode-case-fold t)
-
+(setq org-agenda-files '("~/.org/"))
+(setq org-agenda-custom-commands
+      '(
+        ("w" . "任务安排")
+        ("wa" "重要且紧急的任务" tags-todo "+PRIORITY=\"A\"")
+        ("wb" "重要且不紧急的任务" tags-todo "-weekly-monthly-daily+PRIORITY=\"B\"")
+        ("wc" "不重要且紧急的任务" tags-todo "+PRIORITY=\"C\"")
+        ("wd" "不重要且不紧急的任务" tags-todo "+PRIORITY=\"C\"")
+        ("W" "Weekly Review"
+         ((stuck "") ;; review stuck projects as designated by org-stuck-projects
+          (tags-todo "project")
+          (tags-todo "daily")
+          (tags-todo "weekly")
+          (tags-todo "school")
+          (tags-todo "code")
+          (tags-todo "theory")))))
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -51,15 +66,14 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(custom-set-variables)
+;; custom-set-variables was added by Custom.
+;; If you edit it by hand, you could mess it up, so be careful.
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.
+
+(custom-set-faces)
+;; custom-set-faces was added by Custom.
+;; If you edit it by hand, you could mess it up, so be careful.
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.

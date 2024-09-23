@@ -18,12 +18,12 @@
   (setq docker-image-run-arguments '("-i" "-t" "--rm")))
 
 ;; Search the word at point with Dash
-(use-package! dash-at-point
-  :defer t
-  :init
-  (map! :leader
-        "dd" #'dash-at-point
-        "dD" #'dash-at-point-with-docset))
+; (use-package! dash-at-point
+;   :defer t
+;   :init
+;   (map! :leader
+;         "dd" #'dash-at-point
+;         "dD" #'dash-at-point-with-docset))
 
 ;; Automatically save file content
 (use-package! super-save
