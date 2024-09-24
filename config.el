@@ -10,7 +10,9 @@
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
       epa-file-encrypt-to user-mail-address)
-
+(setq default-frame-alist '((width . 90)
+                            (height . 50)
+                            (alpha-background . 80)))
 
 ;; System locale to use for formatting time values.
 ;;
@@ -29,7 +31,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/.org/")
 (setq catppuccin-flavor 'frappe)
 (setq doom-theme 'catppuccin)
 ;; auto mode case insensitive
