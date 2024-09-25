@@ -36,6 +36,4 @@
        :desc "Open Terminal"
        "t" 'eaf-open-pyqterminal
        :desc "Open Git"
-       "g" 'eaf-open-git)))
-  :custom
-  (eaf-browser-dark-mode nil))
+       "g" 'eaf-open-git))))

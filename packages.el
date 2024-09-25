@@ -50,3 +50,6 @@
 (unpin! t)
 
 (package! catppuccin-theme)
+(package! find-file-in-project
+  :recipe (:host github :repo "redguardtoo/find-file-in-project"
+           :files ("*")))

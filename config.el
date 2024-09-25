@@ -52,6 +52,15 @@
           (tags-todo "school")
           (tags-todo "code")
           (tags-todo "theory")))))
+(use-package! find-file-in-project
+  :config
+  (map!
+   (:leader
+    (:desc "Open Browser"
+     "ff" 'find-file-in-project))))
+
+
+
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one

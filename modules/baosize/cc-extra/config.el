@@ -15,9 +15,6 @@
 (set-file-template! "\\(acm\\|codeforces\\|oj\\|training\\).*\\.\\(cpp\\|cc\\|cxx\\)$" :trigger "acm")
 
 (setq-hook! 'c-mode-common-hook
-  tab-width 4
-  c-basic-offset 4
-  indent-tabs-mode -1
   fill-column 100)
 
 (use-package! google-c-style
