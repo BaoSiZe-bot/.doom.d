@@ -1,0 +1,30 @@
+# -*- mode: snippet -*-
+# name: dij
+# key: dijkstra
+# --
+int d[${1:10005}];
+bool f[$1];
+inline void dij()
+{
+    memset(d, 0x3f, sizeof(d));
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> q;
+    q.push({0, 1});
+    d[1] = 0;
+    while (!q.empty())
+    {
+        int nw = q.top().second;
+        q.pop();
+        if (f[nw])
+            continue;
+        f[nw] = 1;
+        for (int i = ed[nw]; i; i = e[i].p)
+        {
+            int to = e[i].v;
+            if (!f[to] && d[to] > d[nw] + e[i].w)
+            {
+                d[to] = d[nw] + e[i].w;
+                q.push({d[to], to});
+            }
+        }
+    }
+}

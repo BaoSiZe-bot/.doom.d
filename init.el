@@ -74,7 +74,7 @@
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       (dired +ranger +icons)            ; making dired pretty [functional]
+       (dired +icons)            ; making dired pretty [functional]
        ;;electric          ; smarter, keyword-based electric-indent
        (ibuffer +icons)         ; interactive buffer management
        ;;undo              ; persistent, smarter undo for your inevitable mistakes
@@ -87,14 +87,14 @@
        vterm             ; the best terminal emulation in Emacs
 
        :checkers
-       (syntax +childframe)             ; tasing you for every semicolon you forget
+       ;;(syntax +childframe)             ; tasing you for every semicolon you forget
        ;;(spell +flyspell) ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
        ;;ansible
        ;;biblio            ; Writes a PhD for you (citation needed)
-       (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
+       debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
@@ -122,7 +122,7 @@
        :lang
        ;;agda              ; types of types of types of types...
        ;;beancount         ; mind the GAAP
-       (cc +lsp +tree-sitter)                ; C > C++ == 1
+       (cc +tree-sitter)                ; C > C++ == 1
        ;;clojure           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
@@ -146,7 +146,7 @@
        ;;(haskell +lsp)    ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
-       (json +lsp +tree-sitter)              ; At least it ain't XML
+       (json +tree-sitter)              ; At least it ain't XML
        ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
@@ -173,7 +173,7 @@
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +lsp +pyright)            ; beautiful is better than ugly
+       python            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
@@ -210,7 +210,7 @@
        (default +bindings)
 
        :baosize
-       chinese
+       (chinese +rime-predicates)
        ;;(telega             ; telegram
        ;; +auto-im)      ; auto toggle input method
        tools
@@ -228,4 +228,5 @@
        lsp-bridge
        ;;lspce
        eaf
+       dape
        vterm-run)

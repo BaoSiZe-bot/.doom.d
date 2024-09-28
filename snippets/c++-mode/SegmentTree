@@ -1,0 +1,60 @@
+# -*- mode: snippet -*-
+# name: bld
+# key: SegmentTree
+# --
+struct Node
+{
+    int l, r;
+    ${1://TODO: add data in Node}
+}s[3000005];
+inline void psd(int x)
+{
+    ${2://TODO: add pushdown}
+}
+inline void psu(int x)
+{
+    ${3: //TODO: add pushup}
+}
+inline void bld(int x, int l, int r)
+{
+    ${5://TODO: add init}
+    if (l == r)
+    {
+        ${6://TODO: add one-node init.}
+        return;
+    }
+    int mid = (l + r) >> 1;
+    bld(x << 1, l, mid);
+    bld(x << 1 | 1, mid + 1, r);
+    psu(x);
+}
+inline void add(int x, int l, int r, int v)
+{
+    if (l <= s[x].l && s[x].r <= r)
+    {
+        ${7://TODO: add full add.}
+        return;
+    }
+    psd(x);
+    int mid = (s[x].l + s[x].r) >> 1;
+    if (l <= mid)
+        add(x << 1, l, r, v);
+    if (r > mid)
+        add(x << 1 | 1, l, r, v);
+    psu(x);
+}
+inline int qry(int x, int l, int r)
+{
+    if (l <= s[x].l && s[x].r <= r)
+    {
+        ${8://TODO: add full return(qry).}
+    }
+    psd(x);
+    int mid = (s[x].l + s[x].r) >> 1;
+    int res = 0;
+    if (l <= mid)
+        res += qry(x << 1, l, r);
+    if (r > mid)
+        res += qry(x << 1 | 1, l, r);
+    return res;
+}

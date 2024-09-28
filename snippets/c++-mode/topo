@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: topo
+# key: topo
+# --
+int q[${1:100000}];
+inline void topo(int rr[], int d[])
+{
+    int hd = 1, tl = 0;
+    for (int i = 1; i <= n; i++)
+        if (!rr[i])
+            q[++tl] = i;
+    while (hd <= tl)
+    {
+        int p = q[hd++];
+        for (int i = ed[p]; i; i = e[i].p)
+        {
+            int to = e[i].v;
+            --rr[to];
+            if (!rr[to])
+                q[++tl] = to;
+        }
+    }
+}

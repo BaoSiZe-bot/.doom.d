@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: fd
+# key: Find-Union Set
+# --
+
+int p[100005], h[100005]; //TODO: add memset(p, 0xff, sizeof p);
+inline int fd(int x) // find parent
+{
+    return ~p[x] ? p[x] = fd(p[x]) : x;
+}
+inline void mg(int u, int v) // merge u, v
+{
+    u = fd(u);
+    v = fd(v);
+    if (u ^ v)
+    {
+        if (h[u] <= h[v])
+            p[u] = v;
+        else
+            p[v] = u;
+        if (h[u] == h[v])
+            ++h[u];
+    }
+}

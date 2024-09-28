@@ -1,0 +1,31 @@
+# -*- mode: snippet -*-
+# name: spfa
+# key: spfa
+# --
+bool f[${1:100005}];
+int q[$1], d[$1], hd, tl;
+inline void spfa(int s)
+{
+    for (int i = 1; i <= n; ++i)
+        d[i] = INT_MAX;
+    tl = d[s] = 0;
+    hd = f[s] = 1;
+    q[++tl] = s;
+    while(hd <= tl)
+    {
+        int now = q[hd++];
+        f[now] = 0;
+        for (int i = ed[now]; i; i = e[i].p) {
+            int to = e[i].v;
+            if(d[now] + e[i].w < d[to])
+            {
+                d[to] = d[now] + e[i].w;
+                if(!f[to])
+                {
+                    q[++tl] = to;
+                    f[to] = 1;
+                }
+            }
+        }
+    }
+}

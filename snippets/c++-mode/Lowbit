@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: lowbit
+# key: Lowbit
+# --
+
+inline int lb(int x)
+{
+    return x & -x;
+}

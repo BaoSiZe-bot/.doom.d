@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: qpmod
+# key: Quick Pow(mod)
+# --
+inline int qp(int a, int b, int p)
+{
+    int res = 1;
+    while(b)
+    {
+        if (b & 1)
+            (res *= a) %= p;
+        (a *= a) %= p;
+        b >>= 1;
+    }
+    return res;
+}

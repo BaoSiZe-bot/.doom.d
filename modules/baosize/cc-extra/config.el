@@ -17,14 +17,18 @@
 (setq-hook! 'c-mode-common-hook
   fill-column 100)
 
-(use-package! google-c-style
-  :config
-  :hook (c-mode-common . google-set-c-style)
-  :hook (c-mode-common . google-make-newline-indent))
-
-(after! lsp-clients
-  (set-lsp-priority! 'clangd 1))
-
+(setq-local c-basic-offset 4)
+(setq c-basic-offset 4)
+(setq-default c-basic-offset 4)
+(setq-hook! 'c-mode-common-hook c-basic-offset 4)
+(setq-hook! 'c-mode-hook c-basic-offset 4)
+(setq-hook! 'c++-mode-hook c-basic-offset 4)
+(add-hook 'c++-mode-hook (lsp-bridge-mode))
+(add-hook 'c-mode-hook (lsp-bridge-mode))
+(add-hook 'c-mode-common-hook (lsp-bridge-mode))
+(add-hook! 'c++-mode-hook (lsp-bridge-mode))
+(add-hook! 'c-mode-hook (lsp-bridge-mode))
+(add-hook! 'c-mode-common-hook (lsp-bridge-mode))
 (after! c++-mode
   (map!
    :map (c++-mode-map)

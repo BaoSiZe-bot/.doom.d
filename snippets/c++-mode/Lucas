@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: lucas
+# key: Lucas
+# --
+inline int C(int m, int n, int p)
+{
+    if (n > m)
+        return 0;
+    if (m == 0 || n == 0 || n == m)
+        return 1;
+    int s = 1, t = 1;
+    for (int i = m - n + 1; i <= m; ++i)
+        s = s * i % p;
+    for (int i = 1; i <= n; ++i)
+        t = t * i % p;
+    return s * qp(t, p - 2, p) % p;
+}
+inline int Lucas(int m, int n, int p)  //c^n_m
+{
+    if (m == 0 || n == 0 || n == m)
+        return 1;
+    return Lucas(m / p, n / p, p) * C(m % p, n % p, p) % p;
+}

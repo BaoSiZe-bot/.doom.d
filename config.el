@@ -59,8 +59,7 @@
     (:desc "Open Browser"
      "ff" 'find-file-in-project))))
 
-
-
+(map! (:leader (:desc "Consult Lines" "cl" 'consult-line)))
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one

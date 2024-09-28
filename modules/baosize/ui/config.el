@@ -4,10 +4,10 @@
 
 ;; 字体
 (setq
- doom-font (font-spec :family "Maple Mono NF" :size 14 :weight 'Regular)
- doom-unicode-font (font-spec :family "Maple Mono NF" :size 14 :weight 'Regular)
- doom-variable-pitch-font (font-spec :family "Maple Mono NF" :size 14 :weight 'Regular)
- doom-big-font (font-spec :family "Maple Mono NF" :size 18 :weight 'Regular))
+ doom-font (font-spec :family "Maple Mono NF CN" :size 15 :weight 'Regular)
+ doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 15 :weight 'Regular)
+ doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 15 :weight 'Regular)
+ doom-big-font (font-spec :family "Maple Mono NF CN" :size 18 :weight 'Regular))
 
 ;; emoji 字体 Noto Color Emoji
 (defun +font-set-emoji (&rest _)

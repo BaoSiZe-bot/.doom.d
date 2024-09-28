@@ -1,0 +1,30 @@
+# -*- mode: snippet -*-
+# name: tarscc
+# key: Tarjan
+# condition: t
+# --
+int ep[500005], dfn[500005], low[500005], stk[500005], pos[500005], top, gtm, pts;
+inline void tarjan(int x)
+{
+    dfn[x] = low[x] = ++gtm;
+    stk[++top] = x;
+    for (int i = ed[x]; i; i = e[i].p)
+    {
+        int to = e[i].v;
+        if (!dfn[to])
+        {
+            tarjan(to);
+            low[x] = min(low[x], low[to]);
+        }
+        else if (!pos[to])
+            low[x] = min(low[x], dfn[to]);
+    }
+    if (dfn[x] == low[x])
+    {
+        ++pts;
+        int t = 0;
+        do
+            pos[t = stk[top--]] = pts;
+        while (t != x);
+    }
+}

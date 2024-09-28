@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: Edge
+# key: List-forward star
+# --
+struct Edge
+{
+    int v, w, p;
+} e[2005];
+int ed[1005], cnt;
+inline void add(int u, int v, int w)
+{
+    e[++cnt] = {v, w, ed[u]};
+    ed[u] = cnt;
+}

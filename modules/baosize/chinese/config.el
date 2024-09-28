@@ -80,6 +80,8 @@ unwanted space when exporting org-mode to hugo markdown."
   (rime-show-candidate 'posframe)
   (rime-show-preedit 'inline)
   (rime-posframe-style 'simple)
+  (setq rime-posframe-properties (list :internal-border-width 1
+                                       :font "Maple Mono NF"))
   (rime-inline-ascii-trigger 'shift-l)
   :hook
   ((after-init kill-emacs) . (lambda ()
