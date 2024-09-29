@@ -5,8 +5,8 @@
 struct Edge
 {
     int v, w, p;
-} e[2005];
-int ed[1005], cnt;
+} e[${1:200005}];
+int ed[${2:100005}], cnt;
 inline void add(int u, int v, int w)
 {
     e[++cnt] = {v, w, ed[u]};

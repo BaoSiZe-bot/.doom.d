@@ -13,7 +13,6 @@
 (setq default-frame-alist '((width . 90)
                             (height . 50)
                             (alpha-background . 80)))
-
 ;; System locale to use for formatting time values.
 ;;
 ;; Make sure that the weekdays in the time stamps of your Org mode files and in
@@ -52,13 +51,23 @@
           (tags-todo "school")
           (tags-todo "code")
           (tags-todo "theory")))))
-(use-package! find-file-in-project
-  :config
-  (map!
-   (:leader
-    (:desc "Open Browser"
-     "ff" 'find-file-in-project))))
-
+(map!
+ (:leader
+  (:desc "Find File in Project"
+         "fd" 'find-file-in-project)))
+(map!
+ (:leader
+  (:desc "Consult FD"
+         "fd" 'consult-fd)))
+(map!
+ (:leader
+  (:desc "Consult Grep"
+         "fg" 'consult-ripgrep)))
+(map!
+ (:leader
+  (:desc "Consult Grep"
+         "fo" 'consult-org-agenda)))
+(use-package! vc-msg)
 (map! (:leader (:desc "Consult Lines" "cl" 'consult-line)))
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;

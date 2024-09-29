@@ -4,9 +4,9 @@
 
 ;; 字体
 (setq
- doom-font (font-spec :family "Maple Mono NF CN" :size 15 :weight 'Regular)
- doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 15 :weight 'Regular)
- doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 15 :weight 'Regular)
+ doom-font (font-spec :family "Maple Mono NF CN" :size 14 :weight 'Regular)
+ doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 14 :weight 'Regular)
+ doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 14 :weight 'Regular)
  doom-big-font (font-spec :family "Maple Mono NF CN" :size 18 :weight 'Regular))
 
 ;; emoji 字体 Noto Color Emoji
@@ -76,9 +76,9 @@
         doom-modeline-buffer-state-icon t
         doom-modeline-buffer-modification-icon t
         doom-modeline-enable-word-count t
-        doom-modeline-indent-info t))
-  ;; (when (and (display-graphic-p) (not (daemonp)))
-  ;;   (setq doom-modeline-major-mode-icon t)))
+        doom-modeline-indent-info t)
+  (when (and (display-graphic-p) (not (daemonp)))
+    (setq doom-modeline-major-mode-icon t)))
 
 (after! lsp-ui
   (setq lsp-ui-doc-position 'at-point
@@ -86,9 +86,9 @@
         lsp-ui-sideline-ignore-duplicate t
         lsp-ui-sideline-update-mode 'point
         lsp-enable-file-watchers nil
-        lsp-ui-doc-enable t))
-;; (if (featurep 'xwidget-internal)
-;;     (setq lsp-ui-doc-use-webkit t)))
+        lsp-ui-doc-enable t)
+(if (featurep 'xwidget-internal)
+    (setq lsp-ui-doc-use-webkit t)))
 
 ;; 显示时间
 (display-time-mode 1)
@@ -111,38 +111,6 @@
 ;; (pushnew! initial-frame-alist '(width . 200) '(height . 48))
 ;; (add-hook 'window-setup-hook #'toggle-frame-maximized t)
 ;; (add-hook 'window-setup-hook #'toggle-frame-fullscreen t)
-
-
-(use-package! awesome-tab
-  :commands (awesome-tab-mode)
-  :init
-  (defhydra hydra-tab (:pre (awesome-tab-mode t)
-                       :post (awesome-tab-mode -1))
-    "
-   ^^^^Fast Move             ^^^^Tab                    ^^Search            ^^Misc
-  -^^^^--------------------+-^^^^---------------------+-^^----------------+-^^---------------------------
-     ^_k_^   prev group    | _C-a_^^     select first | _b_ switch buffer | _C-k_   kill buffer
-   _h_   _l_ switch tab    | _C-e_^^     select last  | _g_ switch group  | _C-S-k_ kill others in group
-     ^_j_^   next group    | _a_^^       ace jump     | ^^                | ^^
-   ^^0 ~ 9^^ select window | _C-h_/_C-l_ move current | ^^                | ^^
-  -^^^^--------------------+-^^^^---------------------+-^^----------------+-^^---------------------------
-  "
-    ("h" awesome-tab-backward-tab)
-    ("j" awesome-tab-forward-group)
-    ("k" awesome-tab-backward-group)
-    ("l" awesome-tab-forward-tab)
-    ("a" awesome-tab-ace-jump)
-    ("C-a" awesome-tab-select-beg-tab)
-    ("C-e" awesome-tab-select-end-tab)
-    ("C-h" awesome-tab-move-current-tab-to-left)
-    ("C-l" awesome-tab-move-current-tab-to-right)
-    ("b" ivy-switch-buffer)
-    ("g" awesome-tab-counsel-switch-group)
-    ("C-k" kill-current-buffer)
-    ("C-S-k" awesome-tab-kill-other-buffers-in-current-group)
-    ("q" nil "quit"))
-  :bind
-  (("s-t" . hydra-tab/body)))
 
 
 ;; enable emacs27+ build-in fill-column
