@@ -45,7 +45,7 @@
        ligatures         ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
        modeline          ; snazzy, Atom-inspired modeline, plus API
-       nav-flash         ; blink cursor line after big motions
+       ;;nav-flash         ; blink cursor line after big motions
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup
@@ -55,14 +55,14 @@
        ;;unicode           ; extended unicode support for various languages
        ;;vc-gutter         ; vcs diff in the fringe
        ;;vi-tilde-fringe   ; fringe tildes to mark beyond EOB
-       window-select     ; visually switch windows
+       ;;window-select     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
-       zen               ; distraction-free coding or writing
+       ;;zen               ; distraction-free coding or writing
 
        :editor
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
-       fold              ; (nigh) universal code folding
+       ;;fold              ; (nigh) universal code folding
        format            ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
@@ -74,7 +74,7 @@
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       (dired +icons)            ; making dired pretty [functional]
+       ;;(dired +icons)            ; making dired pretty [functional]
        ;;electric          ; smarter, keyword-based electric-indent
        (ibuffer +icons)         ; interactive buffer management
        ;;undo              ; persistent, smarter undo for your inevitable mistakes
@@ -99,13 +99,13 @@
        ;;docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
-       (eval +overlay)     ; run code, run (also, repls)
+       ;;(eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
-       (lookup +dictionary +docsets)             ; navigate your code and its documentation
+       ;;(lookup +dictionary +docsets)             ; navigate your code and its documentation
        ;;(lsp +peek)               ; M-x vscode
        (magit +forge)             ; a git porcelain for Emacs
-       make              ; run make tasks from Emacs
-       pass              ; password manager for nerds
+       ;;make              ; run make tasks from Emacs
+       ;;pass              ; password manager for nerds
        ;;pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
@@ -116,7 +116,7 @@
        tree-sitter
 
        :os
-       (:if IS-MAC macos)  ; improve compatibility with macOS
+       ;;(:if IS-MAC macos)  ; improve compatibility with macOS
        ;;tty               ; improve the terminal Emacs experience
 
        :lang
@@ -142,12 +142,12 @@
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
-       ;;(go +lsp +tree-sitter)         ; the hipster dialect
-       ;;(haskell +lsp)    ; a language that's lazier than I am
+       ;;(go +tree-sitter)         ; the hipster dialect
+       ;;(haskell)    ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
-       (json +tree-sitter)              ; At least it ain't XML
-       ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
+       ;;(json +tree-sitter)              ; At least it ain't XML
+       ;;(java)       ; the poster child for carpal tunnel syndrome
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
@@ -183,13 +183,13 @@
        ;;rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        ;;(scheme +guile)   ; a fully conniving family of lisps
-       ;;(sh +lsp +tree-sitter)               ; she sells {ba,z,fi}sh shells on the C xor
+       ;;(sh +tree-sitter)               ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
        ;;web               ; the tubes
-       ;;(yaml +lsp)              ; JSON, but readable
+       ;;(yaml)              ; JSON, but readable
        ;;zig               ; C, but simpler
 
        :email
@@ -216,17 +216,13 @@
        tools
        ui
        cc-extra
-       ;;(:if (featurep! :lang go) go-extra)
-       ;;(:if (featurep! :lang python) python-extra)
+       ;;(:if (modulep! :lang python) python-extra) ; using pylance
        ;;systemd
        ;;pkgbuild
-       (:if (featurep! :term eshell) eshell-extra)
        ;;ement
        ;;copilot
        ;;tabnine
        ;;holo-layer
        lsp-bridge
-       ;;lspce
        eaf
-       dape
        vterm-run)

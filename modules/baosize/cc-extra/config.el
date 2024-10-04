@@ -3,25 +3,11 @@
 (set-formatter! 'clang-format
   '("clang-format"
     ("-assume-filename=%s" (or buffer-file-name mode-result "")))
-  :modes '((c-mode ".c")
-           (c++-mode ".cpp")
-           (java-mode ".java")
-           (objc-mode ".m")
-           (protobuf-mode ".proto")))
+  :modes '((c++-mode ".cpp")))
 
-;;(setq flycheck-cppcheck-checks "warning,performance,portability,unusedFunction")
-;;(setq flycheck-cppcheck-standards "c++2c")
-
-;;(set-file-template! "/\\(acm\\|codeforces\\|oj\\|training\\).*\\.\\(org\\|neorg\\|org\\)$" :trigger "__pj.org" :mode 'org-mode)
-(set-file-template! "/\\(acm\\|codeforces\\|oj\\|training\\).*\\.\\(cpp\\|cc\\|cxx)$"      :trigger "__pj.cpp" :mode 'c++-mode)
-(setq-hook! 'c-mode-common-hook
-  fill-column 100)
-(setq-hook! 'c-mode-common-hook c-basic-offset 4)
-(setq-hook! 'c-mode-hook c-basic-offset 4)
+(setq-hook! 'c++-mode-hook fill-column 100)
 (setq-hook! 'c++-mode-hook c-basic-offset 4)
-;;(add-hook! 'c++-mode-hook (lsp-bridge-mode))
-;;(add-hook! 'c-mode-common-hook (lsp-bridge-mode))
-;;(add-hook! 'c-mode-hook (lsp-bridge-mode))
+(setq-hook! 'c++-mode-hook c-default-style "bsd")
 (after! c++-mode
   (map!
    :map

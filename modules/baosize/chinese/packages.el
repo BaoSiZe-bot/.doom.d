@@ -5,4 +5,4 @@
 (package! rime)
 (package! ace-pinyin)
 (package! pinyinlib)
-(when (featurep! :editor evil) (package! evil-pinyin))
+(when (modulep! :editor evil) (package! evil-pinyin))

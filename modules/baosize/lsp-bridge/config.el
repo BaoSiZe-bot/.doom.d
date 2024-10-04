@@ -3,6 +3,12 @@
   :config
   (yas-global-mode 1))
 (use-package! lsp-bridge
+  :custom
+  (lsp-bridge-enable-hover-diagnostic t)
+  (acm-backend-preview t)
+  (lsp-bridge-symbols-enable-which-func t)
+  (lsp-bridge-enable-inlay-hint t)
+  (lsp-bridge-python-multi-lsp-server "pyright-background-analysis_ruff")
   :config
   (map! :map doom-leader-code-map
         :desc "LSP Rename"
@@ -15,9 +21,6 @@
         "j"             #'lsp-bridge-find-def)
 ;;  (setq lsp-bridge-use-wenls-in-org-mode 't)
   (add-hook! 'lsp-bridge-ref-mode-hook (evil-emacs-state))
-  (setq lsp-bridge-python-multi-lsp-server "pyright-background-analysis_ruff")
-  (setq acm-enable-tempel nil)
-  (setq lsp-bridge-enable-log nil)
   (global-lsp-bridge-mode))
 
 (unless (display-graphic-p)

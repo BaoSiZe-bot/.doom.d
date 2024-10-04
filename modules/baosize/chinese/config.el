@@ -152,7 +152,7 @@ input scheme to convert to Chinese."
                          (concat content "　"))))
         (list newresult))))
 
-  (when (featurep! +rime-predicates)
+  (when (modulep! +rime-predicates)
     (load! "+rime-predicates")))
 
 (use-package! pinyinlib
@@ -165,7 +165,7 @@ input scheme to convert to Chinese."
 
 (use-package! evil-pinyin
   :when
-  (featurep! :editor evil)
+  (modulep! :editor evil)
   :custom
   (evil-pinyin-scheme 'simplified-traditional-quanpin-all)
   :config

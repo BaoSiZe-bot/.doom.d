@@ -51,11 +51,11 @@
                    :test #'equal))
   (add-hook 'telega-msg-ignore-predicates 'telega-msg-from-blocked-sender-p)
 
-  (when (featurep! +auto-im)
+  (when (modulep! +auto-im)
     (load! "+telega-auto-im"))
 
                                         ; (set-evil-initial-state! '(telega-root-mode telega-chat-mode) 'emacs)
-  (when (featurep! :editor evil)
+  (when (modulep! :editor evil)
     (map!
      (:map telega-msg-button-map
       "J" #'telega-button-forward
@@ -68,7 +68,7 @@
      "h" nil))
 
   ;; use RET to add newline and C-RET to send
-  (when (featurep! :config default)
+  (when (modulep! :config default)
     (map! :map telega-chat-mode-map
           "C-c C-t"          #'telega-chatbuf-attach-sticker
           "RET"              nil

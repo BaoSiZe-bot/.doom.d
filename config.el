@@ -30,45 +30,25 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/.org/")
-(setq catppuccin-flavor 'frappe)
-(setq doom-theme 'catppuccin)
+(setq org-directory '("~/.org/"))
 ;; auto mode case insensitive
-(setq auto-mode-case-fold t)
 (setq org-agenda-files '("~/.org/"))
-(setq org-agenda-custom-commands
-      '(
-        ("w" . "任务安排")
-        ("wa" "重要且紧急的任务" tags-todo "+PRIORITY=\"A\"")
-        ("wb" "重要且不紧急的任务" tags-todo "-weekly-monthly-daily+PRIORITY=\"B\"")
-        ("wc" "不重要且紧急的任务" tags-todo "+PRIORITY=\"C\"")
-        ("wd" "不重要且不紧急的任务" tags-todo "+PRIORITY=\"C\"")
-        ("W" "Weekly Review"
-         ((stuck "") ;; review stuck projects as designated by org-stuck-projects
-          (tags-todo "project")
-          (tags-todo "daily")
-          (tags-todo "weekly")
-          (tags-todo "school")
-          (tags-todo "code")
-          (tags-todo "theory")))))
-(map!
- (:leader
-  (:desc "Find File in Project"
-         "fd" 'find-file-in-project)))
-(map!
- (:leader
-  (:desc "Consult FD"
-         "fd" 'consult-fd)))
-(map!
- (:leader
-  (:desc "Consult Grep"
-         "fg" 'consult-ripgrep)))
-(map!
- (:leader
-  (:desc "Consult Grep"
-         "fo" 'consult-org-agenda)))
+(map! :map doom-leader-file-map
+      :desc "Find File in Project"
+      "f" 'find-file-in-project)
+(map! :map doom-leader-file-map
+      :desc "Consult FD"
+      "d" 'consult-fd)
+(map! :map doom-leader-file-map
+      :desc "Consult Grep"
+      "g" 'consult-ripgrep)
+(map! :map doom-leader-file-map
+      :desc "Consult Org"
+      "o" 'consult-org-agenda)
 (use-package! vc-msg)
-(map! (:leader (:desc "Consult Lines" "cl" 'consult-line)))
+(map! :map doom-leader-git-map
+      :desc "Show vc-msg"
+      "s" 'vc-msg-show)
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one

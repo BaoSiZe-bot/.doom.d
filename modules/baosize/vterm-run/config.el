@@ -1,5 +1,5 @@
 ;;; baosize/vterm-run/config.el -*- lexical-binding: t; -*-
-(when (featurep! :term vterm)
+(when (modulep! :term vterm)
   (map!
    (:leader
     (:prefix ("r" . "run-in-vterm")
@@ -54,13 +54,13 @@
                      (file-name-directory buffer-file-name))))
           (pcase major-mode
             ('c-mode (run-in-vterm (concat "cd '" dir "' && "
-                                              "gcc -O2 -std=c11 '"
+                                              "clang -O2 -std=c11 '"
                                               buffer-file-name
                                               "' -o '/tmp/c-" filename
                                               "' && '/tmp/c-" filename
                                               "'")))
             ('c++-mode (run-in-vterm (concat "cd '" dir "' && "
-                                             "g++ -O2 -g3 -std=gnu++17 '"
+                                             "clang++ -O2 -g3 -std=c++2c '"
                                              buffer-file-name
                                              "' -o '/tmp/cpp-" filename
                                              "' && '/tmp/cpp-" filename
@@ -76,5 +76,5 @@
     (if buffer-file-name
         (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
               (dir (if (doom-project-root) (doom-project-root) (file-name-directory buffer-file-name))))
-          (run-in-vterm (concat "cd " dir " && " "clang++ -O2 -std=c++17 -fsanitize=undefined " buffer-file-name " -o /tmp/cpp-" filename " && /tmp/cpp-" filename)))
+          (run-in-vterm (concat "cd " dir " && " "clang++ -O2 -std=c++2c -fsanitize=undefined " buffer-file-name " -o /tmp/cpp-" filename " && /tmp/cpp-" filename)))
       (message "buffer-file-name is nil"))))
