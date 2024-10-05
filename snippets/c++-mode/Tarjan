@@ -3,7 +3,7 @@
 # key: Tarjan
 # condition: t
 # --
-int ep[500005], dfn[500005], low[500005], stk[500005], pos[500005], top, gtm, pts;
+int ep[${1:500005}], dfn[$1], low[$1], stk[$1], pos[$1], top, gtm, pts;
 inline void tarjan(int x)
 {
     dfn[x] = low[x] = ++gtm;

@@ -10,6 +10,7 @@
   :custom
   (super-save-auto-save-when-idle t)
   (super-save-idle-duration 2)
+  (super-save-idle-timer 1)
   :config
   (super-save-mode +1))
 

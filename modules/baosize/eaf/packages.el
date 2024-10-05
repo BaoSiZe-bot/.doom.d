@@ -38,7 +38,7 @@
            (+eaf-install-deps-for-app
             (concat straight-base-dir "/straight/" straight-build-dir "/eaf-browser"))))
 (package! eaf-pyqterminal
-  :recipe (:host github :repo "emacs-eaf/eaf-pyqterminal"
+  :recipe (:host github :repo "mumu-lhl/eaf-pyqterminal"
            :files ("*")
            :post-build
            (+eaf-install-deps-for-app

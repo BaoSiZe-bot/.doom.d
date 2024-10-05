@@ -1,8 +1,7 @@
 ;;; baosize/lsp-bridge/config.el -*- lexical-binding: t; -*-
-(use-package! yasnippet
-  :config
-  (yas-global-mode 1))
+
 (use-package! lsp-bridge
+  :hook (prog-mode . global-lsp-bridge-mode)
   :custom
   (lsp-bridge-enable-hover-diagnostic t)
   (acm-backend-preview t)
@@ -10,6 +9,9 @@
   (lsp-bridge-enable-inlay-hint t)
   (lsp-bridge-python-multi-lsp-server "pyright-background-analysis_ruff")
   :config
+  (use-package! yasnippet
+  :config
+  (yas-global-mode))
   (map! :map doom-leader-code-map
         :desc "LSP Rename"
         "r"             #'lsp-bridge-rename
