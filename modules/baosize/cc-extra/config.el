@@ -9,9 +9,7 @@
 (setq-hook! 'c++-mode-hook c-basic-offset 4)
 (setq-hook! 'c++-mode-hook c-default-style "bsd")
 (after! c++-mode
-  (map!
-   :map
-   (:leader
+  (map! (:leader
     (:prefix ("d" . "debug")
      :desc "Run cpp in gdb"
      :n "c" #'cpp-gdb)))

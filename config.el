@@ -10,9 +10,7 @@
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
       epa-file-encrypt-to user-mail-address)
-(setq default-frame-alist '((width . 90)
-                            (height . 50)
-                            (alpha-background . 80)))
+(setf treemacs-position 'right)
 ;; System locale to use for formatting time values.
 ;;
 ;; Make sure that the weekdays in the time stamps of your Org mode files and in
