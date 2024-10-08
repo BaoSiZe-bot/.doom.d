@@ -6,8 +6,8 @@
 (package! dash-at-point)
 (package! posframe)
 (package! alert)
-(package! super-save
-  :recipe (:host github :repo "bbatsov/super-save"))
+(package! auto-save
+  :recipe (:host github :repo "manateelazycat/auto-save"))
 (package! neopastebin
   :recipe (:host github :repo "dhilst/emacs-pastebin" :fork "cnsunyour/emacs-pastebin"))
 (package! keyfreq

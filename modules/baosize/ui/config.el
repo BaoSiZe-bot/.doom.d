@@ -11,20 +11,16 @@
 (setq default-frame-alist '((width . 192)
                             (height . 45)
                             (alpha-background . 80)))
-(add-to-list 'default-frame-alist
-             '(font . "Maple Mono NF CN-11"))
+(add-to-list 'default-frame-alist '(font . "Maple Mono NF CN-11"))
 (setq nerd-icons-font-names '("MapleMono-NF-CN-Regular.ttf"))
 (setq nerd-icons-font-family "Maple Mono NF CN")
 (add-hook! 'after-setting-font-hook #'+font-set-emoji)
 (setq catppuccin-flavor 'frappe)
-(defvar doom-theme-dark 'catppuccin)
-(setq doom-theme doom-theme-dark)
+(setq doom-theme 'catppuccin)
 (setq-default fill-column 100)
 (after! doom-modeline
-  (setq doom-modeline-icon t
-        doom-modeline-modal nil
-        doom-modeline-buffer-modification-icon t
-        doom-modeline-indent-info t))
+  (setq doom-modeline-icon nil
+        doom-modeline-modal nil))
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (setq display-line-numbers-type 'relative)

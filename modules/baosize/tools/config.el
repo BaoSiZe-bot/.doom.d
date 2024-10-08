@@ -6,13 +6,11 @@
 (use-package! pinentry :config (pinentry-start))
 
 ;; Automatically save file content
-(use-package! super-save
-  :custom
-  (super-save-auto-save-when-idle t)
-  (super-save-idle-duration 2)
-  (super-save-idle-timer 1)
+(use-package! auto-save
   :config
-  (super-save-mode +1))
+  (auto-save-enable)
+  (setq auto-save-silent t)   ; quietly save
+  (setq auto-save-delete-trailing-whitespace t))
 
 ;; cleanup trailing whitespaces before save buffers.
 ;; (add-hook! before-save

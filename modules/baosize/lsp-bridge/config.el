@@ -10,7 +10,11 @@
   (setq lsp-bridge-symbols-enable-which-func t)
   (setq lsp-bridge-enable-inlay-hint t)
   (setq lsp-bridge-enable-log nil)
-  (setq lsp-bridge-python-multi-lsp-server "pyright-background-analysis_ruff")
+  (setq lsp-bridge-enable-search-words nil)
+  (setq acm-enable-search-file-words nil)
+  (setq lsp-bridge-python-multi-lsp-server "pylsp_ruff")
+  (setq lsp-workspace-symbol-candidates -1)
+  (setq acm-backend-lsp-workspace-symbol-server-names -1)
   (map! :map doom-leader-code-map
         :desc "LSP Rename"
         "r"             #'lsp-bridge-rename
@@ -19,8 +23,9 @@
         :desc "LSP Diagnostic"
         "d"             #'lsp-bridge-diagnostic-list
         :desc "LSP Find declaration"
-        "j"             #'lsp-bridge-find-def)
-  ;;  (setq lsp-bridge-use-wenls-in-org-mode 't)
+        "j"             #'lsp-bridge-find-def
+        :desc "Lsp Format"
+        "f"             #'lsp-bridge-code-format)
   (add-hook! 'lsp-bridge-ref-mode-hook (evil-emacs-state)))
 
 (unless (display-graphic-p)
