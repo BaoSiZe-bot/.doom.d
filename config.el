@@ -29,22 +29,9 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory '("~/.org/"))
 (setq org-agenda-files '("~/.org/"))
-(use-package! find-file-in-project
-  :commands
-  find-file-in-project
-  find-file-in-project-at-point
-  find-file-in-current-directory
-  find-file-in-project-by-selected
-  :init
-  (map! :map doom-leader-file-map
-        :desc "Find File in Project"
-        "f" 'find-file-in-project))
 (map! :map doom-leader-file-map
       :desc "Consult FD"
-      "d" 'consult-fd)
-(map! :map doom-leader-file-map
-      :desc "Consult Grep"
-      "g" 'consult-ripgrep)
+      "d" '+vertico/consult-fd-or-find)
 (map! :map doom-leader-file-map
       :desc "Consult Org"
       "o" 'consult-org-agenda)

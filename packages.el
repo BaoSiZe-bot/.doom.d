@@ -51,4 +51,3 @@
 
 (package! catppuccin-theme)
 (package! vc-msg)
-(package! find-file-in-project)
