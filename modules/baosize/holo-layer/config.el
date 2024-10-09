@@ -1,4 +1,4 @@
-(use-package! eaf
+(use-package! holo-layer
   :custom
   (holo-layer-enable-cursor-animation t)
   (holo-layer-enable-type-animation t)

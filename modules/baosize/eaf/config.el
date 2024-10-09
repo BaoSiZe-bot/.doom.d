@@ -30,7 +30,7 @@
   (eaf-pdf-dark-mode t)
   :init
   (defcustom eaf-evil-leader-key "C-SPC"
-    "Leader key trigger" )
+    "Leader key trigger")
 
   (defcustom eaf-evil-leader-keymap #'doom/leader
     "Leader key bind"
@@ -52,6 +52,14 @@
 
   (with-eval-after-load "eaf"
     (eaf-enable-evil-intergration))
+  (setq eaf-webengine-font-family "Maple Mono NF CN")
+  (setq eaf-webengine-fixed-font-family "Maple Mono NF CN")
+  (setq eaf-webengine-serif-font-family "Maple Mono NF CN")
+  (setq eaf-pyqterminal-font-family "Maple Mono NF CN")
+  (setq eaf-marker-fontsize 16)
+  (setq eaf-pyqterminal-font-size 16)
+  (setq eaf-webengine-font-size 16)
+  (setq eaf-webengine-fixed-font-size 16)
   (map! (:leader
          (:prefix ("e" . "Emacs Application Frame")
           :desc "Open Browser"
@@ -83,21 +91,17 @@
   eaf-open-browser-with-history
   eaf-open-browser-other-window
   eaf-open-browser-same-window
-  :requires eaf
-  :custom (eaf-browser-dark-mode t))
+  :requires eaf)
 (use-package! eaf-pdf-viewer
-  :after eaf
-  :custom (eaf-pdf-dark-mode t))
+  :after eaf)
 (use-package! eaf-pyqterminal
   :commands
   eaf-open-pyqterminal
   eaf-open-office
   :requires eaf)
 (use-package! eaf-markdown-previewer
-  :after eaf
-  :custom (eaf-markdown-dark-mode t))
+  :after eaf)
 (use-package! eaf-org-previewer
-  :after eaf
-  :custom (eaf-org-dark-mode t))
+  :after eaf)
 (use-package! eaf-image-viewer
   :after eaf)

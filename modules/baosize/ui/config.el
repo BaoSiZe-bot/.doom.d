@@ -18,9 +18,6 @@
 (setq catppuccin-flavor 'frappe)
 (setq doom-theme 'catppuccin)
 (setq-default fill-column 100)
-(after! doom-modeline
-  (setq doom-modeline-icon nil
-        doom-modeline-modal nil))
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (setq display-line-numbers-type 'relative)
