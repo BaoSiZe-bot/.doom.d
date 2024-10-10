@@ -83,7 +83,12 @@
           :desc "Open Pyqterminal"
           "t" 'eaf-open-pyqterminal
           :desc "Open IPython"
-          "p" 'eaf-open-ipython))))
+          "i" 'eaf-open-ipython
+          :desc "Open Git"
+          "g" 'eaf-open-git)))
+  (map! :map doom-leader-open-map
+        :desc "Open File Manager"
+        "/" 'eaf-open-file-manager))
 (use-package! eaf-browser
   :commands
   eaf-open-bookmark
@@ -105,3 +110,11 @@
   :after eaf)
 (use-package! eaf-image-viewer
   :after eaf)
+(use-package! eaf-git
+  :commands
+  eaf-open-git
+  :requires eaf)
+(use-package! eaf-file-manager
+  :commands
+  eaf-open-file-manager
+  :requires eaf)

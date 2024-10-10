@@ -11,7 +11,6 @@
 (setq default-frame-alist '((width . 192)
                             (height . 45)
                             (alpha-background . 80)))
-(add-to-list 'default-frame-alist '(font . "Maple Mono NF CN-11"))
 (setq nerd-icons-font-names '("MapleMono-NF-CN-Regular.ttf"))
 (setq nerd-icons-font-family "Maple Mono NF CN")
 (add-hook! 'after-setting-font-hook #'+font-set-emoji)

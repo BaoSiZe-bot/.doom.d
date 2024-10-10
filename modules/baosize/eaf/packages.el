@@ -67,3 +67,15 @@
            :post-build
            (+eaf-install-deps-for-app
             (concat straight-base-dir "/straight/" straight-build-dir "/eaf-pdf-viewer"))))
+(package! eaf-git
+  :recipe (:host github :repo "emacs-eaf/eaf-git"
+           :files ("*")
+           :post-build
+           (+eaf-install-deps-for-app
+            (concat straight-base-dir "/straight/" straight-build-dir "/eaf-git"))))
+(package! eaf-file-manager
+  :recipe (:host github :repo "emacs-eaf/eaf-file-manager"
+           :files ("*")
+           :post-build
+           (+eaf-install-deps-for-app
+            (concat straight-base-dir "/straight/" straight-build-dir "/eaf-file-manager"))))

@@ -12,18 +12,28 @@
   (setq lsp-bridge-enable-inlay-hint t)
   (setq lsp-bridge-enable-log nil)
   (setq acm-enable-search-file-words nil)
+  (setq ac-enable-codeium t)
   (setq lsp-bridge-python-multi-lsp-server "pylsp_ruff")
   (setq acm-enable-lsp-workspace-symbol nil)
+  :init
   (map! :map doom-leader-code-map
-        :desc "LSP Rename"
+        :desc "LSP rename"
         "r"             #'lsp-bridge-rename
-        :desc "LSP Action"
+        :desc "LSP action"
         "a"             #'lsp-bridge-code-action
-        :desc "LSP Diagnostic"
+        :desc "LSP diagnostic"
         "d"             #'lsp-bridge-diagnostic-list
-        :desc "LSP Find declaration"
+        :desc "LSP diagnostic goto next"
+        "n"             #'lsp-bridge-diagnostic-jump-next
+        :desc "LSP diagnostic previuos"
+        "p"             #'lsp-bridge-diagnostic-jump-prev
+        :desc "LSP diagnostic goto next"
+        "]"             #'lsp-bridge-diagnostic-jump-next
+        :desc "LSP diagnostic previuos"
+        "["             #'lsp-bridge-diagnostic-jump-prev
+        :desc "LSP find declaration"
         "j"             #'lsp-bridge-find-def
-        :desc "Lsp Format"
+        :desc "Lsp format"
         "f"             #'+format/buffer)
   (map! :map doom-leader-map
         :desc "LSP Hover"

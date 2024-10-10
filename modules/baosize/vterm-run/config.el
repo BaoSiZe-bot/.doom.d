@@ -59,6 +59,12 @@
                                               "' -o '/tmp/c-" filename
                                               "' && '/tmp/c-" filename
                                               "'")))
+            ('c++-ts-mode (run-in-vterm (concat "cd '" dir "' && "
+                                             "clang++ -O2 -g3 -std=c++2c '"
+                                             buffer-file-name
+                                             "' -o '/tmp/cpp-" filename
+                                             "' && '/tmp/cpp-" filename
+                                             "'")))
             ('c++-mode (run-in-vterm (concat "cd '" dir "' && "
                                              "clang++ -O2 -g3 -std=c++2c '"
                                              buffer-file-name
