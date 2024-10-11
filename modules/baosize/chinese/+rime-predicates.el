@@ -17,6 +17,7 @@
 (setq rime-disable-predicates
               '(rime-predicate-evil-mode-p
                 rime-predicate-hydra-p
+                rime-predicate-prog-in-code-p
                 rime-predicate-space-after-cc-p
                 rime-predicate-org-in-src-block-p
                 rime-predicate-org-latex-mode-p
