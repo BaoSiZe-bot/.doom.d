@@ -27,31 +27,25 @@
   (eaf-org-dark-mode t)
   (eaf-markdown-dark-mode t)
   (eaf-browser-dark-mode t)
+  (eaf-browser-search-engines '(("bing" . "https://bing.com/search?q=%s")
+                                ("baidu" . "https://www.baidu.com/search?ie=utf-8&q=%s")
+                                ("google" . "http://www.google.com/search?ie=utf-8&q=%s")
+                                ("duckduckgo" . "https://duckduckgo.com/?q=%s")))
+  (eaf-browser-default-search-engine "bing")
   (eaf-pdf-dark-mode t)
   :init
-  (defcustom eaf-evil-leader-key "C-SPC"
-    "Leader key trigger")
-
-  (defcustom eaf-evil-leader-keymap #'doom/leader
-    "Leader key bind"
-    :type 'keymap)
-
-;;;###autoload
+  (setq eaf-evil-leader-key "C-SPC")
+  (setq eaf-evil-leader-keymap #'doom/leader)
   (defun eaf-enable-evil-intergration ()
-    "EAF evil intergration."
     (interactive)
-
     (add-hook 'evil-normal-state-entry-hook
               (lambda ()
                 (when (derived-mode-p 'eaf-mode)
                   (define-key eaf-mode-map (kbd eaf-evil-leader-key) eaf-evil-leader-keymap)
                   (setq emulation-mode-map-alists
                         (delq 'evil-mode-map-alist emulation-mode-map-alists)))))
-
     (add-to-list 'evil-insert-state-modes 'eaf-edit-mode))
-
-  (with-eval-after-load "eaf"
-    (eaf-enable-evil-intergration))
+  (with-eval-after-load "eaf" (eaf-enable-evil-intergration))
   (setq eaf-webengine-font-family "Maple Mono NF CN")
   (setq eaf-webengine-fixed-font-family "Maple Mono NF CN")
   (setq eaf-webengine-serif-font-family "Maple Mono NF CN")
@@ -88,7 +82,7 @@
           "g" 'eaf-open-git)))
   (map! :map doom-leader-open-map
         :desc "Open File Manager"
-        "/" 'eaf-open-file-manager))
+        "/" 'eaf-open-in-file-manager))
 (use-package! eaf-browser
   :commands
   eaf-open-bookmark
@@ -117,4 +111,5 @@
 (use-package! eaf-file-manager
   :commands
   eaf-open-file-manager
+  eaf-open-in-file-manager
   :requires eaf)
