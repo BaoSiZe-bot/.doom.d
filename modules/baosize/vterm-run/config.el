@@ -2,7 +2,7 @@
 (when (modulep! :term vterm)
   (map!
    (:leader
-    (:prefix ("r" . "run-in-vterm")
+    (:prefix ("r" . "run-in-vterm/ripgrep")
      :desc "Run custom command"
      "c" #'run-in-vterm
      :desc "Run single code file"

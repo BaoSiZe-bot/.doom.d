@@ -224,6 +224,8 @@
        ;;copilot
        ;;tabnine
        ;;holo-layer
+       blink-search
+       color-rg
        lsp-bridge
        breadcrumb
        eaf

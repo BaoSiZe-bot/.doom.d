@@ -1,4 +1,4 @@
-(use-package! breadcrumb  :hook (prog-mode . breadcrumb-local-mode))
+;; (use-package! breadcrumb  :hook (prog-mode . breadcrumb-local-mode))
 (require 'treesit)
 (require 'posframe)
 
