@@ -81,7 +81,7 @@ unwanted space when exporting org-mode to hugo markdown."
   (rime-show-preedit 'inline)
   (rime-posframe-style 'simple)
   (setq rime-posframe-properties (list :internal-border-width 1
-                                       :font "Maple Mono NF"))
+                                       :font "Maple Mono NF CN"))
   (rime-inline-ascii-trigger 'shift-l)
   :hook
   ((after-init kill-emacs) . (lambda ()
@@ -151,7 +151,8 @@ input scheme to convert to Chinese."
                            content
                          (concat content "　"))))
         (list newresult))))
-
+  (add-hook 'kill-emacs-hook (lambda ()
+                               (ignore-errors (rime-lib-finalize))))
   (when (modulep! +rime-predicates)
     (load! "+rime-predicates")))
 

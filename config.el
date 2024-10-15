@@ -36,13 +36,8 @@
       :desc "Consult Org"
       "o" 'consult-org-agenda)
 (use-package! vc-msg
-  :commands
-  vc-msg-show
-  vc-msg-prompt
-  :init
-  (map! :map doom-leader-git-map
-        :desc "Show vc-msg"
-        "s" 'vc-msg-show))
+  :bind (:map doom-leader-git-map
+        ("s" ("Show vc-msg" . vc-msg-show))))
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one

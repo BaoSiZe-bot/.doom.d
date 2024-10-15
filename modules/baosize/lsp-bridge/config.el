@@ -5,41 +5,31 @@
   (prog-mode . yas-minor-mode))
 (use-package! lsp-bridge
   :hook
-  (prog-mode . lsp-bridge-mode)
+  (c++-ts-mode . lsp-bridge-mode)
+  (python-ts-mode . lsp-bridge-mode)
+  (emacs-lisp-mode . lsp-bridge-mode)
+  (inferior-python-mode . lsp-bridge-mode)
+  (inferior-emacs-lisp-mode . lsp-bridge-mode)
+  :custom
+  (lsp-bridge-enable-hover-diagnostic t)
+  (lsp-bridge-symbols-enable-which-func t)
+  (lsp-bridge-enable-inlay-hint t)
+  (lsp-bridge-enable-log nil)
+  (acm-enable-search-file-words nil)
+  ;; (ac-enable-codeium t)
+  (lsp-bridge-python-multi-lsp-server "pylsp_ruff")
+  (acm-enable-lsp-workspace-symbol nil)
+  :bind (:map doom-leader-code-map
+         ("r" ("LSP rename" . lsp-bridge-rename))
+         ("a" ("LSP action" . lsp-bridge-code-action))
+         ("j" ("LSP find declaration" . lsp-bridge-find-def))
+         ("f" ("Lsp format" . lsp-bridge-code-format)))
+        (:map doom-leader-map
+         ("dd" ("LSP diagnostic list" . lsp-bridge-diagnostic-list))
+         ("dn" ("LSP diagnostic goto next" . lsp-bridge-diagnostic-jump-next))
+         ("dp" ("LSP diagnostic previuos" . lsp-bridge-diagnostic-jump-prev))
+         ("d]" ("LSP diagnostic goto next" . lsp-bridge-diagnostic-jump-next))
+         ("d[" ("LSP diagnostic previuos" . lsp-bridge-diagnostic-jump-prev))
+         ("dk" ("LSP Hover" . lsp-bridge-popup-documentation)))
   :config
-  (setq lsp-bridge-enable-hover-diagnostic t)
-  (setq lsp-bridge-symbols-enable-which-func t)
-  (setq lsp-bridge-enable-inlay-hint t)
-  (setq lsp-bridge-enable-log nil)
-  (setq acm-enable-search-file-words nil)
-  (setq ac-enable-codeium t)
-  (setq lsp-bridge-python-multi-lsp-server "pylsp_ruff")
-  (setq acm-enable-lsp-workspace-symbol nil)
-  :init
-  (map! :map doom-leader-code-map
-        :desc "LSP rename"
-        "r"             #'lsp-bridge-rename
-        :desc "LSP action"
-        "a"             #'lsp-bridge-code-action
-        :desc "LSP diagnostic"
-        "d"             #'lsp-bridge-diagnostic-list
-        :desc "LSP diagnostic goto next"
-        "n"             #'lsp-bridge-diagnostic-jump-next
-        :desc "LSP diagnostic previuos"
-        "p"             #'lsp-bridge-diagnostic-jump-prev
-        :desc "LSP diagnostic goto next"
-        "]"             #'lsp-bridge-diagnostic-jump-next
-        :desc "LSP diagnostic previuos"
-        "["             #'lsp-bridge-diagnostic-jump-prev
-        :desc "LSP find declaration"
-        "j"             #'lsp-bridge-find-def
-        :desc "Lsp format"
-        "f"             #'+format/buffer)
-  (map! :map doom-leader-map
-        :desc "LSP Hover"
-        "k"             #'lsp-bridge-popup-documentation)
   (add-hook! 'lsp-bridge-ref-mode-hook (evil-emacs-state)))
-
-(unless (display-graphic-p)
-  (after! acm
-    (use-package! acm-terminal)))

@@ -49,18 +49,6 @@
            :post-build
            (+eaf-install-deps-for-app
             (concat straight-base-dir "/straight/" straight-build-dir "/eaf-org-previewer"))))
-(package! eaf-markdown-previewer
-  :recipe (:host github :repo "emacs-eaf/eaf-markdown-previewer"
-           :files ("*")
-           :post-build
-           (+eaf-install-deps-for-app
-            (concat straight-base-dir "/straight/" straight-build-dir "/eaf-markdown-previewer"))))
-(package! eaf-image-viewer
-  :recipe (:host github :repo "emacs-eaf/eaf-image-viewer"
-           :files ("*")
-           :post-build
-           (+eaf-install-deps-for-app
-            (concat straight-base-dir "/straight/" straight-build-dir "/eaf-image-viewer"))))
 (package! eaf-pdf-viewer
   :recipe (:host github :repo "emacs-eaf/eaf-pdf-viewer"
            :files ("*")

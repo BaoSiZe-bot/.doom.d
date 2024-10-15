@@ -1,7 +1,6 @@
 (use-package! awesome-tray
   :config
   (awesome-tray-mode 1)
-  :init
   (setq awesome-tray-belong-update-duration 1)
   (setq awesome-tray-file-path-show-filename t)
   (setq awesome-tray-file-path-full-dirname-levels 1)

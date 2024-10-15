@@ -53,7 +53,7 @@
               (dir (if (doom-project-root) (doom-project-root)
                      (file-name-directory buffer-file-name))))
           (pcase major-mode
-            ('c-mode (run-in-vterm (concat "cd '" dir "' && "
+            ('c-ts-mode (run-in-vterm (concat "cd '" dir "' && "
                                            "clang -O2 -std=c11 '"
                                            buffer-file-name
                                            "' -o '/tmp/c-" filename
@@ -65,13 +65,7 @@
                                                 "' -o '/tmp/cpp-" filename
                                                 "' && '/tmp/cpp-" filename
                                                 "'")))
-            ('c++-mode (run-in-vterm (concat "cd '" dir "' && "
-                                             "clang++ -O2 -g3 -std=c++2c '"
-                                             buffer-file-name
-                                             "' -o '/tmp/cpp-" filename
-                                             "' && '/tmp/cpp-" filename
-                                             "'")))
-            ('python-mode (run-in-vterm (concat "cd " dir " && "
+            ('python-ts-mode (run-in-vterm (concat "cd " dir " && "
                                                 "python " buffer-file-name)))
             (_ (message "not supported"))))
 

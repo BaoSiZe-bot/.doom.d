@@ -4,7 +4,7 @@
 
 (package! pinentry)
 (package! dash-at-point)
-(package! posframe)
+(package! posframe :recipe (:host github :repo "tumashu/posframe" :branch "master" :files ("*")))
 (package! alert)
 (package! auto-save
   :recipe (:host github :repo "manateelazycat/auto-save"))

@@ -1,5 +1,4 @@
 ;;; baosize/ui/config.el -*- lexical-binding: t; -*-
-
 ;; based on cnsunyour's config
 (setq
  doom-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
@@ -41,13 +40,11 @@
         ,@(funcall fn mode))
     (funcall fn mode)))
 (advice-add 'c-ts-mode--font-lock-settings :around 'my-c-font-lock-settings)
-;; (setq catppuccin-flavor 'frappe)
 (setq doom-theme 'doom-palenight)
-(setq-default fill-column 80)
+(setq fill-column 80)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (setq display-line-numbers-type 'relative)
 (add-hook 'find-file-hook 'display-line-numbers-mode)
-(when (>= emacs-major-version 27)
-  (add-hook! (text-mode prog-mode conf-mode)
-             #'display-fill-column-indicator-mode))
+(add-hook! (text-mode prog-mode conf-mode)
+    #'display-fill-column-indicator-mode)

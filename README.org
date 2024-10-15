@@ -1,4 +1,4 @@
-* My custom config for Doom Emacs Based from H-Cheung's
+* My custom config for Doom Emacs Based from h0cheung's
 
 See [[https://github.com/hlissner/doom-emacs]] for information about Doom Emacs.
 
@@ -8,13 +8,13 @@ This file is an introduction for my config.
 
     * fastest LSP (lsp-bridge)
 
-    * C/C++, Python, Go
+    * C/C++, Python
 
     * GitHub Copilot
 
     * systemd units, rpm spec, Arch Linux pkgbuild
 
-    * build and run single files (mainly for competitive programming) in eshell
+    * build and run single files (mainly for competitive programming)
 
     * rime for butter Chinese input
 
@@ -32,4 +32,16 @@ This file is an introduction for my config.
 
 Tested with emacs 31.0.50 (master branch).
 
-Doom Emacs supports 27.1+ now. 29+ is not supported but in fact works well.
+Doom Emacs supports 29+ now. 31+ is not supported but in fact works well.
+
+Now EAF just support compile emacs with "-with-x-toolkit=gtk3" flags.
+
+EAF does not support PGTK.
+
+If you install emacs from your package manager (without Gentoo Portage),
+then lsp-bridge and blink-search won't show icons.
+
+It's recommanded to using "--with-native-compilation=aot" and you will get
+a lot of optimize in the speed.
+
+I just support tree-sitter but you can remove the cc-extra in init.el.
