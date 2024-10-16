@@ -11,7 +11,6 @@
   (inferior-python-mode . lsp-bridge-mode)
   (inferior-emacs-lisp-mode . lsp-bridge-mode)
   :custom
-  (lsp-bridge-enable-hover-diagnostic t)
   (lsp-bridge-symbols-enable-which-func t)
   (lsp-bridge-enable-inlay-hint t)
   (lsp-bridge-enable-log nil)
@@ -30,6 +29,4 @@
          ("dp" ("LSP diagnostic previuos" . lsp-bridge-diagnostic-jump-prev))
          ("d]" ("LSP diagnostic goto next" . lsp-bridge-diagnostic-jump-next))
          ("d[" ("LSP diagnostic previuos" . lsp-bridge-diagnostic-jump-prev))
-         ("dk" ("LSP Hover" . lsp-bridge-popup-documentation)))
-  :config
-  (add-hook! 'lsp-bridge-ref-mode-hook (evil-emacs-state)))
+         ("dk" ("LSP Hover" . lsp-bridge-popup-documentation))))

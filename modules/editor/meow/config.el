@@ -64,7 +64,7 @@
     ;; Use e to move up, n to move down.
     ;; Since special modes usually use n to move down, we only overwrite e here.
     '("e" . meow-prev))
-   (when (featurep! :editor meow +leader)
+   (when (modulep! :editor meow +leader)
          (meow-motion-overwrite-define-key '("\\ e" . "H-e")))
    (meow-leader-define-key '("e" . "H-e")))
   (map! :map meow-normal-state-keymap
@@ -169,11 +169,11 @@
 (defun meow/setup-qwerty ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow/setup)
-  (when (featurep! :editor meow +override)
+  (when (modulep! :editor meow +override)
    (meow-motion-overwrite-define-key
     '("j" . meow-next)
     '("k" . meow-prev))
-   (when (featurep! :editor meow +leader)
+   (when (modulep! :editor meow +leader)
      (meow-motion-overwrite-define-key
       '("\\ j" . "H-j")
       '("\\ k" . "H-k")))
@@ -328,5 +328,6 @@
   (map! :map meow-keymap [remap describe-key] #'helpful-key)
   (meow-define-keys
    'normal
-   '("/" . meow-comment))
-   '("P" . meow-replace-char))
+   '("/" . meow-comment)
+   '("F" . avy-goto-char-2)
+   '("S" . avy-goto-char-timer)))

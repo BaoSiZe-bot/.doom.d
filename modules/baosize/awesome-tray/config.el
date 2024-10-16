@@ -8,5 +8,6 @@
                                       "input-method"
                                       "belong"
                                       "buffer-read-only"
+                                      "meow"
                                       "mode-name")
         awesome-tray-input-method-local-style "㞢"))

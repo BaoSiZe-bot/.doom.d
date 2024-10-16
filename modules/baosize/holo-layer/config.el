@@ -1,3 +1,4 @@
+(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/blink-search/backend/")
 (use-package! holo-layer
   :custom
   (holo-layer-enable-cursor-animation t)
