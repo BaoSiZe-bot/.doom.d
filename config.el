@@ -38,6 +38,7 @@
 (use-package! vc-msg
   :bind (:map doom-leader-git-map
         ("s" ("Show vc-msg" . vc-msg-show))))
+(setq meow-use-clipboard t)
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one

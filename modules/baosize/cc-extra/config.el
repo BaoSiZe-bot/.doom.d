@@ -9,14 +9,8 @@
         (c++-mode . c++-ts-mode)
         (c-or-c++-mode . c-or-c++-ts-mode)
         (python-mode . python-ts-mode)))
-(setq-hook! 'c++-ts-mode-hook fill-column 80)
 (setq-hook! 'c++-ts-mode-hook c-basic-offset 4)
-(add-hook! 'c++-ts-mode-hook (indent-tabs-mode -1))
-(setq-hook! 'c++-ts-mode-hook c-default-style "linux")
-(setq-hook! 'c++-mode-hook fill-column 80)
 (setq-hook! 'c++-mode-hook c-basic-offset 4)
-(add-hook! 'c++-mode-hook (indent-tabs-mode -1))
-(setq-hook! 'c++-mode-hook c-default-style "linux")
 (after! c++-ts-mode
   (map! (:leader
     (:prefix ("d" . "debug")

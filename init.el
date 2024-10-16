@@ -1,10 +1,9 @@
 ;;; init.el -*- lexical-binding: t; -*-
-
+;; To disable collection of benchmark data after init is done.
 ;; Limit on depth in eval, apply and funcall before error
 (setq max-lisp-eval-depth 100000)
 ;; Limit on number of Lisp variable bindings and unwind-protects.
 (setq max-specpdl-size 100000)
-(setq debug-on-error t)
 ;; This file controls what Doom modules are enabled and what order they load
 ;; in. Remember to run 'doom sync' after modifying it!
 
@@ -36,8 +35,8 @@
        :ui
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
-       doom-dashboard    ; a nifty splash screen for Emacs
-       doom-quit         ; DOOM quit-message prompts when you quit Emacs
+       doom-dashboard
+       ;; doom-quit         ; DOOM quit-message prompts when you quit Emacs
        ;;(emoji +unicode)  ; 🙂
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
@@ -51,16 +50,17 @@
        (popup +all)   ; tame sudden yet inevitable temporary windows
        ;;treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
-       vc-gutter         ; vcs diff in the fringe
-       vi-tilde-fringe   ; fringe tildes to mark beyond EOB
-       window-select     ; visually switch windows
+       ;; vc-gutter         ; vcs diff in the fringe
+       ;; vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       ;; window-select     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
-       zen               ; distraction-free coding or writing
+       ;; zen               ; distraction-free coding or writing
 
        :editor
-       (evil +everywhere); come to the dark side, we have cookies
+       (meow +qwerty +override)
+       ;;(evil +everywhere); come to the dark side, we have cookies
        ;; file-templates    ; auto-snippets for empty files
-       fold              ; (nigh) universal code folding
+       ;; fold              ; (nigh) universal code folding
        ;;format            ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
@@ -77,7 +77,7 @@
        ;; electric          ; smarter, keyword-based electric-indent
        ;; (ibuffer +icons)         ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes
-       vc                ; version-control and Emacs, sitting in a tree
+       ;; vc                ; version-control and Emacs, sitting in a tree
 
        :term
        ;;eshell            ; the elisp shell that works everywhere
@@ -152,7 +152,7 @@
        ;;lean              ; for folks with too much to prove
        ;;ledger            ; be audit you can be
        ;;lua               ; one-based indices? one-based indices
-       markdown          ; writing docs for people to ignore
+       ;; markdown          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
@@ -162,7 +162,7 @@
            ;; +gnuplot
            ;; +hugo
            ;; +present
-           +journal
+           ;; +journal
            +pretty)         ;;php               ; perl's insecure younger brother
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
@@ -202,25 +202,25 @@
        :config
        ;;literate
        ;;use-package
-       (default +bindings +smartparens)
+       (default +bindings)
 
        :baosize
-       (chinese +rime-predicates)
+       chinese
        ;;(telega             ; telegram
        ;; +auto-im)      ; auto toggle input method
        tools
        ui
        cc-extra
        awesome-tray
-       sort-tab
+       ;;sort-tab
        ;;(:if (modulep! :lang python) python-extra) ; using pylance
        ;;ement
        ;;copilot
        ;;tabnine
        ;;holo-layer
+       ;;eaf
        blink-search
-       color-rg
+       ;;color-rg
        lsp-bridge
        breadcrumb
-       aweshell
-       eaf)
+       aweshell)

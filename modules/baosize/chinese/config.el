@@ -53,6 +53,7 @@ unwanted space when exporting org-mode to hugo markdown."
 
 
 (use-package! rime
+
   :bind
   ("C-S-s-j" . #'+rime-convert-string-at-point)
   (:map rime-active-mode-map
@@ -66,6 +67,20 @@ unwanted space when exporting org-mode to hugo markdown."
    ("C-~" . #'rime-send-keybinding)
    ("C-S-`" . #'rime-send-keybinding))
   :custom
+  (rime-disable-predicates
+      '(rime-predicate-evil-mode-p
+           rime-predicate-hydra-p
+           rime-predicate-prog-in-code-p
+           rime-predicate-space-after-cc-p
+           rime-predicate-org-in-src-block-p
+           rime-predicate-org-latex-mode-p
+           rime-predicate-punctuation-after-space-cc-p
+           rime-predicate-punctuation-after-ascii-p
+           rime-predicate-punctuation-line-begin-p
+           ;; rime-predicate-space-after-ascii-p
+           ;; rime-predicate-space-after-cc-p
+           rime-predicate-current-uppercase-letter-p
+           rime-predicate-after-ascii-char-p))
   (default-input-method "rime")
   (rime-share-data-dir
    (cl-some (lambda (dir)
@@ -75,7 +90,6 @@ unwanted space when exporting org-mode to hugo markdown."
             '("/usr/share/rime-data"
               "/usr/share/local"
               "/usr/share")))
-
   (rime-user-data-dir (expand-file-name "~/.local/share/emacs-rime"))
   (rime-show-candidate 'posframe)
   (rime-show-preedit 'inline)
@@ -83,14 +97,9 @@ unwanted space when exporting org-mode to hugo markdown."
   (setq rime-posframe-properties (list :internal-border-width 1
                                        :font "Maple Mono NF CN"))
   (rime-inline-ascii-trigger 'shift-l)
-  :hook
-  ((after-init kill-emacs) . (lambda ()
-                               (when (fboundp 'rime-lib-sync-user-data)
-                                 (ignore-errors (rime-sync)))))
   :config
   (add-hook! (org-mode
-              markdown-mode
-              beancount-mode)
+              markdown-mode)
     (activate-input-method default-input-method))
 
   (defun +rime-force-enable ()
