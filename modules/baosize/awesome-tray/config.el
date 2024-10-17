@@ -1,3 +1,4 @@
+;;; $DOOMDIR/modules/baosize/awesome-tray/config.el -*- lexical-binding: t; -*-
 (use-package! awesome-tray
   :config
   (awesome-tray-mode 1)

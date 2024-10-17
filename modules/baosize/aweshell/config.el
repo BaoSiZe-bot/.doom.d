@@ -1,3 +1,4 @@
+;;; $DOOMDIR/modules/baosize/aweshell/config.el -*- lexical-binding: t; -*-
 (use-package! aweshell
   :bind (:map doom-leader-open-map
             ("e" ("Toggle eshell" . aweshell-dedicated-toggle))

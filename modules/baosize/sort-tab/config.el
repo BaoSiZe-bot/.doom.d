@@ -1,3 +1,4 @@
+;;; $DOOMDIR/modules/baosize/sort-tab/config.el -*- lexical-binding: t; -*-
 (use-package! sort-tab
   :defer t
   :commands
