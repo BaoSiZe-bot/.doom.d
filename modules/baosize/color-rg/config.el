@@ -1,5 +1,7 @@
 ;;; $DOOMDIR/modules/baosize/color-rg/config.el -*- lexical-binding: t; -*-
 (use-package! color-rg
+  :config
+  (add-hook! 'color-rg-mode-hook (meow-insert-mode))
   :bind (:map doom-leader-map
         ("ri" ("ripgrep input" . color-rg-search-input))
         ("rs" ("ripgrep current symbol" . color-rg-search-symbol))

@@ -11,3 +11,8 @@
 ;; (package! popon)
 (package! lsp-mode :disable t :ignore t)
 (package! company :disable t :ignore t)
+(unless (display-graphic-p)
+  (package! popon
+    :recipe (:host nil :repo "https://codeberg.org/akib/emacs-popon.git"))
+  (package! acm-terminal
+    :recipe (:host github :repo "twlz0ne/acm-terminal")))

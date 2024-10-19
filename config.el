@@ -4,14 +4,15 @@
       user-mail-address "baosize@hotmail.com"
       epa-file-encrypt-to user-mail-address)
 (setq
- doom-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
- doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
- doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
+ doom-font (font-spec :family "Maple Mono NF CN" :size 18 :weight 'Regular)
+ doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 18 :weight 'Regular)
+ doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 18 :weight 'Regular)
  doom-big-font (font-spec :family "Maple Mono NF CN" :size 20 :weight 'Regular))
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (setq default-frame-alist '((width . 192)
-                            (height . 45)))
+                            (height . 45)
+                            (alpha-background . 91)))
 (setq nerd-icons-font-names '("MapleMono-NF-CN-Regular.ttf"))
 (setq nerd-icons-font-family "Maple Mono NF CN")
 (add-hook! 'after-setting-font-hook #'+font-set-emoji)
@@ -42,7 +43,36 @@
         ,@(funcall fn mode))
     (funcall fn mode)))
 (advice-add 'c-ts-mode--font-lock-settings :around 'my-c-font-lock-settings)
-(setq doom-theme 'doom-palenight)
+(setq doom-theme 'doom-one)
+(add-hook! 'doom-modeline-before-github-fetch-notification-hook #'auth-source-pass-enable)
+(after! doom-modeline
+  (display-time-mode 1)
+  (setq doom-modeline-icon t
+        doom-modeline-major-mode-color-icon t
+        doom-modeline-buffer-state-icon t
+        doom-modeline-buffer-modification-icon t
+        doom-modeline-time t
+        doom-modeline-time-icon t
+        doom-modeline-time-live-icon t
+        doom-modeline-time-analogue-clock t
+        doom-modeline-modal t
+        doom-modeline-display-default-persp-name nil
+        doom-modeline-position-column-line-format '("L%l")
+        doom-modeline-position-line-format '("L%l")
+        doom-modeline-position-column-format '("")
+        doom-modeline-modal-icon t
+        doom-modeline-modal-modern-icon t
+        doom-modeline-repl t
+        doom-modeline-buffer-encoding t
+        doom-modeline-lsp nil
+        doom-modeline-support-imenu t
+        doom-modeline-project-detection 'projectile
+        doom-modeline-mu4e t
+        doom-modeline-github t
+        doom-modeline-minor-modes nil
+        doom-modeline-buffer-modification-icon t)
+ (when (and (display-graphic-p) (not (daemonp)))
+  (setq doom-modeline-major-mode-icon t)))
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (setq display-line-numbers-type 'relative)
@@ -60,8 +90,8 @@
       :desc "Consult Org"
       "o" 'consult-org-agenda)
 (use-package! vc-msg
-  :bind (:map doom-leader-git-map
-        ("s" ("Show vc-msg" . vc-msg-show))))
+  :bind (:map doom-leader-map
+        ("vi" ("Show vc-msg" . vc-msg-show))))
 (setq meow-use-clipboard t)
 (setq major-mode-remap-alist
       '((yaml-mode . yaml-ts-mode)
@@ -86,7 +116,27 @@
           (when (eq 0 (shell-command (concat "clang++ -g -std=c++2c \"" buffer-file-name "\" -o \"/tmp/cpp-" filename "\"")))
             (gdb (concat "gdb -i=mi \"/tmp/cpp-" filename "\""))))
       (message "buffer-file-name is nil"))))
-
+(setq dirvish-side-width 30)
+(use-package hideshow
+  :diminish hs-minor-mode
+  :hook (prog-mode . hs-minor-mode)
+  :config
+    (defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
+    (defun hideshow-folded-overlay-fn (ov)
+        (when (eq 'code (overlay-get ov 'hs))
+            (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
+                    (info (format " ... #%d " nlines)))
+                (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
+    (setq hs-set-up-overlay 'hideshow-folded-overlay-fn))
+(setq holiday-local-holidays `((holiday-fixed 3 12 "Arbor Day")
+                               ,@(cl-loop for i from 1 to 3
+                                          collect `(holiday-fixed 5 ,i "International Workers' Day"))
+                               (holiday-fixed 6 1  "Children's Day")
+                               (holiday-fixed 9 10 "Teachers' Day")
+                               ,@(cl-loop for i from 1 to 7
+                                          collect `(holiday-fixed 10 ,i "National Day"))))
+(add-hook! 'calendar-today-visible-hook (calendar-mark-today))
+;;(use-package! railgun) ;I'm highly NOT RECOMMEND enable this.
 (custom-set-variables)
 ;; custom-set-variables was added by Custom.
 ;; If you edit it by hand, you could mess it up, so be careful.

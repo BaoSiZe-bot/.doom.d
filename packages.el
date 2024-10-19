@@ -49,3 +49,5 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 (unpin! t)
 (package! vc-msg)
+(package! power-mode)
+(package! railgun :recipe(:host github :repo "gynamics/railgun.el"))

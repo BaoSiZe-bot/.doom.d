@@ -69,6 +69,9 @@ unwanted space when exporting org-mode to hugo markdown."
   :custom
   (rime-disable-predicates
       '(rime-predicate-evil-mode-p
+           meow-normal-mode-p
+           meow-keypad-mode-p
+           meow-motion-mode-p
            rime-predicate-hydra-p
            rime-predicate-prog-in-code-p
            rime-predicate-space-after-cc-p
@@ -96,7 +99,6 @@ unwanted space when exporting org-mode to hugo markdown."
   (rime-posframe-style 'simple)
   (setq rime-posframe-properties (list :internal-border-width 1
                                        :font "Maple Mono NF CN"))
-  (rime-inline-ascii-trigger 'shift-l)
   :config
   (add-hook! (org-mode
               markdown-mode)
@@ -172,11 +174,3 @@ input scheme to convert to Chinese."
     (setf (car str) (pinyinlib-build-regexp-string (car str)))
     str)
   (advice-add 'orderless-regexp :filter-args #'orderless-regexp-pinyin))
-
-(use-package! evil-pinyin
-  :when
-  (modulep! :editor evil)
-  :custom
-  (evil-pinyin-scheme 'simplified-traditional-quanpin-all)
-  :config
-  (global-evil-pinyin-mode))

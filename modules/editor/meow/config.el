@@ -2,7 +2,6 @@
 (defun meow/setup-keypad ()
  (map! :map meow-keypad-state-keymap
   "?" #'meow-cheatsheet
-  "/" #'meow-keypad-describe-key
   "h" #'help-command))
 (defun meow/setup ()
   (map! :map meow-normal-state-keymap

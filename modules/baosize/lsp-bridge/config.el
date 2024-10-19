@@ -15,8 +15,10 @@
   (lsp-bridge-enable-inlay-hint t)
   (lsp-bridge-enable-log nil)
   (acm-enable-search-file-words nil)
+  (lsp-bridge-enable-hover-diagnostic t)
   ;; (ac-enable-codeium t)
   (lsp-bridge-python-multi-lsp-server "pylsp_ruff")
+  (lsp-bridge-enable-mode-line nil)
   (acm-enable-lsp-workspace-symbol nil)
   :bind (:map doom-leader-code-map
          ("r" ("LSP rename" . lsp-bridge-rename))
@@ -29,4 +31,10 @@
          ("dp" ("LSP diagnostic previuos" . lsp-bridge-diagnostic-jump-prev))
          ("d]" ("LSP diagnostic goto next" . lsp-bridge-diagnostic-jump-next))
          ("d[" ("LSP diagnostic previuos" . lsp-bridge-diagnostic-jump-prev))
-         ("dk" ("LSP Hover" . lsp-bridge-popup-documentation))))
+         ("dk" ("LSP Hover" . lsp-bridge-popup-documentation)))
+  :config
+  (add-hook! 'lsp-bridge-ref-mode-hook (meow-insert-mode))
+  :init
+  (unless (display-graphic-p)
+   (with-eval-after-load 'acm
+    (require 'acm-terminal))))
