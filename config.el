@@ -1,18 +1,20 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+(setq meow-use-cursor-position-hack t
+      meow-use-enhanced-selection-effect t)
 (setq user-full-name "Size Bao"
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
       epa-file-encrypt-to user-mail-address)
 (setq
- doom-font (font-spec :family "Maple Mono NF CN" :size 18 :weight 'Regular)
- doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 18 :weight 'Regular)
- doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 18 :weight 'Regular)
+ doom-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
+ doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
+ doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
  doom-big-font (font-spec :family "Maple Mono NF CN" :size 20 :weight 'Regular))
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (setq default-frame-alist '((width . 192)
                             (height . 45)
-                            (alpha-background . 91)))
+                            (alpha-background . 96)))
 (setq nerd-icons-font-names '("MapleMono-NF-CN-Regular.ttf"))
 (setq nerd-icons-font-family "Maple Mono NF CN")
 (add-hook! 'after-setting-font-hook #'+font-set-emoji)
@@ -45,6 +47,7 @@
 (advice-add 'c-ts-mode--font-lock-settings :around 'my-c-font-lock-settings)
 (setq doom-theme 'doom-one)
 (add-hook! 'doom-modeline-before-github-fetch-notification-hook #'auth-source-pass-enable)
+(size-indication-mode -1)
 (after! doom-modeline
   (display-time-mode 1)
   (setq doom-modeline-icon t
@@ -78,20 +81,17 @@
 (setq display-line-numbers-type 'relative)
 (add-hook 'find-file-hook 'display-line-numbers-mode)
 (setf treemacs-position 'right)
+
+;; ui config end
+
 (setq system-time-locale "C")
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory '("~/.org/"))
 (setq org-agenda-files '("~/.org/"))
-(map! :map doom-leader-file-map
-      :desc "Consult FD"
-      "d" '+vertico/consult-fd-or-find)
-(map! :map doom-leader-file-map
-      :desc "Consult Org"
-      "o" 'consult-org-agenda)
-(use-package! vc-msg
-  :bind (:map doom-leader-map
-        ("vi" ("Show vc-msg" . vc-msg-show))))
+(setq dirvish-side-width 30)
+(setq-hook! 'c++-ts-mode-hook c-basic-offset 4)
+(setq-hook! 'c++-mode-hook c-basic-offset 4)
 (setq meow-use-clipboard t)
 (setq major-mode-remap-alist
       '((yaml-mode . yaml-ts-mode)
@@ -102,21 +102,9 @@
         (c++-mode . c++-ts-mode)
         (c-or-c++-mode . c-or-c++-ts-mode)
         (python-mode . python-ts-mode)))
-(setq-hook! 'c++-ts-mode-hook c-basic-offset 4)
-(setq-hook! 'c++-mode-hook c-basic-offset 4)
-(after! c++-ts-mode
-  (map! (:leader
-    (:prefix ("d" . "debug")
-     :desc "Run cpp in gdb"
-     :n "c" #'cpp-gdb)))
-  (defun cpp-gdb ()
-    (interactive)
-    (if buffer-file-name
-        (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name))))
-          (when (eq 0 (shell-command (concat "clang++ -g -std=c++2c \"" buffer-file-name "\" -o \"/tmp/cpp-" filename "\"")))
-            (gdb (concat "gdb -i=mi \"/tmp/cpp-" filename "\""))))
-      (message "buffer-file-name is nil"))))
-(setq dirvish-side-width 30)
+
+;; value set end
+
 (use-package hideshow
   :diminish hs-minor-mode
   :hook (prog-mode . hs-minor-mode)
@@ -136,6 +124,64 @@
                                ,@(cl-loop for i from 1 to 7
                                           collect `(holiday-fixed 10 ,i "National Day"))))
 (add-hook! 'calendar-today-visible-hook (calendar-mark-today))
+(use-package whitespace
+  :hook (after-init . global-whitespace-mode)
+  :config
+  ;; Don't use different background for tabs.
+  (face-spec-set 'whitespace-tab
+                 '((t :background unspecified)))
+  (face-spec-set 'whitespace-line
+                 '((((background light))
+                    :background "#d8d8d8" :foreground unspecified
+                    :underline t :weight unspecified)
+                   (t
+                    :background "#404040" :foreground unspecified
+                    :underline t :weight unspecified)))
+  (face-spec-set 'whitespace-space-before-tab
+                 '((((background light))
+                    :background "#d8d8d8" :foreground "#de4da1")
+                   (t
+                    :inherit warning
+                    :background "#404040" :foreground "#ee6aa7")))
+
+  (setq
+   whitespace-line-column nil
+   whitespace-style
+   '(face             ; visualize things below:
+     empty            ; empty lines at beginning/end of buffer
+     lines-tail       ; lines go beyond `fill-column'
+     space-before-tab ; spaces before tab
+     trailing         ; trailing blanks
+     tabs             ; tabs (show by face)
+     tab-mark         ; tabs (show by symbol)
+     )))
+;; builtin package config end
+
+(map! :map doom-leader-file-map
+      :desc "Consult FD"
+      "d" '+vertico/consult-fd-or-find)
+(map! :map doom-leader-file-map
+      :desc "Consult Org"
+      "o" 'consult-org-agenda)
+(use-package! vc-msg
+  :bind (:map doom-leader-map
+        ("vi" ("Show vc-msg" . vc-msg-show))))
+(after! c++-ts-mode
+  (map! (:leader
+    (:prefix ("d" . "debug")
+     :desc "Run cpp in gdb"
+     :n "c" #'cpp-gdb)))
+  (defun cpp-gdb ()
+    (interactive)
+    (if buffer-file-name
+        (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name))))
+          (when (eq 0 (shell-command (concat "clang++ -g -std=c++2c \"" buffer-file-name "\" -o \"/tmp/cpp-" filename "\"")))
+            (gdb (concat "gdb -i=mi \"/tmp/cpp-" filename "\""))))
+      (message "buffer-file-name is nil"))))
+
+;; keymap bind end
+
+(add-hook! 'prog-mode-hook (indent-bars--ts-mode))
 ;;(use-package! railgun) ;I'm highly NOT RECOMMEND enable this.
 (custom-set-variables)
 ;; custom-set-variables was added by Custom.

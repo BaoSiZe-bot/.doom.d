@@ -21,6 +21,10 @@
    "." #'meow-bounds-of-thing
    "'" #'repeat
    "<escape>" #'ignore))
+(defun meow-append-this-line ()
+  (interactive)
+  (doom/forward-to-last-non-comment-or-eol)
+  (meow-insert))
 (defun meow/setup-qwerty ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow/setup)
@@ -34,11 +38,12 @@
    "[" #'meow-beginning-of-thing
    "]" #'meow-end-of-thing
    "a" #'meow-append
-   "A" #'meow-open-below
+   "o" #'meow-open-below
+   "A" #'meow-append-this-line
    "b" #'meow-back-word
    "B" #'meow-back-symbol
    "c" #'meow-change
-   "d" #'meow-delete
+   "x" #'meow-delete
    "D" #'meow-backward-delete
    "e" #'meow-next-word
    "E" #'meow-next-symbol
@@ -55,23 +60,24 @@
    "K" #'meow-prev-expand
    "l" #'meow-right
    "L" #'meow-right-expand
+   "v" #'meow-left-expand
    "m" #'meow-join
    "n" #'meow-search
-   "o" #'meow-block
+   "%" #'meow-block
    "O" #'meow-to-block
    "p" #'meow-yank
    "q" #'meow-quit
    "Q" #'meow-goto-line
    "r" #'meow-replace
    "R" #'meow-swap-grab
-   "s" #'meow-kill
+   "d" #'meow-kill
    "t" #'meow-till
    "u" #'meow-undo
    "U" #'meow-undo-in-selection
-   "v" #'meow-visit
+   "/" #'meow-visit
    "w" #'meow-mark-word
    "W" #'meow-mark-symbol
-   "x" #'meow-line
+   "V" #'meow-line
    "X" #'meow-goto-line
    "y" #'meow-save
    "Y" #'meow-sync-grab
@@ -86,6 +92,6 @@
   (map! :map meow-keymap [remap describe-key] #'helpful-key)
   (meow-define-keys
    'normal
-   '("/" . meow-comment)
+   '("?" . meow-comment)
    '("F" . avy-goto-char-2)
-   '("S" . avy-goto-char-timer)))
+   '("s" . avy-goto-char-timer)))
