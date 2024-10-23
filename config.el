@@ -6,10 +6,10 @@
       user-mail-address "baosize@hotmail.com"
       epa-file-encrypt-to user-mail-address)
 (setq
- doom-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
- doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
- doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
- doom-big-font (font-spec :family "Maple Mono NF CN" :size 20 :weight 'Regular))
+ doom-font (font-spec :family "Victor Mono Nerd Font" :size 20 :weight 'Regular)
+ doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 20 :weight 'Regular)
+ doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 20 :weight 'Regular)
+ doom-big-font (font-spec :family "Victor Mono Nerd Font" :size 24 :weight 'Regular))
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (setq default-frame-alist '((width . 192)
@@ -45,11 +45,13 @@
         ,@(funcall fn mode))
     (funcall fn mode)))
 (advice-add 'c-ts-mode--font-lock-settings :around 'my-c-font-lock-settings)
-(setq doom-theme 'doom-one)
 (add-hook! 'doom-modeline-before-github-fetch-notification-hook #'auth-source-pass-enable)
-(size-indication-mode -1)
 (after! doom-modeline
-  (display-time-mode 1)
+  (setq display-time-day-and-date t)                             ;打开日期显示
+  (display-time-mode 1)                                          ;打开时间显示
+  (display-time)                                                 ;显示时间
+  (setq display-time-format "%H:%M")                             ;设定时间显示格式
+  (setq display-time-24hr-format t)                              ;打开24小时显示模式
   (setq doom-modeline-icon t
         doom-modeline-major-mode-color-icon t
         doom-modeline-buffer-state-icon t
@@ -102,9 +104,35 @@
         (c++-mode . c++-ts-mode)
         (c-or-c++-mode . c-or-c++-ts-mode)
         (python-mode . python-ts-mode)))
-
-;; value set end
-
+(setq indent-bars-treesit-support t)
+(setq indent-bars-no-descend-string t)
+(setq indent-bars-treesit-ignore-blank-lines-types '("module"))
+(setq indent-bars-prefer-character t)
+(setq indent-bars-zigzag nil)
+(setq indent-bars-pattern "|")
+(set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
+(use-package winum
+  :hook
+  (after-init . winum-mode)
+  :init
+  (setq winum-keymap
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "C-`") 'winum-select-window-by-number)
+      (define-key map (kbd "C-²") 'winum-select-window-by-number)
+      (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
+      (define-key map (kbd "M-1") 'winum-select-window-1)
+      (define-key map (kbd "M-2") 'winum-select-window-2)
+      (define-key map (kbd "M-3") 'winum-select-window-3)
+      (define-key map (kbd "M-4") 'winum-select-window-4)
+      (define-key map (kbd "M-5") 'winum-select-window-5)
+      (define-key map (kbd "M-6") 'winum-select-window-6)
+      (define-key map (kbd "M-7") 'winum-select-window-7)
+      (define-key map (kbd "M-8") 'winum-select-window-8)
+      map)))
+(use-package imenu-list
+  :defer 2
+  :init
+  (setq imenu-list-size 0.1))
 (use-package hideshow
   :diminish hs-minor-mode
   :hook (prog-mode . hs-minor-mode)
@@ -116,14 +144,36 @@
                     (info (format " ... #%d " nlines)))
                 (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
     (setq hs-set-up-overlay 'hideshow-folded-overlay-fn))
-(setq holiday-local-holidays `((holiday-fixed 3 12 "Arbor Day")
-                               ,@(cl-loop for i from 1 to 3
-                                          collect `(holiday-fixed 5 ,i "International Workers' Day"))
-                               (holiday-fixed 6 1  "Children's Day")
-                               (holiday-fixed 9 10 "Teachers' Day")
-                               ,@(cl-loop for i from 1 to 7
-                                          collect `(holiday-fixed 10 ,i "National Day"))))
-(add-hook! 'calendar-today-visible-hook (calendar-mark-today))
+(use-package cal-china-x
+  :defer 2
+  :config
+    (setq holiday-local-holidays `((holiday-fixed 3 12 "Arbor Day")
+                                   (holiday-fixed 5 1 "International Workers' Day")
+                                   (holiday-fixed 5 2 "International Workers' Day")
+                                   (holiday-fixed 5 3 "International Workers' Day")
+                                   (holiday-fixed 6 1  "Children's Day")
+                                   (holiday-fixed 9 10 "Teachers' Day")
+                                   (holiday-fixed 10 1 "National Day")
+                                   (holiday-fixed 10 2 "National Day")
+                                   (holiday-fixed 10 3 "National Day")
+                                   (holiday-fixed 10 4 "National Day")
+                                   (holiday-fixed 10 5 "National Day")
+                                   (holiday-fixed 10 6 "National Day")
+                                   (holiday-fixed 10 7 "National Day")))
+    (setq holiday-other-holidays '((holiday-fixed 4 22 "Earth Day")
+                                   (holiday-fixed 4 23 "World Book Day")))
+    (setq calendar-chinese-all-holidays-flag t)
+    (setq cal-china-x-always-show-jieqi t)
+    (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
+    (setq calendar-holidays (append
+                             cal-china-x-important-holidays
+                             cal-china-x-general-holidays
+                             cal-china-x-chinese-holidays
+                             holiday-oriental-holidays
+                             holiday-local-holidays
+                             holiday-other-holidays))
+    (setq calendar-mark-holidays-flag t)
+    (add-hook! 'calendar-today-visible-hook (calendar-mark-today)))
 (use-package whitespace
   :hook (after-init . global-whitespace-mode)
   :config
@@ -163,7 +213,7 @@
 (map! :map doom-leader-file-map
       :desc "Consult Org"
       "o" 'consult-org-agenda)
-(use-package! vc-msg
+(use-package vc-msg
   :bind (:map doom-leader-map
         ("vi" ("Show vc-msg" . vc-msg-show))))
 (after! c++-ts-mode
@@ -178,11 +228,10 @@
           (when (eq 0 (shell-command (concat "clang++ -g -std=c++2c \"" buffer-file-name "\" -o \"/tmp/cpp-" filename "\"")))
             (gdb (concat "gdb -i=mi \"/tmp/cpp-" filename "\""))))
       (message "buffer-file-name is nil"))))
-
 ;; keymap bind end
-
+(setq avy-timeout-seconds 0.3)
 (add-hook! 'prog-mode-hook (indent-bars--ts-mode))
-;;(use-package! railgun) ;I'm highly NOT RECOMMEND enable this.
+;;(use-package railgun) ;I'm highly NOT RECOMMEND enable this.
 (custom-set-variables)
 ;; custom-set-variables was added by Custom.
 ;; If you edit it by hand, you could mess it up, so be careful.

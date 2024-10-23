@@ -1,5 +1,6 @@
 ;;;;;;;;;;; baosize/eaf/config.el -*- lexical-binding: t; -*-
-(use-package! eaf)
+(use-package! eaf
+  :defer 2)
 (map! :leader (:prefix ("g" . "EAF")
 		:desc "Open this buffer"
 		"e" #'eaf-open-this-buffer
@@ -42,5 +43,5 @@
 ;(use-package! eaf-file-manager
 ;  :bind (:map doom-leader-map
 ;         ("ep" ("Open File Manager" . eaf-open-in-file-manager))))
-(add-hook! org-mode (progn (setq eaf-org-dark-mode t) (require 'eaf-org-previewer)))
-(add-hook! markdown-mode (progn (setq eaf-markdown-dark-mode t) (require 'eaf-markdown-previewer)))
+(add-hook! org-mode (progn (setq eaf-org-dark-mode t) (require 'eaf)(require 'eaf-org-previewer)))
+(add-hook! markdown-mode (progn (setq eaf-markdown-dark-mode t) (require 'eaf)(require 'eaf-markdown-previewer)))

@@ -154,14 +154,6 @@ input scheme to convert to Chinese."
 
   (unless (fboundp 'rime--posframe-display-content)
     (error "Function `rime--posframe-display-content' is not available."))
-  (define-advice rime--posframe-display-content (:filter-args (args) resolve-posframe-issue-a)
-    "给 `rime--posframe-display-content' 传入的字符串加一个全角空
-格，以解决 `posframe' 偶尔吃字的问题。"
-    (cl-destructuring-bind (content) args
-      (let ((newresult (if (string-blank-p content)
-                           content
-                         (concat content "　"))))
-        (list newresult))))
   (add-hook 'kill-emacs-hook (lambda ()
                                (ignore-errors (rime-lib-finalize))))
   (when (modulep! +rime-predicates)

@@ -1,13 +1,13 @@
 ;;; $DOOMDIR/modules/baosize/sort-tab/config.el -*- lexical-binding: t; -*-
 (use-package! sort-tab
 ;;  :defer t
-;;  :commands
-;;  sort-tab-select-next-tab
-;;  sort-tab-select-prev-tab
-;;  sort-tab-select-last-tab
-;;  sort-tab-close-other-tabs
-;;  sort-tab-close-current-tab
-;;  sort-tab-close-all-tabs
+ :commands
+  sort-tab-select-next-tab
+  sort-tab-select-prev-tab
+  sort-tab-select-last-tab
+  sort-tab-close-other-tabs
+  sort-tab-close-current-tab
+  sort-tab-close-all-tabs
 ;;  :init
 ;;  (sort-tab-mode 1)
   :bind

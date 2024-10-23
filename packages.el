@@ -49,5 +49,8 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 (unpin! t)
 (package! vc-msg)
+(package! winum)
 (package! power-mode)
+(package! imenu-list)
+(package! cal-china-x)
 (package! railgun :recipe(:host github :repo "gynamics/railgun.el"))

@@ -9,3 +9,6 @@
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
+(use-package! highlight-parentheses
+    :hook
+    (prog-mode . highlight-parentheses-mode))

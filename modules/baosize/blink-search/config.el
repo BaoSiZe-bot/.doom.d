@@ -6,4 +6,4 @@
   :config
   (add-hook! 'blink-search-mode-hook (meow-insert-mode))
   :bind (:map doom-leader-map
-            ("SPC" ("Blink search" . blink-search))))
+            ("RET" ("Blink search" . blink-search))))
