@@ -1,4 +1,4 @@
 ;; -*- no-byte-compile: t; -*-
-;;; editor/meow/packages.el
+;;; $DOOMDIR/modules/editor/meow/packages.el
 
 (package! meow)

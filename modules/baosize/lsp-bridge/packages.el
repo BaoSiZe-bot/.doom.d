@@ -1,5 +1,5 @@
 ;; -*- no-byte-compile: t; -*-
-;;; baosize/lsp-bridge/packages.el
+;;; $DOOMDIR/modules/baosize/lsp-bridge/packages.el
 
 (package! lsp-bridge
   :recipe (:host github

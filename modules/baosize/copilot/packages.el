@@ -1,5 +1,5 @@
 ;; -*- no-byte-compile: t; -*-
-;;; baosize/copilot/packages.el
+;;; $DOOMDIR/modules/baosize/copilot/packages.el
 
 (package! copilot
   :recipe (:host github

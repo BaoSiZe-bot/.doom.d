@@ -1,24 +1,22 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-(setq meow-use-cursor-position-hack t
-      meow-use-enhanced-selection-effect t)
 (setq user-full-name "Size Bao"
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
-      epa-file-encrypt-to user-mail-address)
-(setq
- doom-font (font-spec :family "Victor Mono Nerd Font" :size 20 :weight 'Regular)
- doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 20 :weight 'Regular)
- doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 20 :weight 'Regular)
- doom-big-font (font-spec :family "Victor Mono Nerd Font" :size 24 :weight 'Regular))
+      epa-file-encrypt-to user-mail-address
+      doom-font (font-spec :family "Victor Mono Nerd Font" :size 20 :weight 'Regular)
+      doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 20 :weight 'Regular)
+      doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 20 :weight 'Regular)
+      doom-big-font (font-spec :family "Victor Mono Nerd Font" :size 24 :weight 'Regular)
+      default-frame-alist '((width . 192)
+                            (height . 45)
+                            (alpha-background . 96))
+      nerd-icons-font-names '("MapleMono-NF-CN-Regular.ttf")
+      nerd-icons-font-family "Maple Mono NF CN"
+      treesit-font-lock-level 4)
+
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
-(setq default-frame-alist '((width . 192)
-                            (height . 45)
-                            (alpha-background . 96)))
-(setq nerd-icons-font-names '("MapleMono-NF-CN-Regular.ttf"))
-(setq nerd-icons-font-family "Maple Mono NF CN")
 (add-hook! 'after-setting-font-hook #'+font-set-emoji)
-(setq treesit-font-lock-level 4)
 (defun my-fontify-variable (node override start end &rest _)
   (let ((parent (treesit-node-parent node)) tyn)
     (catch 'break
@@ -47,12 +45,12 @@
 (advice-add 'c-ts-mode--font-lock-settings :around 'my-c-font-lock-settings)
 (add-hook! 'doom-modeline-before-github-fetch-notification-hook #'auth-source-pass-enable)
 (after! doom-modeline
-  (setq display-time-day-and-date t)                             ;打开日期显示
   (display-time-mode 1)                                          ;打开时间显示
   (display-time)                                                 ;显示时间
-  (setq display-time-format "%H:%M")                             ;设定时间显示格式
-  (setq display-time-24hr-format t)                              ;打开24小时显示模式
-  (setq doom-modeline-icon t
+  (setq display-time-format "%H:%M"                             ;设定时间显示格式
+        display-time-24hr-format t                              ;打开24小时显示模式
+        display-time-day-and-date t
+        doom-modeline-icon t
         doom-modeline-major-mode-color-icon t
         doom-modeline-buffer-state-icon t
         doom-modeline-buffer-modification-icon t
@@ -80,22 +78,16 @@
   (setq doom-modeline-major-mode-icon t)))
 (tool-bar-mode -1)
 (menu-bar-mode -1)
-(setq display-line-numbers-type 'relative)
 (add-hook 'find-file-hook 'display-line-numbers-mode)
-(setf treemacs-position 'right)
-
 ;; ui config end
-
-(setq system-time-locale "C")
+(setq system-time-locale "C"
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory '("~/.org/"))
-(setq org-agenda-files '("~/.org/"))
-(setq dirvish-side-width 30)
-(setq-hook! 'c++-ts-mode-hook c-basic-offset 4)
-(setq-hook! 'c++-mode-hook c-basic-offset 4)
-(setq meow-use-clipboard t)
-(setq major-mode-remap-alist
+      display-line-numbers-type 'relative
+      org-directory '("~/.org/")
+      org-agenda-files '("~/.org/")
+      dirvish-side-width 30
+      major-mode-remap-alist
       '((yaml-mode . yaml-ts-mode)
         (sh-mode . bash-ts-mode)
         (js-mode . js-ts-mode)
@@ -103,14 +95,19 @@
         (c-mode . c-ts-mode)
         (c++-mode . c++-ts-mode)
         (c-or-c++-mode . c-or-c++-ts-mode)
-        (python-mode . python-ts-mode)))
-(setq indent-bars-treesit-support t)
-(setq indent-bars-no-descend-string t)
-(setq indent-bars-treesit-ignore-blank-lines-types '("module"))
-(setq indent-bars-prefer-character t)
-(setq indent-bars-zigzag nil)
-(setq indent-bars-pattern "|")
+        (python-mode . python-ts-mode))
+      indent-bars-treesit-support t
+      indent-bars-no-descend-string t
+      indent-bars-treesit-ignore-blank-lines-types '("module")
+      indent-bars-prefer-character t
+      indent-bars-zigzag nil
+      indent-bars-pattern "|")
+(setq-hook! 'c++-ts-mode-hook c-basic-offset 4)
+(setq-hook! 'c++-mode-hook c-basic-offset 4)
 (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
+(with-eval-after-load 'org
+  (setq org-startup-folded nil
+        org-startup-indented t))
 (use-package winum
   :hook
   (after-init . winum-mode)
@@ -130,9 +127,9 @@
       (define-key map (kbd "M-8") 'winum-select-window-8)
       map)))
 (use-package imenu-list
-  :defer 2
-  :init
-  (setq imenu-list-size 0.1))
+  :defer 1
+  :custom
+  (imenu-list-size 0.1))
 (use-package hideshow
   :diminish hs-minor-mode
   :hook (prog-mode . hs-minor-mode)
@@ -145,7 +142,7 @@
                 (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
     (setq hs-set-up-overlay 'hideshow-folded-overlay-fn))
 (use-package cal-china-x
-  :defer 2
+  :defer 1
   :config
     (setq holiday-local-holidays `((holiday-fixed 3 12 "Arbor Day")
                                    (holiday-fixed 5 1 "International Workers' Day")
@@ -159,20 +156,20 @@
                                    (holiday-fixed 10 4 "National Day")
                                    (holiday-fixed 10 5 "National Day")
                                    (holiday-fixed 10 6 "National Day")
-                                   (holiday-fixed 10 7 "National Day")))
-    (setq holiday-other-holidays '((holiday-fixed 4 22 "Earth Day")
-                                   (holiday-fixed 4 23 "World Book Day")))
-    (setq calendar-chinese-all-holidays-flag t)
-    (setq cal-china-x-always-show-jieqi t)
-    (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
-    (setq calendar-holidays (append
+                                   (holiday-fixed 10 7 "National Day"))
+          holiday-other-holidays '((holiday-fixed 4 22 "Earth Day")
+                                   (holiday-fixed 4 23 "World Book Day"))
+          calendar-chinese-all-holidays-flag t
+          cal-china-x-always-show-jieqi t
+          cal-china-x-important-holidays cal-china-x-chinese-holidays
+          calendar-holidays (append
                              cal-china-x-important-holidays
                              cal-china-x-general-holidays
                              cal-china-x-chinese-holidays
                              holiday-oriental-holidays
                              holiday-local-holidays
-                             holiday-other-holidays))
-    (setq calendar-mark-holidays-flag t)
+                             holiday-other-holidays)
+          calendar-mark-holidays-flag t)
     (add-hook! 'calendar-today-visible-hook (calendar-mark-today)))
 (use-package whitespace
   :hook (after-init . global-whitespace-mode)
@@ -193,7 +190,6 @@
                    (t
                     :inherit warning
                     :background "#404040" :foreground "#ee6aa7")))
-
   (setq
    whitespace-line-column nil
    whitespace-style
@@ -205,8 +201,9 @@
      tabs             ; tabs (show by face)
      tab-mark         ; tabs (show by symbol)
      )))
-;; builtin package config end
-
+(setq doom-light-theme 'doom-one-light
+      doom-dark-theme 'doom-one
+      doom-theme doom-dark-theme)
 (map! :map doom-leader-file-map
       :desc "Consult FD"
       "d" '+vertico/consult-fd-or-find)

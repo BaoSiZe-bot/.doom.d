@@ -4,6 +4,9 @@
   "?" #'meow-cheatsheet
   "h" #'help-command))
 (defun meow/setup ()
+  (setq meow-use-cursor-position-hack t
+        meow-use-clipboard t
+        meow-use-enhanced-selection-effect t)
   (map! :map meow-normal-state-keymap
    "0" #'meow-expand-0
    "1" #'meow-expand-1
@@ -31,9 +34,6 @@
   (meow-motion-overwrite-define-key
    '("j" . meow-next)
    '("k" . meow-prev))
-  (meow-leader-define-key
-   '("j" . "H-j")
-   '("k" . "H-k"))
   (map! :map meow-normal-state-keymap
    "[" #'meow-beginning-of-thing
    "]" #'meow-end-of-thing

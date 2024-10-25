@@ -40,8 +40,8 @@
 (use-package! eaf-git
   :bind (:map doom-leader-map
      ("gg" ("Open git" . eaf-open-git))))
-;(use-package! eaf-file-manager
-;  :bind (:map doom-leader-map
-;         ("ep" ("Open File Manager" . eaf-open-in-file-manager))))
+(use-package! eaf-file-manager
+ :bind (:map doom-leader-map
+        ("g/" ("Open File Manager" . eaf-open-in-file-manager))))
 (add-hook! org-mode (progn (setq eaf-org-dark-mode t) (require 'eaf)(require 'eaf-org-previewer)))
 (add-hook! markdown-mode (progn (setq eaf-markdown-dark-mode t) (require 'eaf)(require 'eaf-markdown-previewer)))

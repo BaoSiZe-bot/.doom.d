@@ -1,5 +1,5 @@
 ;; -*- no-byte-compile: t; -*-
-;;; baosize/eaf/packages.el
+;;; $DOOMDIR/modules/baosize/eaf/packages.el
 (defun +eaf-install-deps-for-app(app-dir)
   "Install deps from dependencies.json."
   (let* ((deps-dict (with-temp-buffer
@@ -67,9 +67,9 @@
            :post-build
            (+eaf-install-deps-for-app
             (concat straight-base-dir "/straight/" straight-build-dir "/eaf-git"))))
-;(package! eaf-file-manager
-;  :recipe (:host github :repo "emacs-eaf/eaf-file-manager"
-;           :files ("*")
-;           :post-build
-;           (+eaf-install-deps-for-app
-;            (concat straight-base-dir "/straight/" straight-build-dir "/eaf-file-manager"))))
+(package! eaf-file-manager
+  :recipe (:host github :repo "emacs-eaf/eaf-file-manager"
+           :files ("*")
+           :post-build
+           (+eaf-install-deps-for-app
+            (concat straight-base-dir "/straight/" straight-build-dir "/eaf-file-manager"))))

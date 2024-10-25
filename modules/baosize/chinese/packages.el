@@ -1,5 +1,5 @@
 ;; -*- no-byte-compile: t; -*-
-;;; baosize/chinese/packages.el
+;;; $DOOMDIR/modules/baosize/chinese/packages.el
 
 
 (package! rime)

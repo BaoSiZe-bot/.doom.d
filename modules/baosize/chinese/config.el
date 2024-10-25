@@ -97,13 +97,10 @@ unwanted space when exporting org-mode to hugo markdown."
   (rime-show-candidate 'posframe)
   (rime-show-preedit 'inline)
   (rime-posframe-style 'simple)
-  (setq rime-posframe-properties (list :internal-border-width 1
-                                       :font "Maple Mono NF CN"))
+  (rime-posframe-properties (list :internal-border-width 1
+                                  :font "Maple Mono NF CN"))
   :config
-  (add-hook! (org-mode
-              markdown-mode)
-    (activate-input-method default-input-method))
-
+  (add-hook! 'org-mode-hook (activate-input-method default-input-method))
   (defun +rime-force-enable ()
     "[ENHANCED] Force into Chinese input state.
 

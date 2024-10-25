@@ -1,5 +1,5 @@
 ;; -*- no-byte-compile: t; -*-
-;;; baosize/tools/packages.el
+;;; $DOOOMDIR/modules/baosize/tools/packages.el
 (package! auto-save
   :recipe (:host github :repo "manateelazycat/auto-save"))
 (package! keyfreq

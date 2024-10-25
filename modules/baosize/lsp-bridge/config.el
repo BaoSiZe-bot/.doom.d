@@ -1,5 +1,8 @@
 ;;; baosize/lsp-bridge/config.el -*- lexical-binding: t; -*-
-
+(use-package yasnippet
+  :defer 1)
+(use-package markdown-mode
+  :defer 1)
 (use-package! lsp-bridge
   :hook
   (prog-mode . lsp-bridge-mode)
@@ -34,6 +37,7 @@
   :config
   (add-hook! 'lsp-bridge-ref-mode-hook (meow-insert-mode))
   :init
-  (unless (display-graphic-p)
-   (with-eval-after-load 'acm
-    (require 'acm-terminal))))
+  ;;(unless (display-graphic-p)
+  ;;(with-eval-after-load 'acm
+  ;;  (require 'acm-terminal)))
+  )
