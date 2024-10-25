@@ -19,7 +19,7 @@
       kill-buffer-query-functions
       (remq 'process-kill-buffer-query-function
             kill-buffer-query-functions))
-(run-with-idle-timer 1 nil #'(lambda () (doom-load-session)(sort-tab-mode 1)))
+(run-with-idle-timer 0.5 nil #'(lambda () (doom-load-session)(sort-tab-mode 1)))
 (fset 'yes-or-no-p 'y-or-n-p)           ;以 y/n代表 yes/no
 (transient-mark-mode 1)                 ;标记高亮
 (global-subword-mode 1)                 ;Word移动支持 FooBar 的格式
@@ -58,11 +58,11 @@
        ligatures         ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
        ;;tabs
-       modeline          ; snazzy, Atom-inspired modeline, plus API (awesome-tray is not very robust)
+       ;;modeline          ; snazzy, Atom-inspired modeline, plus API (awesome-tray is not very robust)
        ;;nav-flash         ; blink cursor line after big motions
        ;;ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
-       unicode           ; extended unicode support for various languages
+       ;;unicode           ; extended unicode support for various languages
        (vc-gutter +pretty) ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        ;;window-select     ; visually switch windows
@@ -144,7 +144,7 @@
        :baosize
        chinese
        tools
-       ;;awesome-tray
+       awesome-tray
        ;;copilot
        ;;tabnine
        ;;holo-layer

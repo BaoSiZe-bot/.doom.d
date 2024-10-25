@@ -43,39 +43,6 @@
         ,@(funcall fn mode))
     (funcall fn mode)))
 (advice-add 'c-ts-mode--font-lock-settings :around 'my-c-font-lock-settings)
-(add-hook! 'doom-modeline-before-github-fetch-notification-hook #'auth-source-pass-enable)
-(after! doom-modeline
-  (display-time-mode 1)                                          ;打开时间显示
-  (display-time)                                                 ;显示时间
-  (setq display-time-format "%H:%M"                             ;设定时间显示格式
-        display-time-24hr-format t                              ;打开24小时显示模式
-        display-time-day-and-date t
-        doom-modeline-icon t
-        doom-modeline-major-mode-color-icon t
-        doom-modeline-buffer-state-icon t
-        doom-modeline-buffer-modification-icon t
-        doom-modeline-time t
-        doom-modeline-time-icon t
-        doom-modeline-time-live-icon t
-        doom-modeline-time-analogue-clock t
-        doom-modeline-modal t
-        doom-modeline-display-default-persp-name nil
-        doom-modeline-position-column-line-format '("L%l")
-        doom-modeline-position-line-format '("L%l")
-        doom-modeline-position-column-format '("")
-        doom-modeline-modal-icon t
-        doom-modeline-modal-modern-icon t
-        doom-modeline-repl t
-        doom-modeline-buffer-encoding t
-        doom-modeline-lsp nil
-        doom-modeline-support-imenu t
-        doom-modeline-project-detection 'projectile
-        doom-modeline-mu4e t
-        doom-modeline-github t
-        doom-modeline-minor-modes nil
-        doom-modeline-buffer-modification-icon t)
- (when (and (display-graphic-p) (not (daemonp)))
-  (setq doom-modeline-major-mode-icon t)))
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (add-hook 'find-file-hook 'display-line-numbers-mode)
