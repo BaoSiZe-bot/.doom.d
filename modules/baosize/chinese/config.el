@@ -31,7 +31,6 @@ unwanted space when exporting org-mode to html."
   "Join consecutive Chinese lines into a single long line without
 unwanted space when exporting org-mode to hugo markdown."
   (++chinese--org-paragraph args))
-
 (defun ++chinese--org-paragraph (args)
   (cl-destructuring-bind (paragraph content info) args
     (let* ((origin-contents

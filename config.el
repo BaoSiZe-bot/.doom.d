@@ -3,17 +3,20 @@
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
       epa-file-encrypt-to user-mail-address
-      doom-font (font-spec :family "Victor Mono Nerd Font" :size 20 :weight 'Regular)
-      doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 20 :weight 'Regular)
-      doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 20 :weight 'Regular)
-      doom-big-font (font-spec :family "Victor Mono Nerd Font" :size 24 :weight 'Regular)
-      default-frame-alist '((width . 192)
-                            (height . 45)
+      doom-font (font-spec :family "Victor Mono Nerd Font" :size 16 :weight 'Regular)
+      doom-unicode-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
+      doom-variable-pitch-font (font-spec :family "Maple Mono NF CN" :size 16 :weight 'Regular)
+      doom-big-font (font-spec :family "Victor Mono Nerd Font" :size 18 :weight 'Regular)
+      default-frame-alist '((width . 150)
+                            (height . 30)
                             (alpha-background . 96))
       nerd-icons-font-names '("MapleMono-NF-CN-Regular.ttf")
       nerd-icons-font-family "Maple Mono NF CN"
-      treesit-font-lock-level 4)
-
+      treesit-font-lock-level 4
+      select-active-regions nil
+      select-enable-clipboard 't
+      select-enable-primary nil
+      interprogram-cut-function #'gui-select-text)
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (add-hook! 'after-setting-font-hook #'+font-set-emoji)
@@ -75,11 +78,8 @@
 (with-eval-after-load 'org
   (setq org-startup-folded nil
         org-startup-indented t))
-(use-package winum
-  :hook
-  (after-init . winum-mode)
-  :init
-  (setq winum-keymap
+
+(setq winum-keymap
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "C-`") 'winum-select-window-by-number)
       (define-key map (kbd "C-²") 'winum-select-window-by-number)
@@ -92,56 +92,49 @@
       (define-key map (kbd "M-6") 'winum-select-window-6)
       (define-key map (kbd "M-7") 'winum-select-window-7)
       (define-key map (kbd "M-8") 'winum-select-window-8)
-      map)))
-(use-package imenu-list
-  :defer 1
-  :custom
-  (imenu-list-size 0.1))
-(use-package hideshow
-  :diminish hs-minor-mode
-  :hook (prog-mode . hs-minor-mode)
-  :config
-    (defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
-    (defun hideshow-folded-overlay-fn (ov)
+      map))
+(require 'winum)
+(add-hook! 'after-init-hook (winum-mode))
+
+(add-hook! 'prog-mode-hook 'hs-minor-mode)
+(defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
+(defun hideshow-folded-overlay-fn (ov)
         (when (eq 'code (overlay-get ov 'hs))
             (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
                     (info (format " ... #%d " nlines)))
                 (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
-    (setq hs-set-up-overlay 'hideshow-folded-overlay-fn))
-(use-package cal-china-x
-  :defer 1
-  :config
-    (setq holiday-local-holidays `((holiday-fixed 3 12 "Arbor Day")
-                                   (holiday-fixed 5 1 "International Workers' Day")
-                                   (holiday-fixed 5 2 "International Workers' Day")
-                                   (holiday-fixed 5 3 "International Workers' Day")
-                                   (holiday-fixed 6 1  "Children's Day")
-                                   (holiday-fixed 9 10 "Teachers' Day")
-                                   (holiday-fixed 10 1 "National Day")
-                                   (holiday-fixed 10 2 "National Day")
-                                   (holiday-fixed 10 3 "National Day")
-                                   (holiday-fixed 10 4 "National Day")
-                                   (holiday-fixed 10 5 "National Day")
-                                   (holiday-fixed 10 6 "National Day")
-                                   (holiday-fixed 10 7 "National Day"))
-          holiday-other-holidays '((holiday-fixed 4 22 "Earth Day")
-                                   (holiday-fixed 4 23 "World Book Day"))
-          calendar-chinese-all-holidays-flag t
-          cal-china-x-always-show-jieqi t
-          cal-china-x-important-holidays cal-china-x-chinese-holidays
-          calendar-holidays (append
-                             cal-china-x-important-holidays
-                             cal-china-x-general-holidays
-                             cal-china-x-chinese-holidays
-                             holiday-oriental-holidays
-                             holiday-local-holidays
-                             holiday-other-holidays)
-          calendar-mark-holidays-flag t)
-    (add-hook! 'calendar-today-visible-hook (calendar-mark-today)))
-(use-package whitespace
-  :hook (after-init . global-whitespace-mode)
-  :config
-  ;; Don't use different background for tabs.
+(setq hs-set-up-overlay 'hideshow-folded-overlay-fn)
+
+(run-with-idle-timer 1 nil (lambda ()
+  (require 'cal-china-x)
+  (add-hook! 'calendar-today-visible-hook (calendar-mark-today))
+  (setq holiday-local-holidays `((holiday-fixed 3 12 "Arbor Day")
+                                 (holiday-fixed 5 1 "International Workers' Day")
+                                 (holiday-fixed 5 2 "International Workers' Day")
+                                 (holiday-fixed 5 3 "International Workers' Day")
+                                 (holiday-fixed 6 1  "Children's Day")
+                                 (holiday-fixed 9 10 "Teachers' Day")
+                                 (holiday-fixed 10 1 "National Day")
+                                 (holiday-fixed 10 2 "National Day")
+                                 (holiday-fixed 10 3 "National Day")
+                                 (holiday-fixed 10 4 "National Day")
+                                 (holiday-fixed 10 5 "National Day")
+                                 (holiday-fixed 10 6 "National Day")
+                                 (holiday-fixed 10 7 "National Day"))
+        holiday-other-holidays '((holiday-fixed 4 22 "Earth Day")
+                                 (holiday-fixed 4 23 "World Book Day"))
+        calendar-chinese-all-holidays-flag t
+        cal-china-x-always-show-jieqi t
+        cal-china-x-important-holidays cal-china-x-chinese-holidays
+        calendar-holidays (append
+                           cal-china-x-important-holidays
+                           cal-china-x-general-holidays
+                           cal-china-x-chinese-holidays
+                           holiday-oriental-holidays
+                           holiday-local-holidays
+                           holiday-other-holidays)
+        calendar-mark-holidays-flag t)))
+(add-hook! 'after-init-hook (global-whitespace-mode))
   (face-spec-set 'whitespace-tab
                  '((t :background unspecified)))
   (face-spec-set 'whitespace-line
@@ -167,7 +160,7 @@
      trailing         ; trailing blanks
      tabs             ; tabs (show by face)
      tab-mark         ; tabs (show by symbol)
-     )))
+     ))
 (setq doom-light-theme 'doom-one-light
       doom-dark-theme 'doom-one
       doom-theme doom-dark-theme)
@@ -193,8 +186,25 @@
             (gdb (concat "gdb -i=mi \"/tmp/cpp-" filename "\""))))
       (message "buffer-file-name is nil"))))
 ;; keymap bind end
-(setq avy-timeout-seconds 0.3)
+
+(setq avy-timeout-seconds 0.25)
 (add-hook! 'prog-mode-hook (indent-bars--ts-mode))
+(after! posframe (standard-display-unicode-special-glyphs))
+(defun clear-minibuffer-after-delay ()
+  "?? minibuffer ????"
+  (when (minibufferp)
+    (delete-region (minibuffer-prompt-end) (point-max))))
+
+(advice-add 'dired-do-copy
+            :after
+            (lambda (&rest _)
+              (run-with-timer 0 nil #'clear-minibuffer-after-delay)))
+
+(defun custom-dired-do-copy ()
+  (interactive)
+  (add-hook 'post-command-hook 'my-check-abbrev)
+  (dired-do-copy nil)
+  (remove-hook 'post-command-hook 'my-check-abbrev))
 ;;(use-package railgun) ;I'm highly NOT RECOMMEND enable this.
 (custom-set-variables)
 ;; custom-set-variables was added by Custom.
