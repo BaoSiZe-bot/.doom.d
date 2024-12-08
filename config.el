@@ -205,6 +205,9 @@
   (add-hook 'post-command-hook 'my-check-abbrev)
   (dired-do-copy nil)
   (remove-hook 'post-command-hook 'my-check-abbrev))
+(setq shell-file-name (executable-find "bash"))
+(setq-default vterm-shell (executable-find "fish"))
+(setq-default explicit-shell-file-name (executable-find "fish"))
 ;;(use-package railgun) ;I'm highly NOT RECOMMEND enable this.
 (custom-set-variables)
 ;; custom-set-variables was added by Custom.

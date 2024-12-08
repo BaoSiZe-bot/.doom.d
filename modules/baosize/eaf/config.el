@@ -17,9 +17,9 @@
                                      ("google" . "http://www.google.com/search?ie=utf-8&q=%s")
                                      ("duckduckgo" . "https://duckduckgo.com/?q=%s"))
         eaf-browser-default-search-engine "bing"
-        eaf-webengine-font-family "Maple Mono NF CN"
-        eaf-webengine-fixed-font-family "Maple Mono NF CN"
-        eaf-webengine-serif-font-family "Maple Mono NF CN"
+        eaf-webengine-font-family "VictorMono Nerd Font"
+        eaf-webengine-fixed-font-family "VictorMono Nerd Font"
+        eaf-webengine-serif-font-family "VictorMono Nerd Font"
         eaf-webengine-font-size 16
         eaf-webengine-fixed-font-size 16)
   :bind (:map doom-leader-map
@@ -34,7 +34,7 @@
 (use-package! eaf-pyqterminal
   :config
   (setq eaf-pyqterminal-font-size 16
-        eaf-pyqterminal-font-family "Maple Mono NF CN")
+        eaf-pyqterminal-font-family "VictorMono Nerd Font")
   :bind (:map doom-leader-map
      ("gt" ("Open pyqterminal" . eaf-open-pyqterminal))
      ("gi" ("Open ipython" . eaf-open-ipython))))

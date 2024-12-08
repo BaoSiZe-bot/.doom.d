@@ -96,14 +96,15 @@
        chinese
        tools
        awesome-tray
-       ;;copilot
-       ;;tabnine
-       ;;holo-layer
+       ;; ;;copilot
+       ;; ;;tabnine
+       ;; ;;holo-layer
        eaf
        blink-search
-       ;;dape
+       ;; ;;dape
        sort-tab
        color-rg
        lsp-bridge
        treesit-context
-       aweshell)
+       ;; aweshell
+       )
