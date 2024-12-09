@@ -106,5 +106,5 @@
        color-rg
        lsp-bridge
        treesit-context
-       ;; aweshell
+       aweshell
        )
