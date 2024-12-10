@@ -8,10 +8,10 @@
   sort-tab-close-other-tabs
   sort-tab-close-current-tab
   sort-tab-close-all-tabs
-  :bind
-  (:map doom-leader-map
-    ("`" ("Switch to Last Buffer" . sort-tab-select-last-tab)))
   :init
+  (map! :map doom-leader-map
+        :desc "Switch to Last Buffer"
+        "`" #'sort-tab-select-tab)
   (map! :map doom-leader-map
     (:prefix ("b" . "Buffer")
           :desc "Next Buffer"

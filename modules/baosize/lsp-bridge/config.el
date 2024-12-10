@@ -14,16 +14,14 @@
   (acm-enable-tabnine t)
   (acm-enable-capf t)
   (acm-enable-preview t)
-  :bind (:map doom-leader-code-map
-         ("r" ("LSP rename" . lsp-bridge-rename))
-         ("a" ("LSP action" . lsp-bridge-code-action))
-         ("j" ("LSP find declaration" . lsp-bridge-find-def))
-         ("f" ("Lsp format" . lsp-bridge-code-format))
-         ("x" ("LSP diagnostic list" . lsp-bridge-diagnostic-list))
-         ("n" ("LSP diagnostic goto next" . lsp-bridge-diagnostic-jump-next))
-         ("p" ("LSP diagnostic previuos" . lsp-bridge-diagnostic-jump-prev)))
-        (:map doom-leader-map
-         ("k" ("LSP Hover" . lsp-bridge-popup-documentation)))
+  :bind (("C-c c r" . lsp-bridge-rename)
+         ("C-c c a" . lsp-bridge-code-action)
+         ("C-c c j" . lsp-bridge-find-def)
+         ("C-c c f" . lsp-bridge-code-format)
+         ("C-c c x" . lsp-bridge-diagnostic-list)
+         ("C-c c n" . lsp-bridge-diagnostic-jump-next)
+         ("C-c c p" . lsp-bridge-diagnostic-jump-prev)
+         ("C-c k" . lsp-bridge-popup-documentation))
   ;;:init
   ;;(unless (display-graphic-p)
   ;;(with-eval-after-load 'acm

@@ -170,8 +170,7 @@
       :desc "Consult Org"
       "o" 'consult-org-agenda)
 (use-package vc-msg
-  :bind (:map doom-leader-map
-        ("vi" ("Show vc-msg" . vc-msg-show))))
+  :bind ("C-c v i" . vc-msg-show))
 (after! c++-ts-mode
   (map! (:leader
     (:prefix ("d" . "debug")

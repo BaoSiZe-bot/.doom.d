@@ -2,12 +2,11 @@
 (use-package! color-rg
   :config
   (add-hook! 'color-rg-mode-hook (meow-insert-mode))
-  :bind (:map doom-leader-map
-        ("ri" ("ripgrep input" . color-rg-search-input))
-        ("rs" ("ripgrep current symbol" . color-rg-search-symbol))
-        ("rI" ("ripgrep current input in project" . color-rg-search-input-in-project))
-        ("rS" ("ripgrep current symbol in project" . color-rg-search-symbol-in-project))
-        ("rb" ("ripgrep input in buffer" . color-rg-search-input-in-current-file))
-        ("rj" ("ripgrep current symbol in current file" . color-rg-search-symbol-in-current-file))
-        ("rt" ("ripgrep input in buffer with same extentions" . color-rg-search-project-with-type))
-        ("rx" ("ripgrep current symbol with same extentions" . color-rg-search-symbol-with-type))))
+  :bind (("C-c r i" . color-rg-search-input)
+         ("C-c r s" . color-rg-search-symbol)
+         ("C-c r I" . color-rg-search-input-in-project)
+         ("C-c r S" . color-rg-search-symbol-in-project)
+         ("C-c r b" . color-rg-search-input-in-current-file)
+         ("C-c r j" . color-rg-search-symbol-in-current-file)
+         ("C-c r t" . color-rg-search-project-with-type)
+         ("C-c r x" . color-rg-search-symbol-with-type)))

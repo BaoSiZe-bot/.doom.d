@@ -22,11 +22,11 @@
         eaf-webengine-serif-font-family "VictorMono Nerd Font"
         eaf-webengine-font-size 16
         eaf-webengine-fixed-font-size 16)
-  :bind (:map doom-leader-map
-         ("gb" ("Open browser" . eaf-open-browser))
-         ("gh" ("Open browser history" . eaf-open-browser-with-history))
-         ("gB" ("Open browser other window" . eaf-open-browser-other-window))
-         ("gs" ("Open browser same window" . eaf-open-browser-same-window))))
+  :bind (
+         ("C-c g b" . eaf-open-browser)
+         ("C-c g h" . eaf-open-browser-with-history)
+         ("C-c g B" . eaf-open-browser-other-window)
+         ("C-c g s" . eaf-open-browser-same-window)))
 (use-package! eaf-pdf-viewer
   :config
   (setq eaf-pdf-dark-mode t)
@@ -35,14 +35,14 @@
   :config
   (setq eaf-pyqterminal-font-size 16
         eaf-pyqterminal-font-family "VictorMono Nerd Font")
-  :bind (:map doom-leader-map
-     ("gt" ("Open pyqterminal" . eaf-open-pyqterminal))
-     ("gi" ("Open ipython" . eaf-open-ipython))))
+  :bind (
+     ("C-c g t" . eaf-open-pyqterminal)
+     ("C-c g i" . eaf-open-ipython)))
 (use-package! eaf-git
-  :bind (:map doom-leader-map
-     ("gg" ("Open git" . eaf-open-git))))
+  :bind (
+     ("C-c g g" . eaf-open-git)))
 (use-package! eaf-file-manager
- :bind (:map doom-leader-map
-        ("g/" ("Open File Manager" . eaf-open-in-file-manager))))
+ :bind (
+        ("C-c g /" . eaf-open-in-file-manager)))
 (add-hook! org-mode (progn (setq eaf-org-dark-mode t) (require 'eaf)(require 'eaf-org-previewer)))
 (add-hook! markdown-mode (progn (setq eaf-markdown-dark-mode t) (require 'eaf)(require 'eaf-markdown-previewer))))
