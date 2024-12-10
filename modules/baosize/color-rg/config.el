@@ -1,7 +1,7 @@
 ;;; $DOOMDIR/modules/baosize/color-rg/config.el -*- lexical-binding: t; -*-
 (use-package! color-rg
   :config
-  (add-hook! 'color-rg-mode-hook (meow-insert-mode))
+  (add-hook! 'color-rg-mode-hook (meow-insert))
   :bind (("C-c r i" . color-rg-search-input)
          ("C-c r s" . color-rg-search-symbol)
          ("C-c r I" . color-rg-search-input-in-project)

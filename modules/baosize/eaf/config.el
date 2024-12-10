@@ -1,7 +1,6 @@
 ;;;;;;;;;;; baosize/eaf/config.el -*- lexical-binding: t; -*-
 (when (and (display-graphic-p) (not (daemonp)))
-  (use-package! eaf
-  :defer 2)
+  (use-package! eaf :defer 2)
 (map! :leader (:prefix ("g" . "EAF")
 		:desc "Open this buffer"
 		"e" #'eaf-open-this-buffer
@@ -35,6 +34,7 @@
   :config
   (setq eaf-pyqterminal-font-size 16
         eaf-pyqterminal-font-family "VictorMono Nerd Font")
+  (add-hook! 'eaf-mode (meow-insert))
   :bind (
      ("C-c g t" . eaf-open-pyqterminal)
      ("C-c g i" . eaf-open-ipython)))
