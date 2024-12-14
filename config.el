@@ -80,8 +80,6 @@
 
 (setq winum-keymap
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "C-`") 'winum-select-window-by-number)
-      (define-key map (kbd "C-²") 'winum-select-window-by-number)
       (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
       (define-key map (kbd "M-1") 'winum-select-window-1)
       (define-key map (kbd "M-2") 'winum-select-window-2)
@@ -185,7 +183,7 @@
       (message "buffer-file-name is nil"))))
 ;; keymap bind end
 
-(setq avy-timeout-seconds 0.25)
+(setq avy-timeout-seconds 0.2)
 (add-hook! 'prog-mode-hook (indent-bars--ts-mode))
 (after! posframe (standard-display-unicode-special-glyphs))
 (defun clear-minibuffer-after-delay ()

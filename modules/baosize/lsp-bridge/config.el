@@ -10,8 +10,6 @@
   (lsp-bridge-enable-hover-diagnostic t)
   (lsp-bridge-signature-show-function 'lsp-bridge-signature-show-with-frame)
   (lsp-bridge-signature-show-with-frame-position 'point)
-  (acm-enable-codeium t)
-  (acm-enable-tabnine t)
   (acm-enable-capf t)
   (acm-enable-preview t)
   :bind (("C-c c r" . lsp-bridge-rename)

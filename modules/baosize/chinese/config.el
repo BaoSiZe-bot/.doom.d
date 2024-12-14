@@ -97,7 +97,7 @@ unwanted space when exporting org-mode to hugo markdown."
   (rime-show-preedit 'inline)
   (rime-posframe-style 'simple)
   (rime-posframe-properties (list :internal-border-width 1
-                                  :font "Maple Mono NF CN"))
+                                  :font "VictorMono Nerd Font"))
   :config
   (add-hook! 'org-mode-hook (activate-input-method default-input-method))
   (defun +rime-force-enable ()

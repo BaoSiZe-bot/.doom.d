@@ -13,23 +13,17 @@
   (require 'noflet)
   (setq confirm-kill-emacs nil)
   (noflet (process-list) ad-do-it))
-(doom! :input
-       ;;chinese
-
-       :completion
+(doom! :completion
        (vertico +icons +childframe)           ; the search engine of the future
 
        :ui
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
-       ;;(emoji +unicode)  ; 🙂
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        indent-guides     ; highlighted indent columns
        ligatures         ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
-       ;;nav-flash         ; blink cursor line after big motions
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
-       ;;unicode           ; extended unicode support for various languages
        (vc-gutter +pretty) ; vcs diff in the fringe
        workspaces        ; tab emulation, persistence & separate workspaces
 
@@ -37,37 +31,21 @@
        meow
        ;;file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
-       ;;rotate-text       ; cycle region at point between text candidates
        snippets          ; my elves. They type so I don't have to
 
        :emacs
-       ;;electric
-       ;;eww
-       ;;tramp
-       (dired +dirvish +icons)            ; making dired pretty [functional]
+       ;;(dired +dirvish +icons)            ; making dired pretty [functional]
        (ibuffer +icons)         ; interactive buffer management
        (undo +tree)              ; persistent, smarter undo for your inevitable mistakes
-       vc                ; version-control and Emacs, sitting in a tree
 
        :term
        eshell            ; the elisp shell that works everywhere
-       vterm
-
-       :checkers
-
 
        :tools
-       ;;debugger          ; FIXME stepping through code, to help you add bugs
        editorconfig      ; let someone else argue about tabs vs spaces
        (eval +overlay)     ; run code, run (also, repls)
-       ;;(lookup +dictionary +docsets)             ; navigate your code and its documentation
        magit             ; a git porcelain for Emacs
-       ;;make              ; run make tasks from Emacs
-       ;;(pass  +auth)            ; password manager for nerds
-       ;;tree-sitter
 
-       :os
-       ;;tty               ; improve the terminal Emacs experience
 
        :lang
        emacs-lisp        ; drown in parentheses
@@ -83,9 +61,6 @@
        ;;(mu4e +org +gmail)
        ;;notmuch
        ;;(wanderlust +gmail)
-
-       :app
-       ;;everywhere        ; *leave* Emacs!? You must be joking
 
        :config
        ;;literate

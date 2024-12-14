@@ -21,8 +21,8 @@
         eaf-webengine-serif-font-family "VictorMono Nerd Font"
         eaf-webengine-font-size 16
         eaf-webengine-fixed-font-size 16)
-  :bind (
-         ("C-c g b" . eaf-open-browser)
+  (eaf-bind-key clear_focus "<escape>" eaf-browser-keybinding)
+  :bind (("C-c g b" . eaf-open-browser)
          ("C-c g h" . eaf-open-browser-with-history)
          ("C-c g B" . eaf-open-browser-other-window)
          ("C-c g s" . eaf-open-browser-same-window)))
