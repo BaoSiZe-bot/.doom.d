@@ -95,7 +95,7 @@ unwanted space when exporting org-mode to hugo markdown."
   (rime-user-data-dir (expand-file-name "~/.local/share/emacs-rime"))
   (rime-show-candidate 'posframe)
   (rime-show-preedit 'inline)
-  (rime-posframe-style 'simple)
+  (rime-posframe-style 'horizontal)
   (rime-posframe-properties (list :internal-border-width 1
                                   :font "VictorMono Nerd Font"))
   :config

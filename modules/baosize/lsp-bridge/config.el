@@ -1,4 +1,5 @@
 ;;; baosize/lsp-bridge/config.el -*- lexical-binding: t; -*-
+(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/lsp-bridge")
 (use-package! lsp-bridge
   :hook
   (emacs-lisp-mode . lsp-bridge-mode)
