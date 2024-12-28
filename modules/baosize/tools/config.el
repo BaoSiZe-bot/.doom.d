@@ -5,6 +5,13 @@
   (auto-save-enable)
   (setq auto-save-silent t)   ; quietly save
   (setq auto-save-delete-trailing-whitespace t))
+(use-package! eee
+  :commands
+  ee-yazi
+  ee-rg
+  ee-lazygit
+  ee-find
+  ee-btop)
 (use-package! keyfreq
   :config
   (keyfreq-mode 1)

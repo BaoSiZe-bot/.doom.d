@@ -3,13 +3,10 @@
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
       epa-file-encrypt-to user-mail-address
-      doom-font (font-spec :family "Victor Mono Nerd Font" :size 16 :weight 'Regular)
-      doom-unicode-font (font-spec :family "Victor Mono Nerd Font" :size 16 :weight 'Regular)
-      doom-variable-pitch-font (font-spec :family "Victor Mono Nerd Font" :size 16 :weight 'Regular)
-      doom-big-font (font-spec :family "Victor Mono Nerd Font" :size 18 :weight 'Regular)
-      default-frame-alist '((width . 150)
-                            (height . 30)
-                            (alpha-background . 96))
+      doom-font (font-spec :family "Victor Mono Nerd Font" :size 19 :weight 'Regular)
+      doom-unicode-font (font-spec :family "Victor Mono Nerd Font" :size 19 :weight 'Regular)
+      doom-variable-pitch-font (font-spec :family "Victor Mono Nerd Font" :size 19 :weight 'Regular)
+      doom-big-font (font-spec :family "Victor Mono Nerd Font" :size 22 :weight 'Regular)
       nerd-icons-font-family "Victor Mono Nerd Font"
       treesit-font-lock-level 4
       select-active-regions nil
