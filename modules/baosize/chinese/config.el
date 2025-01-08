@@ -51,6 +51,7 @@
   ;;             "/usr/share")))
   (rime-user-data-dir (expand-file-name "~/.local/share/emacs-rime"))
   (rime-show-candidate 'posframe)
+  (rime-posframe-style 'vertical)
   :config
   (add-hook! 'org-mode-hook (activate-input-method default-input-method))
   (unless (fboundp 'rime--posframe-display-content)

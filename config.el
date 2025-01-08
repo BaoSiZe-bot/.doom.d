@@ -3,16 +3,17 @@
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
       epa-file-encrypt-to user-mail-address
-      doom-font (font-spec :family "Victor Mono Nerd Font" :size 19 :weight 'Regular)
-      doom-unicode-font (font-spec :family "Victor Mono Nerd Font" :size 19 :weight 'Regular)
-      doom-variable-pitch-font (font-spec :family "Victor Mono Nerd Font" :size 19 :weight 'Regular)
-      doom-big-font (font-spec :family "Victor Mono Nerd Font" :size 22 :weight 'Regular)
+      doom-font (font-spec :family "VictorMono Nerd Font" :size 19 :weight 'Regular)
+      doom-unicode-font (font-spec :family "霞鹜文楷" :size 19 :weight 'Regular)
+      doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 19 :weight 'Regular)
+      doom-big-font (font-spec :family "VictorMono Nerd Font" :size 22 :weight 'Regular)
       nerd-icons-font-family "Victor Mono Nerd Font"
       treesit-font-lock-level 4
       select-active-regions nil
       select-enable-clipboard 't
       select-enable-primary nil
       interprogram-cut-function #'gui-select-text)
+(set-fontset-font t 'han (font-spec :family "霞鹜文楷" :size 19 :weight 'Regular))
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (add-hook! 'after-setting-font-hook #'+font-set-emoji)
@@ -98,7 +99,7 @@
                     (info (format " ... #%d " nlines)))
                 (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
 (setq hs-set-up-overlay 'hideshow-folded-overlay-fn)
-
+; 内置mode
 (run-with-idle-timer 1 nil (lambda ()
   (require 'cal-china-x)
   (add-hook! 'calendar-today-visible-hook (calendar-mark-today))
@@ -108,12 +109,38 @@
                                  (holiday-fixed 5 3 "International Workers' Day")
                                  (holiday-fixed 6 1  "Children's Day")
                                  (holiday-fixed 9 10 "Teachers' Day")
+                                 ;;`(cl-loop for i in (number-sequence 1 6)
+                                 ;;   collect (holiday-fixed 10 i "National Day"))
                                  (holiday-fixed 10 1 "National Day")
                                  (holiday-fixed 10 2 "National Day")
                                  (holiday-fixed 10 3 "National Day")
                                  (holiday-fixed 10 4 "National Day")
                                  (holiday-fixed 10 5 "National Day")
                                  (holiday-fixed 10 6 "National Day")
+                                 ;; (holiday-solar-term "立春" "立春")
+                                 ;; (holiday-solar-term "雨水" "雨水")
+                                 ;; (holiday-solar-term "惊蛰" "惊蛰")
+                                 ;; (holiday-solar-term "春分" "春分")
+                                 ;; (holiday-solar-term "清明" "清明")
+                                 ;; (holiday-solar-term "谷雨" "谷雨")
+                                 ;; (holiday-solar-term "立夏" "立夏")
+                                 ;; (holiday-solar-term "小满" "小满")
+                                 ;; (holiday-solar-term "芒种" "芒种")
+                                 ;; (holiday-solar-term "夏至" "夏至")
+                                 ;; (holiday-solar-term "小暑" "小暑")
+                                 ;; (holiday-solar-term "大暑" "大暑")
+                                 ;; (holiday-solar-term "立秋" "立秋")
+                                 ;; (holiday-solar-term "处暑" "处暑")
+                                 ;; (holiday-solar-term "白露" "白露")
+                                 ;; (holiday-solar-term "秋分" "秋分")
+                                 ;; (holiday-solar-term "寒露" "寒露")
+                                 ;; (holiday-solar-term "霜降" "霜降")
+                                 ;; (holiday-solar-term "立冬" "立冬")
+                                 ;; (holiday-solar-term "小雪" "小雪")
+                                 ;; (holiday-solar-term "大雪" "大雪")
+                                 ;; (holiday-solar-term "冬至" "冬至")
+                                 ;; (holiday-solar-term "小寒" "小寒")
+                                 ;; (holiday-solar-term "大寒" "大寒")
                                  (holiday-fixed 10 7 "National Day"))
         holiday-other-holidays '((holiday-fixed 4 22 "Earth Day")
                                  (holiday-fixed 4 23 "World Book Day"))
@@ -180,7 +207,7 @@
       (message "buffer-file-name is nil"))))
 ;; keymap bind end
 
-(setq avy-timeout-seconds 0.2)
+(setq avy-timeout-seconds 0.18)
 (add-hook! 'prog-mode-hook (indent-bars--ts-mode))
 (after! posframe (standard-display-unicode-special-glyphs))
 (defun clear-minibuffer-after-delay ()

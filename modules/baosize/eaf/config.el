@@ -1,6 +1,7 @@
 ;;;;;;;;;;; baosize/eaf/config.el -*- lexical-binding: t; -*-
 (when (and (display-graphic-p) (not (daemonp)))
-  (use-package! eaf :defer 2)
+  (use-package! eaf :defer t)
+  (add-hook! 'after-init-hook (require 'eaf))
 (map! :leader (:prefix ("g" . "EAF")
 		:desc "Open this buffer"
 		"e" #'eaf-open-this-buffer

@@ -43,8 +43,6 @@
    "b" #'meow-back-word
    "B" #'meow-back-symbol
    "c" #'meow-change
-   "x" #'meow-delete
-   "D" #'meow-backward-delete
    "e" #'meow-next-word
    "E" #'meow-next-symbol
    "f" #'meow-find
@@ -60,7 +58,7 @@
    "K" #'meow-prev-expand
    "l" #'meow-right
    "L" #'meow-right-expand
-   "v" #'meow-left-expand
+   "v" #'meow-visit
    "m" #'meow-join
    "n" #'meow-search
    "%" #'meow-block
@@ -74,10 +72,10 @@
    "t" #'meow-till
    "u" #'meow-undo
    "U" #'meow-undo-in-selection
-   "/" #'meow-visit
+   "/" #'meow-comment
    "w" #'meow-mark-word
    "W" #'meow-mark-symbol
-   "V" #'meow-line
+   "x" #'meow-line
    "X" #'meow-goto-line
    "y" #'meow-save
    "Y" #'meow-sync-grab
@@ -92,6 +90,5 @@
   (map! :map meow-keymap [remap describe-key] #'helpful-key)
   (meow-define-keys
    'normal
-   '("?" . meow-comment)
-   '("F" . avy-goto-char-2)
-   '("s" . avy-goto-char-timer)))
+   '("s" . avy-goto-char)
+   '("F" . avy-goto-char-2)))
