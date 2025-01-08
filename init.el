@@ -2,12 +2,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)           ;以 y/n代表 yes/no
 (transient-mark-mode 1)                 ;标记高亮
 (global-subword-mode 1)                 ;Word移动支持 FooBar 的格式
-(defun remove-scratch-buffer ()
-  (if (get-buffer "*scratch*")
-      (kill-buffer "*scratch*")))
-(add-hook 'after-init-hook (lambda () (doom-load-session)(sort-tab-mode 1)(awesome-tray-mode 1)))
-(add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
-(setq my-timer (run-at-time  nil 40 (lambda() (if (> (length (process-list)) 23)(list-processes)()))))
+(add-hook 'after-init-hook (lambda () (awesome-tray-enable)))
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (require 'noflet)
@@ -19,6 +14,7 @@
        :ui
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
+       doom-dashboard
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        indent-guides     ; highlighted indent columns
        ;;ligatures         ; ligatures and symbols to make your code pretty again
@@ -73,7 +69,7 @@
        awesome-tray
        ;; ;;copilot
        ;; ;;tabnine
-       ;; ;;holo-layer
+       ;; holo-layer
        eaf
        blink-search
        ;; ;;dape

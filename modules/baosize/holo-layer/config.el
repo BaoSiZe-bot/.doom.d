@@ -8,5 +8,6 @@
   (holo-layer-cursor-color t)
   (holo-layer-cursor-alpha 255)
   (holo-layer-type-animation-style 'supernova)
+  (holo-layer-sort-tab-ui)
   :config
   (holo-layer-enable))

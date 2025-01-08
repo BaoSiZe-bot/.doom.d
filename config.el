@@ -3,10 +3,10 @@
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
       epa-file-encrypt-to user-mail-address
-      doom-font (font-spec :family "VictorMono Nerd Font" :size 19 :weight 'Regular)
-      doom-unicode-font (font-spec :family "霞鹜文楷" :size 19 :weight 'Regular)
-      doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 19 :weight 'Regular)
-      doom-big-font (font-spec :family "VictorMono Nerd Font" :size 22 :weight 'Regular)
+      doom-font (font-spec :family "VictorMono Nerd Font" :size 17 :weight 'Regular)
+      doom-unicode-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
+      doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
+      doom-big-font (font-spec :family "VictorMono Nerd Font" :size 20 :weight 'Regular)
       nerd-icons-font-family "Victor Mono Nerd Font"
       treesit-font-lock-level 4
       select-active-regions nil

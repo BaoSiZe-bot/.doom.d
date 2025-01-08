@@ -3,8 +3,7 @@
 
 (package! lsp-bridge
   :recipe (:host github
-           :repo "liuyinz/lsp-bridge"
-           :branch "feat/support-tty-icon"
+           :repo "manateelazycat/lsp-bridge"
            :files ("*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
            ;; do not perform byte compilation or native compilation for lsp-bridge
            :build (:not compile)))
