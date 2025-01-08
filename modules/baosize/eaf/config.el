@@ -11,7 +11,7 @@
 		"m" #'eaf-open-bookmark))
 (use-package! eaf-browser
   :config
-  (setq eaf-browser-dark-mode t
+  (setq ;;eaf-browser-dark-mode t
         eaf-browser-search-engines '(("bing" . "https://bing.com/search?q=%s")
                                      ("baidu" . "https://www.baidu.com/search?ie=utf-8&q=%s")
                                      ("google" . "http://www.google.com/search?ie=utf-8&q=%s")
