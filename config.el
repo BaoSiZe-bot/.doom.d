@@ -2,6 +2,7 @@
 (setq user-full-name "Size Bao"
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
+      epa-pinentry-mode 'loopback
       epa-file-encrypt-to user-mail-address
       doom-font (font-spec :family "VictorMono Nerd Font" :size 17 :weight 'Regular)
       doom-unicode-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
@@ -71,6 +72,7 @@
       indent-bars-pattern "|")
 (setq-hook! 'c++-ts-mode-hook c-basic-offset 4)
 (setq-hook! 'c++-mode-hook c-basic-offset 4)
+(add-hook! 'c++-ts-mode-hook (rainbow-delimiters-mode 1))
 (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
 (with-eval-after-load 'org
   (setq org-startup-folded nil
