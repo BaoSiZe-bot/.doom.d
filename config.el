@@ -1,4 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+
 (setq user-full-name "Size Bao"
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
@@ -63,13 +64,7 @@
         (c-mode . c-ts-mode)
         (c++-mode . c++-ts-mode)
         (c-or-c++-mode . c-or-c++-ts-mode)
-        (python-mode . python-ts-mode))
-      indent-bars-treesit-support t
-      indent-bars-no-descend-string t
-      indent-bars-treesit-ignore-blank-lines-types '("module")
-      indent-bars-prefer-character t
-      indent-bars-zigzag nil
-      indent-bars-pattern "|")
+        (python-mode . python-ts-mode)))
 (setq-hook! 'c++-ts-mode-hook c-basic-offset 4)
 (setq-hook! 'c++-mode-hook c-basic-offset 4)
 (add-hook! 'c++-ts-mode-hook (rainbow-delimiters-mode 1))
@@ -210,7 +205,6 @@
 ;; keymap bind end
 
 (setq avy-timeout-seconds 0.18)
-(add-hook! 'prog-mode-hook (indent-bars--ts-mode))
 (after! posframe (standard-display-unicode-special-glyphs))
 (defun clear-minibuffer-after-delay ()
   "?? minibuffer ????"
