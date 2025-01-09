@@ -19,6 +19,9 @@
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (add-hook! 'after-setting-font-hook #'+font-set-emoji)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(add-hook 'find-file-hook 'display-line-numbers-mode)
 (defun my-fontify-variable (node override start end &rest _)
   (let ((parent (treesit-node-parent node)) tyn)
     (catch 'break
@@ -45,10 +48,10 @@
         ,@(funcall fn mode))
     (funcall fn mode)))
 (advice-add 'c-ts-mode--font-lock-settings :around 'my-c-font-lock-settings)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(add-hook 'find-file-hook 'display-line-numbers-mode)
+
 ;; ui config end
+(add-hook! 'doom-first-input-hook
+
 (setq system-time-locale "C"
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -72,7 +75,6 @@
 (with-eval-after-load 'org
   (setq org-startup-folded nil
         org-startup-indented t))
-
 (setq winum-keymap
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
@@ -86,8 +88,7 @@
       (define-key map (kbd "M-8") 'winum-select-window-8)
       map))
 (require 'winum)
-(add-hook! 'after-init-hook (winum-mode))
-
+(winum-mode)
 (add-hook! 'prog-mode-hook 'hs-minor-mode)
 (defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
 (defun hideshow-folded-overlay-fn (ov)
@@ -97,7 +98,7 @@
                 (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
 (setq hs-set-up-overlay 'hideshow-folded-overlay-fn)
 ; 内置mode
-(run-with-idle-timer 1 nil (lambda ()
+  (global-whitespace-mode)
   (require 'cal-china-x)
   (add-hook! 'calendar-today-visible-hook (calendar-mark-today))
   (setq holiday-local-holidays `((holiday-fixed 3 12 "Arbor Day")
@@ -114,30 +115,30 @@
                                  (holiday-fixed 10 4 "National Day")
                                  (holiday-fixed 10 5 "National Day")
                                  (holiday-fixed 10 6 "National Day")
-                                 ;; (holiday-solar-term "立春" "立春")
-                                 ;; (holiday-solar-term "雨水" "雨水")
-                                 ;; (holiday-solar-term "惊蛰" "惊蛰")
-                                 ;; (holiday-solar-term "春分" "春分")
-                                 ;; (holiday-solar-term "清明" "清明")
-                                 ;; (holiday-solar-term "谷雨" "谷雨")
-                                 ;; (holiday-solar-term "立夏" "立夏")
-                                 ;; (holiday-solar-term "小满" "小满")
-                                 ;; (holiday-solar-term "芒种" "芒种")
-                                 ;; (holiday-solar-term "夏至" "夏至")
-                                 ;; (holiday-solar-term "小暑" "小暑")
-                                 ;; (holiday-solar-term "大暑" "大暑")
-                                 ;; (holiday-solar-term "立秋" "立秋")
-                                 ;; (holiday-solar-term "处暑" "处暑")
-                                 ;; (holiday-solar-term "白露" "白露")
-                                 ;; (holiday-solar-term "秋分" "秋分")
-                                 ;; (holiday-solar-term "寒露" "寒露")
-                                 ;; (holiday-solar-term "霜降" "霜降")
-                                 ;; (holiday-solar-term "立冬" "立冬")
-                                 ;; (holiday-solar-term "小雪" "小雪")
-                                 ;; (holiday-solar-term "大雪" "大雪")
-                                 ;; (holiday-solar-term "冬至" "冬至")
-                                 ;; (holiday-solar-term "小寒" "小寒")
-                                 ;; (holiday-solar-term "大寒" "大寒")
+                                 (holiday-solar-term "立春" "立春")
+                                 (holiday-solar-term "雨水" "雨水")
+                                 (holiday-solar-term "惊蛰" "惊蛰")
+                                 (holiday-solar-term "春分" "春分")
+                                 (holiday-solar-term "清明" "清明")
+                                 (holiday-solar-term "谷雨" "谷雨")
+                                 (holiday-solar-term "立夏" "立夏")
+                                 (holiday-solar-term "小满" "小满")
+                                 (holiday-solar-term "芒种" "芒种")
+                                 (holiday-solar-term "夏至" "夏至")
+                                 (holiday-solar-term "小暑" "小暑")
+                                 (holiday-solar-term "大暑" "大暑")
+                                 (holiday-solar-term "立秋" "立秋")
+                                 (holiday-solar-term "处暑" "处暑")
+                                 (holiday-solar-term "白露" "白露")
+                                 (holiday-solar-term "秋分" "秋分")
+                                 (holiday-solar-term "寒露" "寒露")
+                                 (holiday-solar-term "霜降" "霜降")
+                                 (holiday-solar-term "立冬" "立冬")
+                                 (holiday-solar-term "小雪" "小雪")
+                                 (holiday-solar-term "大雪" "大雪")
+                                 (holiday-solar-term "冬至" "冬至")
+                                 (holiday-solar-term "小寒" "小寒")
+                                 (holiday-solar-term "大寒" "大寒")
                                  (holiday-fixed 10 7 "National Day"))
         holiday-other-holidays '((holiday-fixed 4 22 "Earth Day")
                                  (holiday-fixed 4 23 "World Book Day"))
@@ -151,8 +152,7 @@
                            holiday-oriental-holidays
                            holiday-local-holidays
                            holiday-other-holidays)
-        calendar-mark-holidays-flag t)))
-(add-hook! 'after-init-hook (global-whitespace-mode))
+        calendar-mark-holidays-flag t)
   (face-spec-set 'whitespace-tab
                  '((t :background unspecified)))
   (face-spec-set 'whitespace-line
@@ -178,30 +178,10 @@
      trailing         ; trailing blanks
      tabs             ; tabs (show by face)
      tab-mark         ; tabs (show by symbol)
-     ))
-(setq doom-light-theme 'doom-one-light
-      doom-dark-theme 'doom-one
-      doom-theme doom-dark-theme)
-(map! :map doom-leader-file-map
-      :desc "Consult FD"
-      "d" '+vertico/consult-fd-or-find)
-(map! :map doom-leader-file-map
-      :desc "Consult Org"
-      "o" 'consult-org-agenda)
-(use-package vc-msg
-  :bind ("C-c v i" . vc-msg-show))
-(after! c++-ts-mode
-  (map! (:leader
-    (:prefix ("d" . "debug")
-     :desc "Run cpp in gdb"
-     :n "c" #'cpp-gdb)))
-  (defun cpp-gdb ()
-    (interactive)
-    (if buffer-file-name
-        (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name))))
-          (when (eq 0 (shell-command (concat "clang++ -g -std=c++2c \"" buffer-file-name "\" -o \"/tmp/cpp-" filename "\"")))
-            (gdb (concat "gdb -i=mi \"/tmp/cpp-" filename "\""))))
-      (message "buffer-file-name is nil"))))
+     )))
+(setq doom-theme 'doom-one)
+(map! "C-c fd" '+vertico/consult-fd-or-find
+      "C-c fo" 'consult-org-agenda)
 ;; keymap bind end
 
 (setq avy-timeout-seconds 0.18)
@@ -210,12 +190,10 @@
   "?? minibuffer ????"
   (when (minibufferp)
     (delete-region (minibuffer-prompt-end) (point-max))))
-
 (advice-add 'dired-do-copy
             :after
             (lambda (&rest _)
               (run-with-timer 0 nil #'clear-minibuffer-after-delay)))
-
 (defun custom-dired-do-copy ()
   (interactive)
   (add-hook 'post-command-hook 'my-check-abbrev)

@@ -4,26 +4,12 @@
   :hook
   (doom-first-buffer . sort-tab-mode)
   :init
-  (map! :map doom-leader-map
-        :desc "Switch to Last Buffer"
-        "`" #'sort-tab-select-tab)
-  (map! :map doom-leader-map
-    (:prefix ("b" . "Buffer")
-          :desc "Next Buffer"
-      "]" #'sort-tab-select-next-tab
-      :desc "Next Buffer"
-      "n" #'sort-tab-select-next-tab
-      :desc "Previous Buffer"
-      "[" #'sort-tab-select-prev-tab
-      :desc "Previous Buffer"
-      "p" #'sort-tab-select-prev-tab
-      :desc "Switch to Last Buffer"
-      "l" #'sort-tab-select-last-tab
-      :desc "Kill all Buffers"
-      "K" #'sort-tab-close-all-tabs
-      :desc "Kill Other Buffers"
-      "O" #'sort-tab-close-other-tabs
-      :desc "Kill Buffer"
-      "d" #'sort-tab-close-current-tab
-      :desc "Kill Buffer"
-      "k" #'sort-tab-close-current-tab)))
+  (map! "C-c b]" #'sort-tab-select-next-tab
+        "C-c bn" #'sort-tab-select-next-tab
+        "C-c b[" #'sort-tab-select-prev-tab
+        "C-c bp" #'sort-tab-select-prev-tab
+        "C-c bl" #'sort-tab-select-last-tab
+        "C-c bK" #'sort-tab-close-all-tabs
+        "C-c bO" #'sort-tab-close-other-tabs
+        "C-c bd" #'sort-tab-close-current-tab
+        "C-c bk" #'sort-tab-close-current-tab))

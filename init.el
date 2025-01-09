@@ -31,8 +31,7 @@
 
        :emacs
        ;;(dired +dirvish +icons)            ; making dired pretty [functional]
-       (ibuffer +icons)         ; interactive buffer management
-       (undo +tree)              ; persistent, smarter undo for your inevitable mistakes
+       undo              ; persistent, smarter undo for your inevitable mistakes
 
        :term
        eshell            ; the elisp shell that works everywhere
@@ -45,13 +44,8 @@
 
        :lang
        emacs-lisp        ; drown in parentheses
-       (markdown +grip)          ; writing docs for people to ignore
-       (org              ; organize your plain life in plain text
-           ;; +dragndrop       ; file drag & drop support
-           ;; +journal
-           ;; +passwords
-           ;; +pomodoro
-           +pretty)
+       markdown          ; writing docs for people to ignore
+       (org +pretty)              ; organize your plain life in plain text
 
        :email
        ;;(mu4e +org +gmail)
@@ -67,8 +61,6 @@
        chinese
        tools
        awesome-tray
-       ;; ;;copilot
-       ;; ;;tabnine
        ;; holo-layer
        eaf
        blink-search
