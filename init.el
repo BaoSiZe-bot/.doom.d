@@ -19,7 +19,6 @@
        ;;indent-guides     ; highlighted indent columns
        ;;ligatures         ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
-       (popup +defaults)   ; tame sudden yet inevitable temporary windows
        (vc-gutter +pretty) ; vcs diff in the fringe
        workspaces        ; tab emulation, persistence & separate workspaces
 
@@ -58,6 +57,7 @@
        (default +bindings +smartparens)
 
        :baosize
+       theme
        chinese
        tools
        awesome-tray

@@ -179,7 +179,6 @@
      tabs             ; tabs (show by face)
      tab-mark         ; tabs (show by symbol)
      )))
-(setq doom-theme 'doom-one)
 (map! "C-c fd" '+vertico/consult-fd-or-find
       "C-c fo" 'consult-org-agenda)
 ;; keymap bind end
