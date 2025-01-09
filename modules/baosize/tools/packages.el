@@ -6,4 +6,5 @@
   :recipe (:host github :repo "dacap/keyfreq"))
 (package! eee
   :recipe (:host github :repo "eval-exec/eee.el"))
+(package! citre :recipe (:host github :repo "universal-ctags/citre" :files ("*") :branch "develop"))
 (package! highlight-parentheses)

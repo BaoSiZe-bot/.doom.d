@@ -1,4 +1,10 @@
 ;;; baosize/lsp-bridge/config.el -*- lexical-binding: t; -*-
+;;(use-package citre
+;;  :defer t
+;;  :init
+;;  (require 'citre-config)
+;;  :config
+;;  (add-hook 'c-mode-hook 'prog-mode-citre-bindings))
 (defun load-lsp ()
   (interactive)
 (map! :leader
@@ -14,6 +20,7 @@
       acm-enable-doc-markdown-render nil
       acm-enable-search-file-words nil
       lsp-bridge-enable-hover-diagnostic t
+;;      acm-enable-citre t
       lsp-bridge-signature-show-function 'lsp-bridge-signature-show-with-frame
       lsp-bridge-signature-show-with-frame-position 'point
       ;;acm-enable-preview t

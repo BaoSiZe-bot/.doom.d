@@ -228,6 +228,8 @@
 (setq shell-file-name (executable-find "bash"))
 (setq-default vterm-shell (executable-find "fish"))
 (setq-default explicit-shell-file-name (executable-find "fish"))
+(add-to-list 'default-frame-alist '(alpha-background . 85))
+;; (use-package trekker :load-path "~/trekker" :config (trekker-enable))
 ;;(use-package railgun) ;I'm highly NOT RECOMMEND enable this.
 (custom-set-variables)
 ;; custom-set-variables was added by Custom.
