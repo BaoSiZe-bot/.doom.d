@@ -38,7 +38,7 @@
        eshell            ; the elisp shell that works everywhere
 
        :tools
-       editorconfig      ; let someone else argue about tabs vs spaces
+       ;;editorconfig      ; let someone else argue about tabs vs spaces
        (eval +overlay)     ; run code, run (also, repls)
        magit             ; a git porcelain for Emacs
 
@@ -47,10 +47,10 @@
        emacs-lisp        ; drown in parentheses
        (markdown +grip)          ; writing docs for people to ignore
        (org              ; organize your plain life in plain text
-           +dragndrop       ; file drag & drop support
+           ;; +dragndrop       ; file drag & drop support
            ;; +journal
            ;; +passwords
-           +pomodoro
+           ;; +pomodoro
            +pretty)
 
        :email

@@ -1,8 +1,4 @@
 ;;; editor/meow/config.el -*- lexical-binding: t; -*-
-(defun meow/setup-keypad ()
- (map! :map meow-keypad-state-keymap
-  "?" #'meow-cheatsheet
-  "h" #'help-command))
 (defun meow/setup ()
   (setq meow-use-cursor-position-hack t
         meow-use-clipboard t
@@ -22,18 +18,18 @@
    ";" #'meow-reverse
    "," #'meow-inner-of-thing
    "." #'meow-bounds-of-thing
-   "'" #'repeat
-   "<escape>" #'ignore))
+   "'" #'repeat))
 (defun meow-append-this-line ()
   (interactive)
-  (doom/forward-to-last-non-comment-or-eol)
+  (move-end-of-line 1)
+  (meow-insert))
+(defun meow-insert-this-line ()
+  (interactive)
+  (move-beginning-of-line 1)
   (meow-insert))
 (defun meow/setup-qwerty ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow/setup)
-  (meow-motion-overwrite-define-key
-   '("j" . meow-next)
-   '("k" . meow-prev))
   (map! :map meow-normal-state-keymap
    "[" #'meow-beginning-of-thing
    "]" #'meow-end-of-thing
@@ -51,7 +47,8 @@
    "h" #'meow-left
    "H" #'meow-left-expand
    "i" #'meow-insert
-   "I" #'meow-open-above
+   "I" #'meow-insert-this-line
+   "O" #'meow-open-above
    "j" #'meow-next
    "J" #'meow-next-expand
    "k" #'meow-prev
@@ -86,7 +83,6 @@
   :demand t
   :config
   (meow/setup-qwerty)
-  (meow/setup-keypad)
   (map! :map meow-keymap [remap describe-key] #'helpful-key)
   (meow-define-keys
    'normal

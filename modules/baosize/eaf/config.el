@@ -35,7 +35,7 @@
   :config
   (setq eaf-pyqterminal-font-size 16
         eaf-pyqterminal-font-family "VictorMono Nerd Font")
-  (add-hook! 'eaf-mode (meow-insert))
+  (add-hook 'eaf-mode-hook (lambda () (meow-insert)))
   :bind (
      ("C-c g t" . eaf-open-pyqterminal)
      ("C-c g i" . eaf-open-ipython)))

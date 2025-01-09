@@ -1,5 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-
+(setq-default mode-line-format nil)
 (setq user-full-name "Size Bao"
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
