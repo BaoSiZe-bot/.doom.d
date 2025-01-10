@@ -14,18 +14,23 @@
   (setq confirm-kill-emacs nil)
   (noflet (process-list) ad-do-it))
 (doom! :completion
+;;       (corfu +icons +orderless +dabbrev)
        (vertico +icons +childframe)           ; the search engine of the future
 
        :ui
        ;;deft              ; notational velocity for Emacs
        ;;doom              ; what makes DOOM look the way it does
        doom-dashboard
+       (popup +defaults)
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;indent-guides     ; highlighted indent columns
        ;;ligatures         ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
        (vc-gutter +pretty) ; vcs diff in the fringe
        workspaces        ; tab emulation, persistence & separate workspaces
+
+       :checkers
+       (syntax +childframe)             ; tasing you for every semicolon you forget
 
        :editor
        meow
@@ -38,10 +43,12 @@
 
        :term
        eshell            ; the elisp shell that works everywhere
+       vterm                  ; the best terminal emulation
 
        :tools
-       (eval +overlay)     ; run code, run (also, repls)
+       ;;(eval +overlay)     ; run code, run (also, repls)
        magit             ; a git porcelain for Emacs
+       (lookup +dictionary +docsets)             ; navigate your code and its documentation
 
 
        :lang
@@ -64,15 +71,20 @@
        chinese
        tools
        awesome-tray
+       ;;mycorfu
        ;; holo-layer
        eaf
        blink-search
        ;; ;;dape
        sort-tab
+       (mycorfu +icons +orderless)
        color-rg
-       lsp-bridge
+       lsp-copilot
+       ;;lspce
+       ;;lsp-bridge
        treesit-context
        aweshell
+       vterm-run
        )
 
 ;;; init.el ends here

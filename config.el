@@ -3,6 +3,7 @@
 (setq user-full-name "Size Bao"
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
+      display-line-numbers-type 'relative
       epa-file-encrypt-to user-mail-address
       doom-font (font-spec :family "VictorMono Nerd Font" :size 17 :weight 'Regular)
       doom-unicode-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
@@ -48,7 +49,6 @@
 (setq system-time-locale "C"
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-      display-line-numbers-type 'relative
       org-directory '("~/.org/")
       org-agenda-files '("~/.org/")
       select-active-regions nil

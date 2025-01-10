@@ -3,8 +3,14 @@
   (setq eaf-pdf-dark-mode t)
   (add-hook! 'doom-first-input-hook (progn (require 'eaf)(require 'eaf-pdf-viewer)))
 (map! "C-c ee" #'eaf-open-this-buffer
-	  "C-c ef" #'eaf-open
-	  "C-c em" #'eaf-open-bookmark)
+      "C-c ef" #'eaf-open
+      "C-c em" #'eaf-open-bookmark
+      "C-c elc" #'luogu-open-contest
+      "C-c eld" #'luogu-open-discuss
+      "C-c ele" #'luogu-open-team
+      "C-c elp" #'luogu-open-problem
+      "C-c elt" #'luogu-open-training
+      "C-c elu" #'luogu-open-user-home)
 (use-package! eaf-browser
   :config
   (setq ;;eaf-browser-dark-mode t
@@ -35,4 +41,28 @@
 (use-package! eaf-file-manager
  :bind (("C-c e /" . eaf-open-in-file-manager)))
 (add-hook! org-mode (progn (setq eaf-org-dark-mode t) (require 'eaf)(require 'eaf-org-previewer)))
-(add-hook! markdown-mode (progn (setq eaf-markdown-dark-mode t) (require 'eaf)(require 'eaf-markdown-previewer))))
+(add-hook! markdown-mode (progn (setq eaf-markdown-dark-mode t) (require 'eaf)(require 'eaf-markdown-previewer)))
+(defun luogu-open-problem (pid)
+  (interactive "M[Luogu] ProblemID: ")
+  (require 'eaf-browser)
+  (eaf-open-browser (concat "https://www.luogu.com.cn/problem/" pid)))
+(defun luogu-open-problem (did)
+  (interactive "M[Luogu] DiscussID: ")
+  (require 'eaf-browser)
+  (eaf-open-browser (concat "https://www.luogu.com.cn/discuss/" did)))
+(defun luogu-open-problem (tid)
+  (interactive "M[Luogu] TrainingID: ")
+  (require 'eaf-browser)
+  (eaf-open-browser (concat "https://www.luogu.com.cn/training/" tid)))
+(defun luogu-open-user-home (uid)
+  (interactive "M[Luogu] UserID: ")
+  (require 'eaf-browser)
+  (eaf-open-browser (concat "https://www.luogu.com.cn/user/" uid)))
+(defun luogu-open-contest (cid)
+  (interactive "M[Luogu] ContestID: ")
+  (require 'eaf-browser)
+  (eaf-open-browser (concat "https://www.luogu.com.cn/contest/" cid)))
+(defun luogu-open-team (teamid)
+  (interactive "M[Luogu] TeamID: ")
+  (require 'eaf-browser)
+  (eaf-open-browser (concat "https://www.luogu.com.cn/team/" teamid))))

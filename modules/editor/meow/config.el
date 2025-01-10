@@ -59,7 +59,6 @@
    "m" #'meow-join
    "n" #'meow-search
    "%" #'meow-block
-   "O" #'meow-to-block
    "p" #'meow-yank
    "q" #'meow-quit
    "Q" #'meow-goto-line

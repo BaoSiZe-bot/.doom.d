@@ -59,4 +59,5 @@
     (message "buffer-file-name is nil")))
 (map! "C-c oc" #'run-in-eshell
       "C-c or" #'run-code-eshell
+      "C-c oe" #'+eshell/toggle
       "C-c of" #'run-cpp-fsanitize-eshell)
