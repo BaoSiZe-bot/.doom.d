@@ -1,5 +1,5 @@
 ;;; $DOOMDIR/modules/baosize/awesome-tray/config.el -*- lexical-binding: t; -*-
-(defun awesome-tray-winum-module () (if (featurep 'winum)
+(defun awesome-tray-winum-module () (if (modulep 'winum)
   (concat " " (int-to-string (winum-get-number)))
   ""))
 (defun awesome-tray-lsp-module () (if (not (equal lsp-bridge-mode nil))
@@ -8,7 +8,7 @@
       " ")
   ""))
 (defun awesome-tray-mybelong-module ()
-    (let ((origin (if (featurep 'treesit)
+    (let ((origin (if (modulep 'treesit)
       (let ((current-seconds (awesome-tray-current-seconds)))
         (if (or (not (eq (current-buffer) awesome-tray-belong-last-buffer))
                 (> (- current-seconds awesome-tray-belong-last-time) awesome-tray-belong-update-duration))
@@ -21,7 +21,7 @@
 (defun awesome-tray-mymeow-module ()
   (let ((origin (with-demoted-errors
       ""
-    (if (and (featurep 'meow) awesome-tray-meow-show-mode)
+    (if (and (modulep 'meow) awesome-tray-meow-show-mode)
         meow--indicator
       ""))))
     (concat "󰄛" origin)))

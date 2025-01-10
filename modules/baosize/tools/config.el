@@ -38,9 +38,9 @@
 (global-set-key (kbd "M-p") 'symbol-overlay-switch-backward)
 (global-set-key (kbd "<f7>") 'symbol-overlay-mode)
 (global-set-key (kbd "<f8>") 'symbol-overlay-remove-all)
-;;(use-package breadcrumb
-;;  :hook (prog-mode . breadcrumb-local-mode))
-;; (add-hook! 'emacs-lisp-mode-hook (rainbow-delimiters-mode -1))
+(use-package breadcrumb
+  :hook (prog-mode . breadcrumb-local-mode))
+ (add-hook! 'emacs-lisp-mode-hook (rainbow-delimiters-mode -1))
 ;; (use-package prism
 ;;   :hook (c++-ts-mode . prism-mode)
 ;;         (emacs-lisp-mode . prism-mode))

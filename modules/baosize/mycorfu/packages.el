@@ -3,7 +3,7 @@
 
 (package! corfu
   :recipe (:files (:defaults "extensions/*.el")))
-(when (featurep! +icons)
+(when (modulep! +icons)
 (package! nerd-icons-corfu))
 ;;(package! corfu-doc
 ;;  :recipe (:host github :repo "galeo/corfu-doc"))

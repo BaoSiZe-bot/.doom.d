@@ -1,5 +1,5 @@
 ;;; h-cheung/vterm-run/config.el -*- lexical-binding: t; -*-
-(when (featurep! :term vterm)
+(when (modulep! :term vterm)
   (map! "C-c o TAB" #'run-in-vterm
         "C-c oo" #'run-code
         "C-c ot" #'+vterm/toggle

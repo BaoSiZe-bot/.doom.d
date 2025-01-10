@@ -1,13 +1,12 @@
-;;; init.el --- The init file of my Doom Emacs
 ;;; init.el -*- lexical-binding: t; -*-
-
+;;; init.el --- The init file of my Doom Emacs
 ;;; Commentary:
 ;;
 
 (fset 'yes-or-no-p 'y-or-n-p)           ;以 y/n代表 yes/no
 (transient-mark-mode 1)                 ;标记高亮
 (global-subword-mode 1)                 ;Word移动支持 FooBar 的格式
-(add-hook 'after-init-hook #'awesome-tray-enable)
+;;(add-hook 'after-init-hook #'awesome-tray-enable)
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (require 'noflet)
@@ -21,6 +20,7 @@
        ;;deft              ; notational velocity for Emacs
        ;;doom              ; what makes DOOM look the way it does
        doom-dashboard
+       modeline
        (popup +defaults)
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;indent-guides     ; highlighted indent columns
@@ -29,8 +29,8 @@
        (vc-gutter +pretty) ; vcs diff in the fringe
        workspaces        ; tab emulation, persistence & separate workspaces
 
-       :checkers
-       (syntax +childframe)             ; tasing you for every semicolon you forget
+;;       :checkers
+;;       (syntax +childframe)             ; tasing you for every semicolon you forget
 
        :editor
        meow
@@ -83,7 +83,7 @@
        ;;lspce
        ;;lsp-bridge
        treesit-context
-       aweshell
+       ;;aweshell
        vterm-run
        )
 

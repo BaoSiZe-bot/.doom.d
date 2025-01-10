@@ -1,12 +1,13 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 (setq-default mode-line-format nil)
+(display-time-mode)
 (setq user-full-name "Size Bao"
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
       display-line-numbers-type 'relative
       epa-file-encrypt-to user-mail-address
       doom-font (font-spec :family "VictorMono Nerd Font" :size 17 :weight 'Regular)
-      doom-unicode-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
+      doom-symbol-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
       doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
       doom-big-font (font-spec :family "VictorMono Nerd Font" :size 20 :weight 'Regular)
       nerd-icons-font-family "Victor Mono Nerd Font"
@@ -54,6 +55,8 @@
       select-active-regions nil
       select-enable-clipboard 't
       select-enable-primary nil
+      flycheck-cppcheck-checks '("warning" "performance" "portability" "unusedFunction")
+      flycheck-cppcheck-inconclusive t
       interprogram-cut-function #'gui-select-text
       epa-pinentry-mode 'loopback
       major-mode-remap-alist

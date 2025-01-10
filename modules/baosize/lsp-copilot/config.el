@@ -2,9 +2,7 @@
 (use-package lsp-copilot
   ;; :load-path "/path/to/lsp-copilot"
   :config
-  (add-hook! '(emacs-lisp-mode-hook
-               c++-ts-mode-hook
-               inferior-emacs-lisp-mode-hook
+  (add-hook! '(c++-ts-mode-hook
                python-ts-mode-hook
  	       ) #'lsp-copilot-mode)
   ;; Doom Emacs
