@@ -47,6 +47,7 @@
 
        :tools
        ;;(eval +overlay)     ; run code, run (also, repls)
+       editorconfig
        magit             ; a git porcelain for Emacs
        (lookup +dictionary +docsets)             ; navigate your code and its documentation
 

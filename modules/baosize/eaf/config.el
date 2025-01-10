@@ -50,7 +50,7 @@
   (interactive "M[Luogu] DiscussID: ")
   (require 'eaf-browser)
   (eaf-open-browser (concat "https://www.luogu.com.cn/discuss/" did)))
-(defun luogu-open-problem (tid)
+(defun luogu-open-training (tid)
   (interactive "M[Luogu] TrainingID: ")
   (require 'eaf-browser)
   (eaf-open-browser (concat "https://www.luogu.com.cn/training/" tid)))
