@@ -3,25 +3,20 @@
 (setq user-full-name "Size Bao"
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
-      epa-pinentry-mode 'loopback
       epa-file-encrypt-to user-mail-address
       doom-font (font-spec :family "VictorMono Nerd Font" :size 17 :weight 'Regular)
       doom-unicode-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
       doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
       doom-big-font (font-spec :family "VictorMono Nerd Font" :size 20 :weight 'Regular)
       nerd-icons-font-family "Victor Mono Nerd Font"
-      treesit-font-lock-level 4
-      select-active-regions nil
-      select-enable-clipboard 't
-      select-enable-primary nil
-      interprogram-cut-function #'gui-select-text)
+      treesit-font-lock-level 4)
 (set-fontset-font t 'han (font-spec :family "霞鹜文楷" :size 19 :weight 'Regular))
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (add-hook! 'after-setting-font-hook #'+font-set-emoji)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
-(add-hook 'find-file-hook 'display-line-numbers-mode)
+(add-hook 'find-file-hook #'display-line-numbers-mode)
 (defun my-fontify-variable (node override start end &rest _)
   (let ((parent (treesit-node-parent node)) tyn)
     (catch 'break
@@ -48,17 +43,19 @@
         ,@(funcall fn mode))
     (funcall fn mode)))
 (advice-add 'c-ts-mode--font-lock-settings :around 'my-c-font-lock-settings)
-
 ;; ui config end
 (add-hook! 'doom-first-input-hook
-
 (setq system-time-locale "C"
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
       display-line-numbers-type 'relative
       org-directory '("~/.org/")
       org-agenda-files '("~/.org/")
-      dirvish-side-width 30
+      select-active-regions nil
+      select-enable-clipboard 't
+      select-enable-primary nil
+      interprogram-cut-function #'gui-select-text
+      epa-pinentry-mode 'loopback
       major-mode-remap-alist
       '((yaml-mode . yaml-ts-mode)
         (sh-mode . bash-ts-mode)
@@ -98,7 +95,6 @@
                 (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
 (setq hs-set-up-overlay 'hideshow-folded-overlay-fn)
 ; 内置mode
-  (global-whitespace-mode)
   (require 'cal-china-x)
   (add-hook! 'calendar-today-visible-hook (calendar-mark-today))
   (setq holiday-local-holidays `((holiday-fixed 3 12 "Arbor Day")
@@ -153,32 +149,16 @@
                            holiday-local-holidays
                            holiday-other-holidays)
         calendar-mark-holidays-flag t)
-  (face-spec-set 'whitespace-tab
-                 '((t :background unspecified)))
-  (face-spec-set 'whitespace-line
-                 '((((background light))
-                    :background "#d8d8d8" :foreground unspecified
-                    :underline t :weight unspecified)
-                   (t
-                    :background "#404040" :foreground unspecified
-                    :underline t :weight unspecified)))
-  (face-spec-set 'whitespace-space-before-tab
-                 '((((background light))
-                    :background "#d8d8d8" :foreground "#de4da1")
-                   (t
-                    :inherit warning
-                    :background "#404040" :foreground "#ee6aa7")))
   (setq
-   whitespace-line-column nil
    whitespace-style
-   '(face             ; visualize things below:
-     empty            ; empty lines at beginning/end of buffer
+   '(empty            ; empty lines at beginning/end of buffer
      lines-tail       ; lines go beyond `fill-column'
      space-before-tab ; spaces before tab
      trailing         ; trailing blanks
      tabs             ; tabs (show by face)
      tab-mark         ; tabs (show by symbol)
-     )))
+     ))
+  (global-whitespace-mode))
 (map! "C-c fd" '+vertico/consult-fd-or-find
       "C-c fo" 'consult-org-agenda)
 ;; keymap bind end
@@ -195,7 +175,7 @@
               (run-with-timer 0 nil #'clear-minibuffer-after-delay)))
 (defun custom-dired-do-copy ()
   (interactive)
-  (add-hook 'post-command-hook 'my-check-abbrev)
+  (add-hook 'post-command-hook #'my-check-abbrev)
   (dired-do-copy nil)
   (remove-hook 'post-command-hook 'my-check-abbrev))
 (setq shell-file-name (executable-find "bash"))

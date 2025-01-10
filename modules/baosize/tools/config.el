@@ -31,8 +31,8 @@
 (use-package colorful-mode
   :hook (prog-mode text-mode))
 (require 'symbol-overlay)
-(add-hook 'prog-mode-hook (lambda () (symbol-overlay-mode 1)))
-(add-hook 'text-mode-hook (lambda () (symbol-overlay-mode 1)))
+(add-hook 'prog-mode-hook #'symbol-overlay-mode)
+(add-hook 'text-mode-hook #'symbol-overlay-mode)
 (global-set-key (kbd "M-i") 'symbol-overlay-put)
 (global-set-key (kbd "M-n") 'symbol-overlay-switch-forward)
 (global-set-key (kbd "M-p") 'symbol-overlay-switch-backward)

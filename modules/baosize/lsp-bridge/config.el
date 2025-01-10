@@ -7,6 +7,21 @@
 ;;  (add-hook 'c-mode-hook 'prog-mode-citre-bindings))
 (defun load-lsp ()
   (interactive)
+(setq lsp-bridge-completion-popup-predicates '(
+                                               lsp-bridge--not-match-hide-keywords
+                                               lsp-bridge--not-match-stop-commands
+                                               lsp-bridge--not-match-hide-characters
+                                               lsp-bridge--not-only-blank-before-cursor
+                                               ;; lsp-bridge--not-in-string
+                                               lsp-bridge--not-in-org-table
+                                               lsp-bridge--not-execute-macro
+                                               lsp-bridge--not-in-multiple-cursors
+                                               lsp-bridge--not-in-mark-macro
+                                               lsp-bridge--is-evil-state
+                                               lsp-bridge--is-meow-state
+                                               lsp-bridge--not-in-chatgpt-response
+                                               lsp-bridge--not-complete-manually
+                                               ))
 (map! "C-c k"  'lsp-bridge-popup-documentation
       "C-c lr" 'lsp-bridge-rename
       "C-c la" 'lsp-bridge-code-action

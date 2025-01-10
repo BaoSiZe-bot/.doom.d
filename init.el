@@ -1,8 +1,13 @@
+;;; init.el --- The init file of my Doom Emacs
 ;;; init.el -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;;
+
 (fset 'yes-or-no-p 'y-or-n-p)           ;以 y/n代表 yes/no
 (transient-mark-mode 1)                 ;标记高亮
 (global-subword-mode 1)                 ;Word移动支持 FooBar 的格式
-(add-hook 'after-init-hook (lambda () (awesome-tray-enable)))
+(add-hook 'after-init-hook #'awesome-tray-enable)
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (require 'noflet)
@@ -13,7 +18,7 @@
 
        :ui
        ;;deft              ; notational velocity for Emacs
-       doom              ; what makes DOOM look the way it does
+       ;;doom              ; what makes DOOM look the way it does
        doom-dashboard
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;indent-guides     ; highlighted indent columns
@@ -29,14 +34,12 @@
        snippets          ; my elves. They type so I don't have to
 
        :emacs
-       ;;(dired +dirvish +icons)            ; making dired pretty [functional]
        undo              ; persistent, smarter undo for your inevitable mistakes
 
        :term
        eshell            ; the elisp shell that works everywhere
 
        :tools
-       ;;editorconfig      ; let someone else argue about tabs vs spaces
        (eval +overlay)     ; run code, run (also, repls)
        magit             ; a git porcelain for Emacs
 
@@ -57,7 +60,7 @@
        (default +bindings +smartparens)
 
        :baosize
-       theme
+       themes
        chinese
        tools
        awesome-tray
@@ -71,3 +74,5 @@
        treesit-context
        aweshell
        )
+
+;;; init.el ends here
