@@ -1,7 +1,7 @@
 ;;;;;;;;;;; baosize/eaf/config.el -*- lexical-binding: t; -*-
 (when (and (display-graphic-p) (not (daemonp)))
   (setq eaf-pdf-dark-mode t)
-  (add-hook! 'doom-first-input-hook (progn (require 'eaf)(require 'eaf-pdf-viewer)))
+  (add-hook! 'doom-first-input-hook (require 'eaf))
 (map! "C-c ee" #'eaf-open-this-buffer
       "C-c ef" #'eaf-open
       "C-c em" #'eaf-open-bookmark
@@ -36,12 +36,12 @@
   (add-hook 'eaf-mode-hook (lambda () (meow-insert)))
   :bind (("C-c e t" . eaf-open-pyqterminal)
          ("C-c e i" . eaf-open-ipython)))
-(use-package! eaf-git
-  :bind (("C-c e g" . eaf-open-git)))
+;; (use-package! eaf-git
+;;   :bind (("C-c e g" . eaf-open-git)))
 (use-package! eaf-file-manager
  :bind (("C-c e /" . eaf-open-in-file-manager)))
-(add-hook! org-mode (progn (setq eaf-org-dark-mode t) (require 'eaf)(require 'eaf-org-previewer)))
-(add-hook! markdown-mode (progn (setq eaf-markdown-dark-mode t) (require 'eaf)(require 'eaf-markdown-previewer)))
+;; (add-hook! org-mode (progn (setq eaf-org-dark-mode t) (require 'eaf)(require 'eaf-org-previewer)))
+;; (add-hook! markdown-mode (progn (setq eaf-markdown-dark-mode t) (require 'eaf)(require 'eaf-markdown-previewer)))
 (defun luogu-open-problem (pid)
   (interactive "M[Luogu] ProblemID: ")
   (require 'eaf-browser)

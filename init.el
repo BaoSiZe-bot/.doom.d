@@ -30,7 +30,7 @@
        workspaces        ; tab emulation, persistence & separate workspaces
 
        :checkers
-       (syntax +childframe)             ; tasing you for every semicolon you forget
+       ;; (syntax +childframe)             ; tasing you for every semicolon you forget
 
        :editor
        meow
@@ -79,7 +79,7 @@
        :config
        ;;literate
        ;;use-package
-       (default +bindings +smartparens)
+       (default +bindings)
 
        :baosize
        themes
@@ -91,7 +91,7 @@
        blink-search
        ;; ;;dape
        sort-tab
-       (mycorfu +icons +orderless)
+       (mycorfu +icons)
        color-rg
        lsp-copilot
        ;;lspce

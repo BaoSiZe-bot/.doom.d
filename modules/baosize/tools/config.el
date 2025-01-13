@@ -22,12 +22,12 @@
   (setq show-paren-when-point-inside-paren t
         show-paren-when-point-in-periphery t
         show-paren-context-when-offscreen t))
-(use-package highlight-parentheses
-  :hook ((minibuffer-setup . highlight-parentheses-minibuffer-setup)
-         (prog-mode . highlight-parentheses-mode))
-  :config
-  (setq highlight-parentheses-colors '("firebrick1" "firebrick3" "orange1" "orange3")
-        highlight-parentheses-attributes '((:underline t) (:underline t) (:underline t))))
+;; (use-package highlight-parentheses
+;;   :hook ((minibuffer-setup . highlight-parentheses-minibuffer-setup)
+;;          (prog-mode . highlight-parentheses-mode))
+;;   :config
+;;   (setq highlight-parentheses-colors '("firebrick1" "firebrick3" "orange1" "orange3")
+;;         highlight-parentheses-attributes '((:underline t) (:underline t) (:underline t))))
 (use-package colorful-mode
   :hook (prog-mode text-mode))
 (require 'symbol-overlay)

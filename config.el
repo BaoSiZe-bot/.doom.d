@@ -22,7 +22,7 @@
       doom-symbol-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
       doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
       doom-big-font (font-spec :family "VictorMono Nerd Font" :size 20 :weight 'Regular)
-      nerd-icons-font-family "Victor Mono Nerd Font"
+      nerd-icons-font-family "VictorMono Nerd Font"
       treesit-font-lock-level 4)
 (set-fontset-font t 'han (font-spec :family "霞鹜文楷" :size 19 :weight 'Regular))
 (defun +font-set-emoji (&rest _)
@@ -60,6 +60,8 @@
 ;; ui config end
 ;;(add-hook 'prog-mode-hook #'eglot-ensure)
 (add-hook! 'doom-first-input-hook
+  (setq-hook! 'meow-insert-mode-hook jit-lock-defer-time 0.25)
+  (setq-hook! 'meow-normal-mode-hook jit-lock-defer-time 0)
   (setq system-time-locale "C"
         ;; If you use `org' and don't want your org files in the default location below,
         ;; change `org-directory'. It must be set before org loads!
@@ -68,8 +70,8 @@
         select-active-regions nil
         select-enable-clipboard 't
         select-enable-primary nil
-        flycheck-cppcheck-checks '("warning" "performance" "portability" "unusedFunction")
-        flycheck-cppcheck-inconclusive t
+        ;; flycheck-cppcheck-checks '("warning" "performance" "portability" "unusedFunction")
+        ;; flycheck-cppcheck-inconclusive t
         interprogram-cut-function #'gui-select-text
         epa-pinentry-mode 'loopback
         major-mode-remap-alist
