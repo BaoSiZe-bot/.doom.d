@@ -24,21 +24,26 @@
        (popup +defaults)
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;indent-guides     ; highlighted indent columns
-       ;;ligatures         ; ligatures and symbols to make your code pretty again
-       ;;minimap           ; show a map of the code on the side
+       ligatures         ; ligatures and symbols to make your code pretty again
+       minimap           ; show a map of the code on the side
        (vc-gutter +pretty) ; vcs diff in the fringe
        workspaces        ; tab emulation, persistence & separate workspaces
 
-;;       :checkers
-;;       (syntax +childframe)             ; tasing you for every semicolon you forget
+       :checkers
+       (syntax +childframe)             ; tasing you for every semicolon you forget
 
        :editor
        meow
-       ;;file-templates    ; auto-snippets for empty files
-       ;;fold              ; (nigh) universal code folding
+       file-templates    ; auto-snippets for empty files
+       fold              ; (nigh) universal code folding
+       format
        snippets          ; my elves. They type so I don't have to
 
        :emacs
+       (ibuffer +icons)
+       (dired +icons +dirvish)
+       electric
+       vc
        undo              ; persistent, smarter undo for your inevitable mistakes
 
        :term
@@ -46,13 +51,22 @@
        vterm                  ; the best terminal emulation
 
        :tools
-       ;;(eval +overlay)     ; run code, run (also, repls)
+       (eval +overlay)     ; run code, run (also, repls)
        editorconfig
-       magit             ; a git porcelain for Emacs
+       ;;(lsp +peek +eglot)
+       debugger
+       (magit +forge)             ; a git porcelain for Emacs
        (lookup +dictionary +docsets)             ; navigate your code and its documentation
 
+       :os
+       tty
 
        :lang
+       ;;(cc +lsp)
+       ;;(json +lsp)
+       ;;(python +lsp +pyright +cpython)
+       ;;(yaml +lsp)
+       ;;(sh +lsp)
        emacs-lisp        ; drown in parentheses
        markdown          ; writing docs for people to ignore
        (org +pretty)              ; organize your plain life in plain text
@@ -71,8 +85,7 @@
        themes
        chinese
        tools
-       awesome-tray
-       ;;mycorfu
+       ;;awesome-tray
        ;; holo-layer
        eaf
        blink-search
@@ -83,7 +96,7 @@
        lsp-copilot
        ;;lspce
        ;;lsp-bridge
-       treesit-context
+       ;;treesit-context
        ;;aweshell
        vterm-run
        )

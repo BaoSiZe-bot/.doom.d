@@ -5,6 +5,7 @@
   (corfu-separator ?\s)
   (corfu-auto t)
   (corfu-auto-delay 0.0)
+  (corfu-popupinfo-delay '(0.1 . 0.1))
   (corfu-on-exact-match nil)
   (corfu-quit-no-match t)
   (corfu-cycle t)
@@ -34,11 +35,14 @@
   (add-hook 'lsp-completion-mode-hook
             (lambda ()
               (setf (alist-get 'lsp-capf completion-category-defaults) '((styles . (orderless flex))))))
-
+  (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode)
   (map! :map corfu-map
         "C-SPC"    #'corfu-insert-separator
         "C-n"      #'corfu-next
         "C-p"      #'corfu-previous
+        "M-p"      #'corfu-popupinfo-scroll-up
+        "M-n"      #'corfu-popupinfo-scroll-down
+        "M-d"      #'corfu-popupinfo-toggle
         (:prefix "C-x"
          "C-k"     #'cape-dict
          "C-f"     #'cape-file))
@@ -55,22 +59,22 @@
       (funcall orig))))
 
 
-;; (use-package! corfu-doc
-;;   :hook (corfu-mode . corfu-doc-mode)
-;;   :custom
-;;   (corfu-doc-delay 0)
-;;   :bind (:map corfu-map
-;;          ("M-n" . corfu-doc-scroll-down)
-;;          ("M-p" . corfu-doc-scroll-up)
-;;          ("M-d" . corfu-doc-toggle)))
+;; use corfu-popupinfo instead
+;;(use-package! corfu-doc
+;;  :hook (corfu-mode . corfu-doc-mode)
+;;  :custom
+;;  (corfu-doc-delay 0)
+;;  :bind (:map corfu-map
+;;         ("M-n" . corfu-doc-scroll-down)
+;;         ("M-p" . corfu-doc-scroll-up)
+;;         ("M-d" . corfu-doc-toggle)))
 
-
-(use-package! orderless
-  :when (modulep! +orderless)
-  :init
-  (setq completion-styles '(orderless partial-completion)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles . (partial-completion))))))
+;;(use-package! orderless
+;;  :when (modulep! +orderless)
+;;  :init
+;;  (setq completion-styles '(orderless partial-completion)
+;;        completion-category-defaults nil
+;;        completion-category-overrides '((file (styles . (partial-completion))))))
 
 
 (use-package! nerd-icons-corfu
@@ -112,12 +116,12 @@
 
 
 ;; TODO This doesn't _quite_ work
-(use-package! evil-collection-corfu
-  :when (modulep! :editor evil +everywhere)
-  :defer t
-  :init (setq evil-collection-corfu-key-themes '(default magic-return))
-  :config
-  (evil-collection-corfu-setup))
+;;(use-package! evil-collection-corfu
+;;  :when (modulep! :editor evil +everywhere)
+;;  :defer t
+;;  :init (setq evil-collection-corfu-key-themes '(default magic-return))
+;;  :config
+;;  (evil-collection-corfu-setup))
 
 (use-package! yasnippet-capf
   :when (modulep! :editor snippets)

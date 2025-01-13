@@ -1,6 +1,18 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 (setq-default mode-line-format nil)
 (display-time-mode)
+;; (with-eval-after-load 'eglot
+;;   (use-package eglot-booster
+;;     :after eglot
+;;     :config (eglot-booster-mode))
+;;   (add-to-list 'eglot-server-programs
+;;                `(c++-ts-mode . ("clangd"
+;;                                 "--background-index"
+;; 			                    "--header-insertion=iwyu"
+;; 			                    "--completion-style=detailed"
+;; 			                    "--function-arg-placeholders"
+;; 			                    "--fallback-style=llvm"
+;; 			                    ))))
 (setq user-full-name "Size Bao"
       frame-title-format (concat "%b - " user-full-name "'s Emacs")
       user-mail-address "baosize@hotmail.com"
@@ -46,58 +58,59 @@
     (funcall fn mode)))
 (advice-add 'c-ts-mode--font-lock-settings :around 'my-c-font-lock-settings)
 ;; ui config end
+;;(add-hook 'prog-mode-hook #'eglot-ensure)
 (add-hook! 'doom-first-input-hook
-(setq system-time-locale "C"
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-      org-directory '("~/.org/")
-      org-agenda-files '("~/.org/")
-      select-active-regions nil
-      select-enable-clipboard 't
-      select-enable-primary nil
-      flycheck-cppcheck-checks '("warning" "performance" "portability" "unusedFunction")
-      flycheck-cppcheck-inconclusive t
-      interprogram-cut-function #'gui-select-text
-      epa-pinentry-mode 'loopback
-      major-mode-remap-alist
-      '((yaml-mode . yaml-ts-mode)
-        (sh-mode . bash-ts-mode)
-        (js-mode . js-ts-mode)
-        (css-mode . css-ts-mode)
-        (c-mode . c-ts-mode)
-        (c++-mode . c++-ts-mode)
-        (c-or-c++-mode . c-or-c++-ts-mode)
-        (python-mode . python-ts-mode)))
-(setq-hook! 'c++-ts-mode-hook c-basic-offset 4)
-(setq-hook! 'c++-mode-hook c-basic-offset 4)
-(add-hook! 'c++-ts-mode-hook (rainbow-delimiters-mode 1))
-(set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
-(with-eval-after-load 'org
-  (setq org-startup-folded nil
-        org-startup-indented t))
-(setq winum-keymap
-    (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
-      (define-key map (kbd "M-1") 'winum-select-window-1)
-      (define-key map (kbd "M-2") 'winum-select-window-2)
-      (define-key map (kbd "M-3") 'winum-select-window-3)
-      (define-key map (kbd "M-4") 'winum-select-window-4)
-      (define-key map (kbd "M-5") 'winum-select-window-5)
-      (define-key map (kbd "M-6") 'winum-select-window-6)
-      (define-key map (kbd "M-7") 'winum-select-window-7)
-      (define-key map (kbd "M-8") 'winum-select-window-8)
-      map))
-(require 'winum)
-(winum-mode)
-(add-hook! 'prog-mode-hook 'hs-minor-mode)
-(defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
-(defun hideshow-folded-overlay-fn (ov)
-        (when (eq 'code (overlay-get ov 'hs))
-            (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
-                    (info (format " ... #%d " nlines)))
-                (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
-(setq hs-set-up-overlay 'hideshow-folded-overlay-fn)
-; 内置mode
+  (setq system-time-locale "C"
+        ;; If you use `org' and don't want your org files in the default location below,
+        ;; change `org-directory'. It must be set before org loads!
+        org-directory '("~/.org/")
+        org-agenda-files '("~/.org/")
+        select-active-regions nil
+        select-enable-clipboard 't
+        select-enable-primary nil
+        flycheck-cppcheck-checks '("warning" "performance" "portability" "unusedFunction")
+        flycheck-cppcheck-inconclusive t
+        interprogram-cut-function #'gui-select-text
+        epa-pinentry-mode 'loopback
+        major-mode-remap-alist
+        '((yaml-mode . yaml-ts-mode)
+          (sh-mode . bash-ts-mode)
+          (js-mode . js-ts-mode)
+          (css-mode . css-ts-mode)
+          (c-mode . c-ts-mode)
+          (c++-mode . c++-ts-mode)
+          (c-or-c++-mode . c-or-c++-ts-mode)
+          (python-mode . python-ts-mode)))
+  (setq-hook! 'c++-ts-mode-hook c-basic-offset 4)
+  (setq-hook! 'c++-mode-hook c-basic-offset 4)
+  (add-hook! 'c++-ts-mode-hook (rainbow-delimiters-mode 1))
+  (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
+  (with-eval-after-load 'org
+    (setq org-startup-folded nil
+          org-startup-indented t))
+  (setq winum-keymap
+        (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
+          (define-key map (kbd "M-1") 'winum-select-window-1)
+          (define-key map (kbd "M-2") 'winum-select-window-2)
+          (define-key map (kbd "M-3") 'winum-select-window-3)
+          (define-key map (kbd "M-4") 'winum-select-window-4)
+          (define-key map (kbd "M-5") 'winum-select-window-5)
+          (define-key map (kbd "M-6") 'winum-select-window-6)
+          (define-key map (kbd "M-7") 'winum-select-window-7)
+          (define-key map (kbd "M-8") 'winum-select-window-8)
+          map))
+  (require 'winum)
+  (winum-mode)
+  (add-hook! 'prog-mode-hook 'hs-minor-mode)
+  (defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
+  (defun hideshow-folded-overlay-fn (ov)
+    (when (eq 'code (overlay-get ov 'hs))
+      (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
+             (info (format " ... #%d " nlines)))
+        (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
+  (setq hs-set-up-overlay 'hideshow-folded-overlay-fn)
+                                        ; 内置mode
   (require 'cal-china-x)
   (add-hook! 'calendar-today-visible-hook (calendar-mark-today))
   (setq holiday-local-holidays `((holiday-fixed 3 12 "Arbor Day")
@@ -161,7 +174,8 @@
      tabs             ; tabs (show by face)
      tab-mark         ; tabs (show by symbol)
      ))
-  (global-whitespace-mode))
+  (global-whitespace-mode)
+  )
 (map! "C-c fd" '+vertico/consult-fd-or-find
       "C-c fo" 'consult-org-agenda)
 ;; keymap bind end

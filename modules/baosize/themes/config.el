@@ -3,7 +3,7 @@
       pos-tip-border-width 1)
 (use-package! doom-themes
   :hook (doom-load-theme . doom-themes-org-config)
-  :init (setq doom-theme 'doom-one))
+  :init (setq doom-theme 'doom-palenight))
 (use-package! solaire-mode
   :hook (doom-load-theme . solaire-global-mode)
   :hook (+popup-buffer-mode . turn-on-solaire-mode))

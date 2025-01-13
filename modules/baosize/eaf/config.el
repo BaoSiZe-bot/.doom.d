@@ -46,7 +46,7 @@
   (interactive "M[Luogu] ProblemID: ")
   (require 'eaf-browser)
   (eaf-open-browser (concat "https://www.luogu.com.cn/problem/" pid)))
-(defun luogu-open-problem (did)
+(defun luogu-open-discuss (did)
   (interactive "M[Luogu] DiscussID: ")
   (require 'eaf-browser)
   (eaf-open-browser (concat "https://www.luogu.com.cn/discuss/" did)))

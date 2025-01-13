@@ -8,4 +8,6 @@
 (package! el-search)
 (package! noflet)
 (package! cal-china-x)
+(package! eglot-booster
+  :recipe(:host github :repo "jdtsmith/eglot-booster"))
 ;;(package! railgun :recipe(:host github :repo "gynamics/railgun.el"))
