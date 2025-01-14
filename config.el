@@ -182,7 +182,9 @@
 (setq-default vterm-shell (executable-find "fish"))
 (setq-default explicit-shell-file-name (executable-find "fish"))
 (add-to-list 'default-frame-alist '(alpha-background . 85))
-(with-eval-after-load 'corfu (global-corfu-mode))
+(with-eval-after-load 'corfu
+  (global-corfu-mode)
+  (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode))
 ;; (use-package trekker :load-path "~/trekker" :config (trekker-enable))
 ;;(use-package railgun) ;I'm highly NOT RECOMMEND enable this.
 (custom-set-variables)

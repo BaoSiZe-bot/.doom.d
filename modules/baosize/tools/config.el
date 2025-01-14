@@ -1,11 +1,17 @@
 ;;; baosize/tools/config.el -*- lexical-binding: t; -*-
 ;; Automatically save file content
 (add-hook 'doom-first-input-hook (lambda ()
-(use-package auto-save
+(use-package super-save
+  :diminish
+  :defer 0.5
   :config
-  (auto-save-enable)
-  (setq auto-save-silent t)   ; quietly save
-)
+  (add-to-list 'super-save-triggers 'switch-window)
+  (setq super-save-exclude '(".gpg"))
+  (setq super-save-idle-duration 1)
+  (setq super-save-all-buffers 1)
+  (setq super-save-auto-save-when-idle t)
+  (setq super-save-silent t)
+  (super-save-mode 1))
 (use-package eee
   :commands
   ee-yazi

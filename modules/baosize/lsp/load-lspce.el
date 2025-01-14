@@ -16,7 +16,7 @@
 (defun lsp! (&rest _)
   (interactive)
   (lspce-mode 1))
-(add-hook! 'c++-ts-mode-hook #'lsp!)
+(add-hook 'c++-ts-mode-hook #'lsp!)
 (bind-keys :map doom-leader-code-map
            ("r" . lspce-rename)
            ("a" . lspce-code-actions))))

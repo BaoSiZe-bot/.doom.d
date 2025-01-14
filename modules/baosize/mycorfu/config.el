@@ -4,7 +4,7 @@
   (setq corfu-separator ?\s
         corfu-auto t
         corfu-auto-delay 0.0
-        corfu-popupinfo-delay '(0.1 . 0.1)
+        corfu-popupinfo-delay '(0.0 . 0.0)
         corfu-on-exact-match nil
         corfu-quit-no-match t
         corfu-cycle t
@@ -13,12 +13,6 @@
         tab-always-indent 'complete)
   (when (modulep! +minibuffer)
     (add-hook 'minibuffer-setup-hook #'+corfu--enable-in-minibuffer)
-  ;; Dirty hack to get c completion running
-  ;; Discussion in https://github.com/minad/corfu/issues/34
-  
-  ;; Reset lsp-completion provider
-    ;; Set orderless filtering for LSP-mode completions
-  (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode)
   (bind-keys :map corfu-map
         ("C-SPC"    . corfu-insert-separator)
         ("C-n"      . corfu-next)
@@ -35,7 +29,6 @@
         (corfu-insert)
       (funcall orig))))
 
-
 ;;(use-package orderless
 ;;  :when (modulep! +orderless)
 ;;  :init
@@ -51,7 +44,6 @@
   (with-eval-after-load 'corfu
     (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)))
 
-
 (use-package cape
   :defer t
   :init
@@ -65,34 +57,10 @@
   (add-to-list 'completion-at-point-functions #'cape-keyword t)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev t))
 
-
 (use-package corfu-history
   :after corfu
   :hook (corfu-mode . (lambda ()
                         (corfu-history-mode 1)
                         (savehist-mode 1)
                         (add-to-list 'savehist-additional-variables 'corfu-history))))
-
-
-(use-package corfu-quick
-  :after corfu
-  :bind (:map corfu-map
-         ("M-q" . corfu-quick-complete)
-         ("C-q" . corfu-quick-insert)))
-
-
-;; TODO This doesn't _quite_ work
-;;(use-package evil-collection-corfu
-;;  :when (modulep! :editor evil +everywhere)
-;;  :defer t
-;;  :init (setq evil-collection-corfu-key-themes '(default magic-return))
-;;  :config
-;;  (evil-collection-corfu-setup))
-
-(use-package yasnippet-capf
-  :when (modulep! :editor snippets)
-  :defer t
-  :init
-  (add-hook 'yas-minor-mode-hook (lambda ()
-    (defun +corfu-add-yasnippet-capf-h ()
-      (add-hook 'completion-at-point-functions #'yasnippet-capf 30 t)))))))
+))

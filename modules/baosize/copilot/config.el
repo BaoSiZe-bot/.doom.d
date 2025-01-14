@@ -1,6 +1,6 @@
 ;;; baosize/copilot/config.el -*- lexical-binding: t; -*-
 
-(use-package! copilot
+(use-package copilot
   :bind
   (:map copilot-mode-map
    ("C-e" . 'copilot-accept-or-forward)
