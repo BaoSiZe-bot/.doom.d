@@ -1,17 +1,18 @@
 ;;;;;;;;;;; baosize/eaf/config.el -*- lexical-binding: t; -*-
 (when (and (display-graphic-p) (not (daemonp)))
-  (setq eaf-pdf-dark-mode t)
-  (add-hook! 'doom-first-input-hook (require 'eaf))
-(map! "C-c ee" #'eaf-open-this-buffer
-      "C-c ef" #'eaf-open
-      "C-c em" #'eaf-open-bookmark
-      "C-c elc" #'luogu-open-contest
-      "C-c eld" #'luogu-open-discuss
-      "C-c ele" #'luogu-open-team
-      "C-c elp" #'luogu-open-problem
-      "C-c elt" #'luogu-open-training
-      "C-c elu" #'luogu-open-user-home)
-(use-package! eaf-browser
+(add-hook 'doom-first-input-hook (lambda ()
+(setq eaf-pdf-dark-mode t)
+(require 'eaf)
+(bind-keys ("C-c ee" . eaf-open-this-buffer)
+           ("C-c ef" . eaf-open)
+           ("C-c em" . eaf-open-bookmark)
+           ("C-c elc" . luogu-open-contest)
+           ("C-c eld" . luogu-open-discuss)
+           ("C-c ele" . luogu-open-team)
+           ("C-c elp" . luogu-open-problem)
+           ("C-c elt" . luogu-open-training)
+           ("C-c elu" . luogu-open-user-home))
+(use-package eaf-browser
   :config
   (setq ;;eaf-browser-dark-mode t
         eaf-browser-search-engines '(("bing" . "https://bing.com/search?q=%s")
@@ -29,19 +30,19 @@
          ("C-c e h" . eaf-open-browser-with-history)
          ("C-c e B" . eaf-open-browser-other-window)
          ("C-c e s" . eaf-open-browser-same-window)))
-(use-package! eaf-pyqterminal
+(use-package eaf-pyqterminal
   :config
   (setq eaf-pyqterminal-font-size 16
         eaf-pyqterminal-font-family "VictorMono Nerd Font")
   (add-hook 'eaf-mode-hook (lambda () (meow-insert)))
   :bind (("C-c e t" . eaf-open-pyqterminal)
          ("C-c e i" . eaf-open-ipython)))
-;; (use-package! eaf-git
+;; (use-package eaf-git
 ;;   :bind (("C-c e g" . eaf-open-git)))
-(use-package! eaf-file-manager
+(use-package eaf-file-manager
  :bind (("C-c e /" . eaf-open-in-file-manager)))
-;; (add-hook! org-mode (progn (setq eaf-org-dark-mode t) (require 'eaf)(require 'eaf-org-previewer)))
-;; (add-hook! markdown-mode (progn (setq eaf-markdown-dark-mode t) (require 'eaf)(require 'eaf-markdown-previewer)))
+;; (add-hook org-mode (lambda () (progn (setq eaf-org-dark-mode t) (require 'eaf)(require 'eaf-org-previewer))))
+;; (add-hook markdown-mode (lambda ()(progn (setq eaf-markdown-dark-mode t) (require 'eaf)(require 'eaf-markdown-previewer))))
 (defun luogu-open-problem (pid)
   (interactive "M[Luogu] ProblemID: ")
   (require 'eaf-browser)
@@ -65,4 +66,4 @@
 (defun luogu-open-team (teamid)
   (interactive "M[Luogu] TeamID: ")
   (require 'eaf-browser)
-  (eaf-open-browser (concat "https://www.luogu.com.cn/team/" teamid))))
+  (eaf-open-browser (concat "https://www.luogu.com.cn/team/" teamid))))))

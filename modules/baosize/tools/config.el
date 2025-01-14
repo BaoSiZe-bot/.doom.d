@@ -1,19 +1,19 @@
 ;;; baosize/tools/config.el -*- lexical-binding: t; -*-
 ;; Automatically save file content
-(add-hook! 'doom-first-file-hook
-(use-package! auto-save
+(add-hook 'doom-first-file-hook (lambda ()
+(use-package auto-save
   :config
   (auto-save-enable)
   (setq auto-save-silent t)   ; quietly save
 )
-(use-package! eee
+(use-package eee
   :commands
   ee-yazi
   ee-rg
   ee-lazygit
   ee-find
   ee-btop)
-(use-package! keyfreq
+(use-package keyfreq
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
@@ -23,12 +23,6 @@
   (setq show-paren-when-point-inside-paren t
         show-paren-when-point-in-periphery t
         show-paren-context-when-offscreen t))
-;; (use-package highlight-parentheses
-;;   :hook ((minibuffer-setup . highlight-parentheses-minibuffer-setup)
-;;          (prog-mode . highlight-parentheses-mode))
-;;   :config
-;;   (setq highlight-parentheses-colors '("firebrick1" "firebrick3" "orange1" "orange3")
-;;         highlight-parentheses-attributes '((:underline t) (:underline t) (:underline t))))
 (use-package colorful-mode
   :hook (prog-mode text-mode))
 (require 'symbol-overlay)
@@ -41,10 +35,7 @@
 (global-set-key (kbd "<f8>") 'symbol-overlay-remove-all)
 (use-package breadcrumb
   :hook (prog-mode . breadcrumb-local-mode))
- (add-hook! 'emacs-lisp-mode-hook (rainbow-delimiters-mode -1))
-;; (use-package prism
-;;   :hook (c++-ts-mode . prism-mode)
-;;         (emacs-lisp-mode . prism-mode))
+(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode-enable)
 (setq winum-keymap
         (let ((map (make-sparse-keymap)))
           (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
@@ -58,4 +49,4 @@
           (define-key map (kbd "M-8") 'winum-select-window-8)
           map))
 (require 'winum)
-(winum-mode))
+(winum-mode)))

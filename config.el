@@ -15,7 +15,7 @@
 (set-fontset-font t 'han (font-spec :family "霞鹜文楷" :size 19 :weight 'Regular))
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
-(add-hook! 'after-setting-font-hook #'+font-set-emoji)
+(add-hook 'after-setting-font-hook #'+font-set-emoji)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (add-hook 'find-file-hook #'display-line-numbers-mode)
@@ -46,9 +46,9 @@
     (funcall fn mode)))
 (advice-add 'c-ts-mode--font-lock-settings :around 'my-c-font-lock-settings)
 ;; ui config end
-(add-hook! 'doom-first-input-hook
-  (setq-hook! 'meow-insert-mode-hook jit-lock-defer-time 0.25)
-  (setq-hook! 'meow-normal-mode-hook jit-lock-defer-time 0)
+(add-hook 'doom-first-input-hook (lambda ()
+  (add-hook 'meow-insert-mode-hook (lambda () (setq jit-lock-defer-time 0.25)))
+  (add-hook 'meow-normal-mode-hook (lambda () (setq jit-lock-defer-time 0)))
   (setq system-time-locale "C"
         ;; If you use `org' and don't want your org files in the default location below,
         ;; change `org-directory'. It must be set before org loads!
@@ -70,15 +70,14 @@
           (c++-mode . c++-ts-mode)
           (c-or-c++-mode . c-or-c++-ts-mode)
           (python-mode . python-ts-mode)))
-  (setq-hook! 'c++-ts-mode-hook c-basic-offset 4)
-  (setq-hook! 'c++-mode-hook c-basic-offset 4)
-  (add-hook! 'c++-ts-mode-hook (rainbow-delimiters-mode 1))
+  (add-hook 'c++-ts-mode-hook (lambda ()(setq c-basic-offset 4)))
+  (add-hook 'c++-mode-hook (lambda ()(setq c-basic-offset 4)))
+  (add-hook 'c++-ts-mode-hook #'rainbow-delimiters-mode-enable)
   (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
   (with-eval-after-load 'org
     (setq org-startup-folded nil
           org-startup-indented t))
-  
-  (add-hook! 'prog-mode-hook 'hs-minor-mode)
+  (add-hook 'prog-mode-hook #'hs-minor-mode)
   (defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
   (defun hideshow-folded-overlay-fn (ov)
     (when (eq 'code (overlay-get ov 'hs))
@@ -88,7 +87,7 @@
   (setq hs-set-up-overlay 'hideshow-folded-overlay-fn)
                                         ; 内置mode
   (require 'cal-china-x)
-  (add-hook! 'calendar-today-visible-hook (calendar-mark-today))
+  (add-hook 'calendar-today-visible-hook #'calendar-mark-today)
   (setq holiday-local-holidays `((holiday-fixed 3 12 "Arbor Day")
                                  (holiday-fixed 5 1 "International Workers' Day")
                                  (holiday-fixed 5 2 "International Workers' Day")
@@ -151,13 +150,21 @@
      tab-mark         ; tabs (show by symbol)
      ))
   (global-whitespace-mode)
-  )
-(map! "C-c fd" '+vertico/consult-fd-or-find
-      "C-c fo" 'consult-org-agenda)
+(after! c++-ts-mode
+ (bind-key "C-c d c" #'cpp-gdb 'c++-ts-mode-map)
+ (defun cpp-gdb ()
+   (interactive)
+   (if buffer-file-name
+       (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name))))
+         (when (eq 0 (shell-command (concat "g++ -g3 -std=c++17 " buffer-file-name " -o /tmp/cpp-" filename)))
+           (gdb (concat "gdb -i=mi /tmp/cpp-" filename))))
+     (message "buffer-file-name is nil"))))))
+(bind-keys ("C-c f d" . +vertico/consult-fd-or-find)
+           ("C-c f o" . consult-org-agenda))
 ;; keymap bind end
 
 (setq avy-timeout-seconds 0.18)
-(after! posframe (standard-display-unicode-special-glyphs))
+(with-eval-after-load 'posframe (standard-display-unicode-special-glyphs))
 (defun clear-minibuffer-after-delay ()
   "?? minibuffer ????"
   (when (minibufferp)

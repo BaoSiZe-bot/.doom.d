@@ -9,8 +9,8 @@
   :config
   (global-copilot-mode 1))
 
-(after! acm
-  (map!
+(with-eval-after-load 'acm
+  (bind-keys
    :map acm-mode-map
-   "M-n" nil
-   "M-p" nil))
+   ("M-n" . nil)
+   ("M-p" . nil)))

@@ -57,7 +57,7 @@
                    (file-name-directory buffer-file-name))))
         (run-in-eshell (concat "cd " dir " && " "clang++ -O2 -std=c++17 -fsanitize=undefined " file-path " -o /tmp/cpp-" file-name " && /tmp/cpp-" file-name)))
     (message "buffer-file-name is nil")))
-(map! "C-c oc" #'run-in-eshell
-      "C-c or" #'run-code-eshell
-      "C-c oe" #'+eshell/toggle
-      "C-c of" #'run-cpp-fsanitize-eshell)
+(bind-keys ("C-c oc" . run-in-eshell)
+           ("C-c or" . run-code-eshell)
+           ("C-c oe" . +eshell/toggle)
+           ("C-c of" . run-cpp-fsanitize-eshell))

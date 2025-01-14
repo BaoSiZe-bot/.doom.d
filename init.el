@@ -94,9 +94,6 @@
        (mycorfu +icons)
        color-rg
        lsp
-       ;; lsp-copilot
-       ;;lspce
-       ;;lsp-bridge
        treesit-context
        aweshell
        vterm-run

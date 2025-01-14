@@ -1,6 +1,6 @@
 ;;; completion/corfu/config.el -*- lexical-binding: t; -*-
 
-(use-package! corfu
+(use-package corfu
   :custom
   (corfu-separator ?\s)
   (corfu-auto t)
@@ -20,38 +20,23 @@
 
   ;; Dirty hack to get c completion running
   ;; Discussion in https://github.com/minad/corfu/issues/34
-  (when (and (modulep! :lang cc)
-             (equal tab-always-indent 'complete))
-    (map! :map c-mode-base-map
-          :i [remap c-indent-line-or-region] #'completion-at-point))
-
+  
   ;; Reset lsp-completion provider
-  (add-hook 'doom-init-modules-hook
-            (lambda ()
-              (after! lsp-mode
-                (setq lsp-completion-provider :none))))
-
-  ;; Set orderless filtering for LSP-mode completions
+    ;; Set orderless filtering for LSP-mode completions
   (add-hook 'lsp-completion-mode-hook
             (lambda ()
               (setf (alist-get 'lsp-capf completion-category-defaults) '((styles . (orderless flex))))))
   (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode)
-  (map! :map corfu-map
-        "C-SPC"    #'corfu-insert-separator
-        "C-n"      #'corfu-next
-        "C-p"      #'corfu-previous
-        "M-p"      #'corfu-popupinfo-scroll-up
-        "M-n"      #'corfu-popupinfo-scroll-down
-        "M-d"      #'corfu-popupinfo-toggle
-        (:prefix "C-x"
-         "C-k"     #'cape-dict
-         "C-f"     #'cape-file))
-  (after! evil
-    (advice-add 'corfu--setup :after 'evil-normalize-keymaps)
-    (advice-add 'corfu--teardown :after 'evil-normalize-keymaps)
-    (evil-make-overriding-map corfu-map))
-
-  (defadvice! +corfu--org-return (orig) :around '+org/return
+  (bind-keys :map corfu-map
+        ("C-SPC"    . corfu-insert-separator)
+        ("C-n"      . corfu-next)
+        ("C-p"      . corfu-previous)
+        ("M-p"      . corfu-popupinfo-scroll-up)
+        ("M-n"      . corfu-popupinfo-scroll-down)
+        ("M-d"      . corfu-popupinfo-toggle)
+        ("C-x C-k"  . cape-dict)
+        ("C-x C-f"  . cape-file))
+    (defadvice! +corfu--org-return (orig) :around '+org/return
     (if (and (modulep! :completion corfu)
              corfu-mode
              (>= corfu--index 0))
@@ -60,7 +45,7 @@
 
 
 ;; use corfu-popupinfo instead
-;;(use-package! corfu-doc
+;;(use-package corfu-doc
 ;;  :hook (corfu-mode . corfu-doc-mode)
 ;;  :custom
 ;;  (corfu-doc-delay 0)
@@ -69,7 +54,7 @@
 ;;         ("M-p" . corfu-doc-scroll-up)
 ;;         ("M-d" . corfu-doc-toggle)))
 
-;;(use-package! orderless
+;;(use-package orderless
 ;;  :when (modulep! +orderless)
 ;;  :init
 ;;  (setq completion-styles '(orderless partial-completion)
@@ -77,21 +62,20 @@
 ;;        completion-category-overrides '((file (styles . (partial-completion))))))
 
 
-(use-package! nerd-icons-corfu
+(use-package nerd-icons-corfu
   :when (modulep! +icons)
   :defer t
   :init
-  (after! corfu
+  (with-eval-after-load 'corfu
     (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)))
 
 
-(use-package! cape
+(use-package cape
   :defer t
   :init
-  (map!
-   [remap dabbrev-expand] 'cape-dabbrev)
-  (add-hook! 'latex-mode-hook (defun +corfu--latex-set-capfs ()
-                                (add-to-list 'completion-at-point-functions #'cape-tex)))
+  (bind-keys ([remap dabbrev-expand] . cape-dabbrev))
+  (add-hook 'latex-mode-hook (lambda ()(defun +corfu--latex-set-capfs ()
+                                (add-to-list 'completion-at-point-functions #'cape-tex))))
   (when (modulep! :checkers spell)
     (add-to-list 'completion-at-point-functions #'cape-dict)
     (add-to-list 'completion-at-point-functions #'cape-ispell))
@@ -100,7 +84,7 @@
   (add-to-list 'completion-at-point-functions #'cape-dabbrev t))
 
 
-(use-package! corfu-history
+(use-package corfu-history
   :after corfu
   :hook (corfu-mode . (lambda ()
                         (corfu-history-mode 1)
@@ -108,7 +92,7 @@
                         (add-to-list 'savehist-additional-variables 'corfu-history))))
 
 
-(use-package! corfu-quick
+(use-package corfu-quick
   :after corfu
   :bind (:map corfu-map
          ("M-q" . corfu-quick-complete)
@@ -116,17 +100,17 @@
 
 
 ;; TODO This doesn't _quite_ work
-;;(use-package! evil-collection-corfu
+;;(use-package evil-collection-corfu
 ;;  :when (modulep! :editor evil +everywhere)
 ;;  :defer t
 ;;  :init (setq evil-collection-corfu-key-themes '(default magic-return))
 ;;  :config
 ;;  (evil-collection-corfu-setup))
 
-(use-package! yasnippet-capf
+(use-package yasnippet-capf
   :when (modulep! :editor snippets)
   :defer t
   :init
-  (add-hook! 'yas-minor-mode-hook
+  (add-hook 'yas-minor-mode-hook (lambda ()
     (defun +corfu-add-yasnippet-capf-h ()
-      (add-hook 'completion-at-point-functions #'yasnippet-capf 30 t))))
+      (add-hook 'completion-at-point-functions #'yasnippet-capf 30 t)))))

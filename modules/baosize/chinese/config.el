@@ -2,15 +2,15 @@
 
 ;; based on cnsunyour's configs
 
-;; (use-package! pangu-spacing
+;; (use-package pangu-spacing
 ;;   :hook (text-mode . pangu-spacing-mode)
 ;;   :config
 ;;   ;; Always insert `real' space in org-mode.
-;;   (setq-hook! 'org-mode-hook pangu-spacing-real-insert-separtor t))
+;;   (setq-hook 'org-mode-hook pangu-spacing-real-insert-separtor t))
 
 (bind-key* "C-\\" #'toggle-input-method)
 
-(use-package! ace-pinyin
+(use-package ace-pinyin
   :after avy
   :init (setq ace-pinyin-use-avy t)
   :config (ace-pinyin-global-mode t))
@@ -19,7 +19,7 @@
 (when (boundp 'pgtk-use-im-context-on-new-connection)
   (setq pgtk-use-im-context-on-new-connection nil))
 
-(use-package! rime
+(use-package rime
   :bind
   (:map rime-mode-map
    ("C-`" . #'rime-send-keybinding))
@@ -52,13 +52,13 @@
   (rime-user-data-dir (expand-file-name "~/.local/share/emacs-rime"))
   (rime-show-candidate 'posframe)
   (rime-posframe-style 'vertical)
-  :config
-  (add-hook! 'org-mode-hook (activate-input-method default-input-method))
-  (unless (fboundp 'rime--posframe-display-content)
-    (error "Function `rime--posframe-display-content' is not available."))
-  (add-hook 'kill-emacs-hook (lambda () (ignore-errors (rime-lib-finalize)))))
+ :config
+ (add-hook 'org-mode-hook (lambda () (activate-input-method default-input-method)))
+ (unless (fboundp 'rime--posframe-display-content)
+   (error "Function `rime--posframe-display-content' is not available."))
+ (add-hook 'kill-emacs-hook (lambda () (ignore-errors (rime-lib-finalize)))))
 
-(use-package! pinyinlib
+(use-package pinyinlib
   :commands (pinyinlib-build-regexp-string)
   :init
   (defun orderless-regexp-pinyin (str)

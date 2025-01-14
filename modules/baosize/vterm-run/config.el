@@ -1,9 +1,9 @@
 ;;; h-cheung/vterm-run/config.el -*- lexical-binding: t; -*-
 (when (modulep! :term vterm)
-  (map! "C-c o TAB" #'run-in-vterm
-        "C-c oo" #'run-code
-        "C-c ot" #'+vterm/toggle
-        "C-c oF" #'run-cpp-fsanitize)
+  (bind-keys ("C-c o TAB" . run-in-vterm)
+        ("C-c oo" . run-code)
+        ("C-c ot" . +vterm/toggle)
+        ("C-c oF" . run-cpp-fsanitize))
 
   (defun run-in-vterm-kill (process _event)
     "A process sentinel. Kills PROCESS's buffer if it is live."

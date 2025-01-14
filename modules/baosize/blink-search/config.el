@@ -2,4 +2,4 @@
 (add-to-list 'load-path "~/.emacs.d/.local/straight/repos/blink-search/")
 (setq blink-search-enable-posframe t)
 (bind-key "C-M-g" 'blink-search)
-(after! blink-search (add-hook! 'blink-search-mode-hook (meow-insert)))
+(with-eval-after-load 'blink-search (add-hook 'blink-search-mode-hook #'meow-insert))

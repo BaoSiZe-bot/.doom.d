@@ -1,4 +1,4 @@
-(add-hook! 'doom-first-input-hook
+(add-hook 'doom-first-input-hook (lambda ()
 (require 'lspce)
 (setq lspce-send-changes-idle-time 1)
 (defadvice! lspce--root-uri-always-allow-single (&rest _)
@@ -17,10 +17,8 @@
   (interactive)
   (lspce-mode 1))
 (add-hook! 'c++-ts-mode-hook #'lsp!)
-(map! :map doom-leader-code-map
-      :desc "LSP Rename"
-      "r"             #'lspce-rename
-      :desc "LSP Code actions"
-      "a"             #'lspce-code-actions))
+(bind-keys :map doom-leader-code-map
+           ("r" . lspce-rename)
+           ("a" . lspce-code-actions))))
 
 (provide 'load-lspce)
