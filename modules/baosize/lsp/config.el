@@ -1,0 +1,5 @@
+(add-to-list 'load-path "~/.doom.d/modules/baosize/lsp")
+(if (modulep! :baosize lsp +lsp-bridge) (require 'load-lsp-bridge)
+(if (modulep! :baosize lsp +lspce) (require 'load-lspce)
+(if (modulep! :baosize lsp +lsp-copilot) (require 'load-lsp-copilot)
+(require 'load-eglot))))

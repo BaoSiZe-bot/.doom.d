@@ -12,3 +12,5 @@
 (package! colorful-mode)
 (package! symbol-overlay)
 (package! breadcrumb)
+(package! winum)
+(package! el-search)

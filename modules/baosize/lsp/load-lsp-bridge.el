@@ -1,14 +1,6 @@
-;;; baosize/lsp-bridge/config.el -*- lexical-binding: t; -*-
-;;(use-package citre
-;;  :defer t
-;;  :init
-;;  (require 'citre-config)
-;;  :config
-;;  (add-hook 'c-mode-hook 'prog-mode-citre-bindings))
-(defun load-lsp ()
+(defun load-lspbridge ()
   (interactive)
-(setq lsp-bridge-completion-popup-predicates '(
-                                               lsp-bridge--not-follow-complete
+(setq lsp-bridge-completion-popup-predicates '(lsp-bridge--not-follow-complete
                                                lsp-bridge--not-match-hide-keywords
                                                lsp-bridge--not-match-stop-commands
                                                lsp-bridge--not-match-hide-characters
@@ -42,6 +34,6 @@
 (require 'lsp-bridge)
   (dolist (hook lsp-bridge-default-mode-hooks)
    (add-hook hook (lambda () (lsp-bridge-mode 1)))))
-(add-hook! 'doom-first-input-hook (load-lsp))
-;; (require 'lsp-bridge)
-;; (use-package lsp-bridge :hook (doom-first-input . lsp-global-mode))
+(add-hook! 'doom-first-input-hook (load-lspbridge))
+
+(provide 'load-lsp-bridge)

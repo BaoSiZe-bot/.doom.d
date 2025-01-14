@@ -34,17 +34,17 @@
 
        :editor
        meow
-       file-templates    ; auto-snippets for empty files
-       fold              ; (nigh) universal code folding
-       format
+       ;; file-templates    ; auto-snippets for empty files
+       ;; fold              ; (nigh) universal code folding
+       ;; format
        snippets          ; my elves. They type so I don't have to
 
        :emacs
        (ibuffer +icons)
-       (dired +icons +dirvish)
-       electric
-       vc
-       undo              ; persistent, smarter undo for your inevitable mistakes
+       ;; (dired +icons +dirvish)
+       ;; electric
+       ;; vc
+       ;; undo              ; persistent, smarter undo for your inevitable mistakes
 
        :term
        eshell            ; the elisp shell that works everywhere
@@ -55,11 +55,11 @@
        editorconfig
        ;;(lsp +peek +eglot)
        debugger
-       (magit +forge)             ; a git porcelain for Emacs
-       (lookup +dictionary +docsets)             ; navigate your code and its documentation
+       magit             ; a git porcelain for Emacs
+       ;; (lookup +dictionary +docsets)             ; navigate your code and its documentation
 
        :os
-       tty
+       ;; tty
 
        :lang
        ;;(cc +lsp)
@@ -93,12 +93,14 @@
        sort-tab
        (mycorfu +icons)
        color-rg
-       lsp-copilot
+       lsp
+       ;; lsp-copilot
        ;;lspce
        ;;lsp-bridge
-       ;;treesit-context
-       ;;aweshell
+       treesit-context
+       aweshell
        vterm-run
+       flymake
        )
 
 ;;; init.el ends here

@@ -52,12 +52,12 @@
                     (file-name-directory buffer-file-name)))))
         (pcase major-mode
           ('c-ts-mode (run-in-vterm (concat "cd " dir " && "
-                                          "gcc -O2 -std=c11 "
+                                          "gcc -O2 -std=c11 -g3 "
                                           file-path
                                           " -o /tmp/c-" file-name
                                           " && /tmp/c-" file-name)))
           ('c++-ts-mode (run-in-vterm (concat "cd " dir " && "
-                                            "g++ -O2 -std=gnu++17 "
+                                            "g++ -O2 -std=gnu++17 -g3 "
                                             file-path
                                             " -o /tmp/cpp-" file-name
                                             " && /tmp/cpp-" file-name)))

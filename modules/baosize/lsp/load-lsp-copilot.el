@@ -1,5 +1,3 @@
-;;; init.el -*- lexical-binding: t; -*-
-
 (add-hook! 'doom-first-input-hook
 (use-package lsp-copilot
   ;; :load-path "/path/to/lsp-copilot"
@@ -24,3 +22,5 @@
     :type-definition '(lsp-copilot-find-type-definition :async t)
     :documentation '(lsp-copilot-describe-thing-at-point :async t))
 ))
+
+(provide 'load-lsp-copilot)
