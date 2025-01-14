@@ -1,6 +1,6 @@
 ;;; baosize/tools/config.el -*- lexical-binding: t; -*-
 ;; Automatically save file content
-(add-hook 'doom-first-file-hook (lambda ()
+(add-hook 'doom-first-input-hook (lambda ()
 (use-package auto-save
   :config
   (auto-save-enable)

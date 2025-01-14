@@ -1,31 +1,23 @@
 ;;; completion/corfu/config.el -*- lexical-binding: t; -*-
-
-(use-package corfu
-  :custom
-  (corfu-separator ?\s)
-  (corfu-auto t)
-  (corfu-auto-delay 0.0)
-  (corfu-popupinfo-delay '(0.1 . 0.1))
-  (corfu-on-exact-match nil)
-  (corfu-quit-no-match t)
-  (corfu-cycle t)
-  (corfu-auto-prefix 2)
-  (completion-cycle-threshold 1)
-  (tab-always-indent 'complete)
-  :hook
-  (doom-first-buffer . global-corfu-mode)
-  :config
+(add-hook 'doom-first-buffer-hook (lambda ()
+  (require 'corfu)
+  (setq corfu-separator ?\s
+        corfu-auto t
+        corfu-auto-delay 0.0
+        corfu-popupinfo-delay '(0.1 . 0.1)
+        corfu-on-exact-match nil
+        corfu-quit-no-match t
+        corfu-cycle t
+        corfu-auto-prefix 2
+        completion-cycle-threshold 1
+        tab-always-indent 'complete)
   (when (modulep! +minibuffer)
-    (add-hook 'minibuffer-setup-hook #'+corfu--enable-in-minibuffer))
-
+    (add-hook 'minibuffer-setup-hook #'+corfu--enable-in-minibuffer)
   ;; Dirty hack to get c completion running
   ;; Discussion in https://github.com/minad/corfu/issues/34
   
   ;; Reset lsp-completion provider
     ;; Set orderless filtering for LSP-mode completions
-  (add-hook 'lsp-completion-mode-hook
-            (lambda ()
-              (setf (alist-get 'lsp-capf completion-category-defaults) '((styles . (orderless flex))))))
   (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode)
   (bind-keys :map corfu-map
         ("C-SPC"    . corfu-insert-separator)
@@ -43,16 +35,6 @@
         (corfu-insert)
       (funcall orig))))
 
-
-;; use corfu-popupinfo instead
-;;(use-package corfu-doc
-;;  :hook (corfu-mode . corfu-doc-mode)
-;;  :custom
-;;  (corfu-doc-delay 0)
-;;  :bind (:map corfu-map
-;;         ("M-n" . corfu-doc-scroll-down)
-;;         ("M-p" . corfu-doc-scroll-up)
-;;         ("M-d" . corfu-doc-toggle)))
 
 ;;(use-package orderless
 ;;  :when (modulep! +orderless)
@@ -113,4 +95,4 @@
   :init
   (add-hook 'yas-minor-mode-hook (lambda ()
     (defun +corfu-add-yasnippet-capf-h ()
-      (add-hook 'completion-at-point-functions #'yasnippet-capf 30 t)))))
+      (add-hook 'completion-at-point-functions #'yasnippet-capf 30 t)))))))

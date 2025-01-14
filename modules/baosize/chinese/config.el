@@ -7,7 +7,7 @@
 ;;   :config
 ;;   ;; Always insert `real' space in org-mode.
 ;;   (setq-hook 'org-mode-hook pangu-spacing-real-insert-separtor t))
-
+(add-hook 'doom-first-input-hook (lambda ()
 (bind-key* "C-\\" #'toggle-input-method)
 
 (use-package ace-pinyin
@@ -64,4 +64,4 @@
   (defun orderless-regexp-pinyin (str)
     (setf (car str) (pinyinlib-build-regexp-string (car str)))
     str)
-  (advice-add 'orderless-regexp :filter-args #'orderless-regexp-pinyin))
+  (advice-add 'orderless-regexp :filter-args #'orderless-regexp-pinyin))))
