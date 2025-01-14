@@ -1,5 +1,6 @@
 ;;; h-cheung/vterm-run/config.el -*- lexical-binding: t; -*-
 (when (modulep! :term vterm)
+  (add-hook 'doom-first-input-hook (lambda ()
   (bind-keys ("C-c o TAB" . run-in-vterm)
         ("C-c oo" . run-code)
         ("C-c ot" . +vterm/toggle)
@@ -73,4 +74,4 @@
         (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
               (dir (if (doom-project-root) (doom-project-root) (file-name-directory buffer-file-name))))
           (run-in-vterm (concat "cd " dir " && " "clang++ -O2 -std=c++17 -fsanitize=undefined " buffer-file-name " -o /tmp/cpp-" filename " && /tmp/cpp-" filename)))
-      (message "buffer-file-name is nil"))))
+      (message "buffer-file-name is nil"))))))

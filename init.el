@@ -24,8 +24,8 @@
        (popup +defaults)
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;indent-guides     ; highlighted indent columns
-       ligatures         ; ligatures and symbols to make your code pretty again
-       minimap           ; show a map of the code on the side
+       ;; ligatures         ; ligatures and symbols to make your code pretty again
+       ;; minimap           ; show a map of the code on the side
        (vc-gutter +pretty) ; vcs diff in the fringe
        workspaces        ; tab emulation, persistence & separate workspaces
 
@@ -40,21 +40,21 @@
        snippets          ; my elves. They type so I don't have to
 
        :emacs
-       (ibuffer +icons)
+       ;; (ibuffer +icons)
        ;; (dired +icons +dirvish)
        ;; electric
        ;; vc
        ;; undo              ; persistent, smarter undo for your inevitable mistakes
 
        :term
-       eshell            ; the elisp shell that works everywhere
+       ;; eshell            ; the elisp shell that works everywhere
        vterm                  ; the best terminal emulation
 
        :tools
-       (eval +overlay)     ; run code, run (also, repls)
+       eval     ; run code, run (also, repls)
        editorconfig
        ;;(lsp +peek +eglot)
-       debugger
+       ;; debugger
        magit             ; a git porcelain for Emacs
        ;; (lookup +dictionary +docsets)             ; navigate your code and its documentation
 

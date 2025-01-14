@@ -1,4 +1,5 @@
 ;;; $DOOMDIR/modules/baosize/aweshell/config.el -*- lexical-binding: t; -*-
+(add-hook 'doom-first-input-hook (lambda ()
 (defun run-in-eshell (command &optional here)
   (interactive
    (list
@@ -60,4 +61,4 @@
 (bind-keys ("C-c oc" . run-in-eshell)
            ("C-c or" . run-code-eshell)
            ("C-c oe" . +eshell/toggle)
-           ("C-c of" . run-cpp-fsanitize-eshell))
+           ("C-c of" . run-cpp-fsanitize-eshell))))

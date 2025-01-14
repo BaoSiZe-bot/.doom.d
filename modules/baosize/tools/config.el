@@ -13,10 +13,9 @@
   ee-lazygit
   ee-find
   ee-btop)
-(use-package keyfreq
-  :config
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1))
+(require 'keyfreq)
+(setq keyfreq-mode 1
+      keyfreq-autosave-mode 1)
 (use-package paren
   :custom-face (show-paren-match ((t (:foreground "SpringGreen3" :underline t :weight bold))))
   :config
