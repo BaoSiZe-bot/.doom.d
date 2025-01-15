@@ -39,7 +39,6 @@
     - [[#chinese][chinese]]
     - [[#lsp][lsp]]
     - [[#mycorfu][mycorfu]]
-    - [[#themes][themes]]
     - [[#tools][tools]]
     - [[#treesit-context][treesit-context]]
     - [[#vterm-run][vterm-run]]
@@ -910,7 +909,6 @@ Rime 本身相关设置
 #+end_src
 *** lsp
 *** mycorfu
-*** themes
 *** tools
 *** treesit-context
 *** vterm-run
