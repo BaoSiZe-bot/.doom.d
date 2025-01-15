@@ -5,7 +5,7 @@
 
        :ui
        ;;deft              ; notational velocity for Emacs
-       ;;doom              ; what makes DOOM look the way it does
+       doom              ; what makes DOOM look the way it does
        doom-dashboard
        modeline
        (popup +defaults)
@@ -69,7 +69,7 @@
        (default +bindings)
 
        :baosize
-       themes
+       ;;themes
        chinese
        tools
        ;;awesome-tray

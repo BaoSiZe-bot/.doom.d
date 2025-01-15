@@ -1,4 +1,3 @@
-custom.el
 config.el
 init.el
 packages.el
@@ -8,3 +7,13 @@ modules/baosize/awesome-tray/config.el
 modules/baosize/awesome-tray/packages.el
 modules/baosize/blink-search/config.el
 modules/baosize/blink-search/packages.el
+modules/baosize/color-rg/config.el
+modules/baosize/color-rg/packages.el
+modules/baosize/eaf/config.el
+modules/baosize/eaf/packages.el
+modules/baosize/holo-layer/config.el
+modules/baosize/holo-layer/packages.el
+modules/baosize/sort-tab/config.el
+modules/baosize/sort-tab/packages.el
+modules/baosize/chinese/config.el
+modules/baosize/chinese/packages.el
