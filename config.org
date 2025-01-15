@@ -1,11 +1,11 @@
 #+title: My Doom Emacs Config
 #+author: baosize-bot
 
-** setup the frame
+* 窗口透明
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(alpha-background . 85))
 #+end_src
-** setup font
+* 设置字体
 #+begin_src emacs-lisp
 (setq doom-font (font-spec :family "VictorMono Nerd Font" :size 17 :weight 'Regular)
       doom-symbol-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
@@ -17,7 +17,7 @@
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (add-hook 'after-setting-font-hook #'+font-set-emoji)
 #+end_src
-** setup treesitter
+* Treesitter
 #+begin_src emacs-lisp
 (setq treesit-font-lock-level 4
       major-mode-remap-alist
@@ -58,7 +58,7 @@
 (add-hook 'meow-insert-mode-hook (lambda () (setq jit-lock-defer-time 0.25)))
 (add-hook 'meow-normal-mode-hook (lambda () (setq jit-lock-defer-time 0)))
 #+end_src
-** setup C++
+* C++
 #+begin_src emacs-lisp
 (add-hook 'c++-ts-mode-hook (lambda ()
 (setq c-basic-offset 4)
@@ -72,24 +72,26 @@
            (gdb (concat "gdb -i=mi /tmp/cpp-" filename))))
      (message "buffer-file-name is nil")))))
 #+end_src
-** setup key bindings
+* 键绑定
 #+begin_src emacs-lisp
 (bind-keys ("C-c f o" . consult-org-agenda))
 #+end_src
-** setup shell
+* POSIX shell
 #+begin_src emacs-lisp
 (setq shell-file-name (executable-find "bash"))
 (setq-default vterm-shell (executable-find "fish"))
 (setq-default explicit-shell-file-name (executable-find "fish"))
 #+end_src
-** setup floating
+* 悬浮窗口
+corfu 貌似不应该出现在这里，但是不放这里就没法工作
 #+begin_src emacs-lisp 
-(standard-display-unicode-special-glyphs)
+(standard-display-unicode-special-glyphs) ; 终端中的弹窗不设置会使用ASCII边框
 (with-eval-after-load 'corfu
   (global-corfu-mode)
   (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode))
 #+end_src
-** setup "C-x C-c"
+* 退出Emacs
+别在提醒我 "Really kill emacs?" 了。
 #+begin_src emacs-lisp
 ;; (advice-add 'save-buffer-kill-emacs :around (lambda (fn &rest)
 ;;   (require 'noflet)
@@ -101,7 +103,8 @@
   (setq confirm-kill-emacs nil)
   (noflet (process-list) ad-do-it))
 #+end_src
-** customize variables and faces
+* 自定义Variables和Faces
+我不知道这是干嘛用的，但它既然在这里……
 #+begin_src emacs-lisp
 (custom-set-variables)
 ;; custom-set-variables was added by Custom.
