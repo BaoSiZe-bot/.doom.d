@@ -1,5 +1,12 @@
-(add-to-list 'default-frame-alist '(alpha-background . 85))
+#+title: My Doom Emacs Config
+#+author: baosize-bot
 
+** setup the frame
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(alpha-background . 85))
+#+end_src
+** setup font
+#+begin_src emacs-lisp
 (setq doom-font (font-spec :family "VictorMono Nerd Font" :size 17 :weight 'Regular)
       doom-symbol-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
       doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
@@ -9,7 +16,9 @@
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (add-hook 'after-setting-font-hook #'+font-set-emoji)
-
+#+end_src
+** setup treesitter
+#+begin_src emacs-lisp
 (setq treesit-font-lock-level 4
       major-mode-remap-alist
       '((yaml-mode . yaml-ts-mode)
@@ -48,7 +57,9 @@
 (advice-add 'c-ts-mode--font-lock-settings :around 'my-c-font-lock-settings)
 (add-hook 'meow-insert-mode-hook (lambda () (setq jit-lock-defer-time 0.25)))
 (add-hook 'meow-normal-mode-hook (lambda () (setq jit-lock-defer-time 0)))
-
+#+end_src
+** setup C++
+#+begin_src emacs-lisp
 (add-hook 'c++-ts-mode-hook (lambda ()
 (setq c-basic-offset 4)
 (rainbow-delimiters-mode-enable)
@@ -60,18 +71,26 @@
          (when (eq 0 (shell-command (concat "g++ -g3 -std=c++17 " buffer-file-name " -o /tmp/cpp-" filename)))
            (gdb (concat "gdb -i=mi /tmp/cpp-" filename))))
      (message "buffer-file-name is nil")))))
-
+#+end_src
+** setup key bindings
+#+begin_src emacs-lisp
 (bind-keys ("C-c f o" . consult-org-agenda))
-
+#+end_src
+** setup shell
+#+begin_src emacs-lisp
 (setq shell-file-name (executable-find "bash"))
 (setq-default vterm-shell (executable-find "fish"))
 (setq-default explicit-shell-file-name (executable-find "fish"))
-
+#+end_src
+** setup floating
+#+begin_src emacs-lisp 
 (standard-display-unicode-special-glyphs)
 (with-eval-after-load 'corfu
   (global-corfu-mode)
   (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode))
-
+#+end_src
+** setup "C-x C-c"
+#+begin_src emacs-lisp
 ;; (advice-add 'save-buffer-kill-emacs :around (lambda (fn &rest)
 ;;   (require 'noflet)
 ;;   (setq confirm-kill-emacs nil)
@@ -81,7 +100,9 @@
   (require 'noflet)
   (setq confirm-kill-emacs nil)
   (noflet (process-list) ad-do-it))
-
+#+end_src
+** customize variables and faces
+#+begin_src emacs-lisp
 (custom-set-variables)
 ;; custom-set-variables was added by Custom.
 ;; If you edit it by hand, you could mess it up, so be careful.
@@ -92,3 +113,4 @@
 ;; If you edit it by hand, you could mess it up, so be careful.
 ;; Your init file should contain only one such instance.
 ;; If there is more than one, they won't work right.
+#+end_src

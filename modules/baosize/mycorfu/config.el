@@ -1,33 +1,38 @@
 ;;; completion/corfu/config.el -*- lexical-binding: t; -*-
-(add-hook 'doom-first-buffer-hook (lambda ()
-  (require 'corfu)
-  (setq corfu-separator ?\s
-        corfu-auto t
-        corfu-auto-delay 0.0
-        corfu-popupinfo-delay '(0.0 . 0.0)
-        corfu-on-exact-match nil
-        corfu-quit-no-match t
-        corfu-cycle t
-        corfu-auto-prefix 2
-        completion-cycle-threshold 1
-        tab-always-indent 'complete)
-  (when (modulep! +minibuffer)
-    (add-hook 'minibuffer-setup-hook #'+corfu--enable-in-minibuffer)
-  (bind-keys :map corfu-map
-        ("C-SPC"    . corfu-insert-separator)
-        ("C-n"      . corfu-next)
-        ("C-p"      . corfu-previous)
-        ("M-p"      . corfu-popupinfo-scroll-up)
-        ("M-n"      . corfu-popupinfo-scroll-down)
-        ("M-d"      . corfu-popupinfo-toggle)
-        ("C-x C-k"  . cape-dict)
-        ("C-x C-f"  . cape-file))
-    (defadvice! +corfu--org-return (orig) :around '+org/return
-    (if (and (modulep! :completion corfu)
-             corfu-mode
-             (>= corfu--index 0))
-        (corfu-insert)
-      (funcall orig))))
+(use-package corfu
+  ;; :diminish
+  ;; :defer t
+;;  :hook
+;;  (minibuffer-setup . +corfu--enable-in-minibuffer)
+  :custom
+  (corfu-separator ?\s)
+  (corfu-auto t)
+  (corfu-auto-delay 0.0)
+  (corfu-popupinfo-delay '(0.0 . 0.0))
+  (corfu-on-exact-match nil)
+  (corfu-quit-no-match t)
+  (corfu-cycle t)
+  (corfu-auto-prefix 2)
+  (completion-cycle-threshold 1)
+  (tab-always-indent 'complete)
+  ;; :bind
+  ;; (:map corfu-map
+  ;;  ("C-SPC"    . corfu-insert-separator)
+  ;;  ("C-n"      . corfu-next)
+  ;;  ("C-p"      . corfu-previous)
+  ;;  ("M-p"      . corfu-popupinfo-scroll-up)
+  ;;  ("M-n"      . corfu-popupinfo-scroll-down)
+  ;;  ("M-d"      . corfu-popupinfo-toggle)
+  ;;  ("C-x C-k"  . cape-dict)
+  ;;  ("C-x C-f"  . cape-file))
+  :config
+  ;; (defadvice! +corfu--org-return (orig) :around '+org/return
+  ;; (if (and (modulep! :completion corfu)
+  ;;          corfu-mode
+  ;;          (>= corfu--index 0))
+  ;;     (corfu-insert)
+  ;;   (funcall orig)))
+    )
 
 ;;(use-package orderless
 ;;  :when (modulep! +orderless)
@@ -63,4 +68,3 @@
                         (corfu-history-mode 1)
                         (savehist-mode 1)
                         (add-to-list 'savehist-additional-variables 'corfu-history))))
-))

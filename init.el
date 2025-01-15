@@ -2,19 +2,13 @@
 ;;; init.el --- The init file of my Doom Emacs
 ;;; Commentary:
 ;;
+;; (setq max-lisp-eval-depth 100000)
+;; (setq max-specpdl-size 100000)
 
-(fset 'yes-or-no-p 'y-or-n-p)           ;以 y/n代表 yes/no
-(transient-mark-mode 1)                 ;标记高亮
-(global-subword-mode 1)                 ;Word移动支持 FooBar 的格式
 ;;(add-hook 'after-init-hook #'awesome-tray-enable)
-(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
-  (require 'noflet)
-  (setq confirm-kill-emacs nil)
-  (noflet (process-list) ad-do-it))
 (doom! :completion
 ;;       (corfu +icons +orderless +dabbrev)
-       (vertico +icons +childframe)           ; the search engine of the future
+       (vertico +icons)           ; the search engine of the future
 
        :ui
        ;;deft              ; notational velocity for Emacs
@@ -30,7 +24,7 @@
        workspaces        ; tab emulation, persistence & separate workspaces
 
        :checkers
-       ;; (syntax +childframe)             ; tasing you for every semicolon you forget
+       (syntax +childframe +flymake)             ; tasing you for every semicolon you forget
 
        :editor
        meow
@@ -77,7 +71,7 @@
        ;;(wanderlust +gmail)
 
        :config
-       ;;literate
+       literate
        ;;use-package
        (default +bindings)
 
@@ -95,7 +89,7 @@
        color-rg
        lsp
        treesit-context
-       aweshell
+       ;; aweshell
        vterm-run
        flymake
        )

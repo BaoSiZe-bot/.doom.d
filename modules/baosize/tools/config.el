@@ -1,6 +1,5 @@
 ;;; baosize/tools/config.el -*- lexical-binding: t; -*-
 ;; Automatically save file content
-(add-hook 'doom-first-input-hook (lambda ()
 (use-package super-save
   :diminish
   :defer 0.5
@@ -13,16 +12,12 @@
   (setq super-save-silent t)
   (super-save-mode 1))
 (use-package eee
-  :commands
-  ee-yazi
-  ee-rg
-  ee-lazygit
-  ee-find
-  ee-btop)
-(require 'keyfreq)
-(setq keyfreq-mode 1
-      keyfreq-autosave-mode 1)
+  :defer t)
+(use-package keyfreq
+  :hook (doom-first-input . keyfreq-mode)
+        (doom-first-input . keyfreq-autosave-mode))
 (use-package paren
+  :defer t
   :custom-face (show-paren-match ((t (:foreground "SpringGreen3" :underline t :weight bold))))
   :config
   (setq show-paren-when-point-inside-paren t
@@ -30,28 +25,36 @@
         show-paren-context-when-offscreen t))
 (use-package colorful-mode
   :hook (prog-mode text-mode))
-(require 'symbol-overlay)
-;; (add-hook 'prog-mode-hook #'symbol-overlay-mode)
-;; (add-hook 'text-mode-hook #'symbol-overlay-mode)
-(global-set-key (kbd "M-i") 'symbol-overlay-put)
-(global-set-key (kbd "M-n") 'symbol-overlay-switch-forward)
-(global-set-key (kbd "M-p") 'symbol-overlay-switch-backward)
-(global-set-key (kbd "<f7>") 'symbol-overlay-mode)
-(global-set-key (kbd "<f8>") 'symbol-overlay-remove-all)
+(use-package symbol-overlay
+    :bind
+    (("M-i" . symbol-overlay-put)
+    ("M-n" . symbol-overlay-switch-forward)
+    ("M-p" . symbol-overlay-switch-backward)
+    ("<f7>" . symbol-overlay-mode)
+    ("<f8>" . symbol-overlay-remove-all)))
+    ;; (add-hook 'prog-mode-hook #'symbol-overlay-mode)
+    ;; (add-hook 'text-mode-hook #'symbol-overlay-mode)
+
 (use-package breadcrumb
   :hook (prog-mode . breadcrumb-local-mode))
-(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode-enable)
-(setq winum-keymap
-        (let ((map (make-sparse-keymap)))
-          (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
-          (define-key map (kbd "M-1") 'winum-select-window-1)
-          (define-key map (kbd "M-2") 'winum-select-window-2)
-          (define-key map (kbd "M-3") 'winum-select-window-3)
-          (define-key map (kbd "M-4") 'winum-select-window-4)
-          (define-key map (kbd "M-5") 'winum-select-window-5)
-          (define-key map (kbd "M-6") 'winum-select-window-6)
-          (define-key map (kbd "M-7") 'winum-select-window-7)
-          (define-key map (kbd "M-8") 'winum-select-window-8)
-          map))
-(require 'winum)
-(winum-mode)))
+(use-package winum
+  :defer 0.5
+  :config
+  (winum-mode)
+  :init
+  (setq winum-keymap
+      (let ((map (make-sparse-keymap)))
+        (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
+        (define-key map (kbd "M-1") 'winum-select-window-1)
+        (define-key map (kbd "M-2") 'winum-select-window-2)
+        (define-key map (kbd "M-3") 'winum-select-window-3)
+        (define-key map (kbd "M-4") 'winum-select-window-4)
+        (define-key map (kbd "M-5") 'winum-select-window-5)
+        (define-key map (kbd "M-6") 'winum-select-window-6)
+        (define-key map (kbd "M-7") 'winum-select-window-7)
+        (define-key map (kbd "M-8") 'winum-select-window-8)
+        map)))
+
+(display-time-mode)
+(fset 'yes-or-no-p 'y-or-n-p)
+(global-subword-mode 1)

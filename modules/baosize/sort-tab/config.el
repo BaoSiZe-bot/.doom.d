@@ -2,7 +2,7 @@
 (use-package sort-tab
 ;;  :defer t
   :hook
-  (doom-first-buffer . sort-tab-mode)
+  (doom-after-init . sort-tab-mode)
   :init
   (bind-keys ("C-c b]" . sort-tab-select-next-tab)
         ("C-c bn" . sort-tab-select-next-tab)
