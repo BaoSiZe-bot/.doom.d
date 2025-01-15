@@ -1,2 +1,10 @@
 custom.el
 config.el
+init.el
+packages.el
+modules/editor/meow/config.el
+modules/editor/meow/packages.el
+modules/baosize/awesome-tray/config.el
+modules/baosize/awesome-tray/packages.el
+modules/baosize/blink-search/config.el
+modules/baosize/blink-search/packages.el

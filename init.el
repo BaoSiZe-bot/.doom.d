@@ -1,13 +1,6 @@
 ;;; init.el -*- lexical-binding: t; -*-
-;;; init.el --- The init file of my Doom Emacs
-;;; Commentary:
-;;
-;; (setq max-lisp-eval-depth 100000)
-;; (setq max-specpdl-size 100000)
-
-;;(add-hook 'after-init-hook #'awesome-tray-enable)
 (doom! :completion
-;;       (corfu +icons +orderless +dabbrev)
+;;     (corfu +icons +orderless +dabbrev)
        (vertico +icons)           ; the search engine of the future
 
        :ui
@@ -91,7 +84,4 @@
        treesit-context
        ;; aweshell
        vterm-run
-       flymake
-       )
-
-;;; init.el ends here
+       flymake)

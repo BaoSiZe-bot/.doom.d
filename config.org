@@ -1,11 +1,143 @@
-#+title: My Doom Emacs Config
+#+TITLE: My Doom Emacs Config
 #+author: baosize-bot
+#+PROPERTY: header-args
 
-* 窗口透明
+* 概述
+#+begin_quote
+“I'm rarely happier than when spending an entire day programming my computer to perform automatically a task that would otherwise take me a good ten seconds to do by hand.” - Douglas Adams
+#+end_quote
+
+我用 [[https://github.com/doomemacs/doomemacs/][Doom Emacs]]（以下简称Doom）作为 Emacs 基本配置。这是一个literate配置文件, 指定了Doom的所有配置并包含了文档。如果将这个文件导入到 =~/.doom.d/config.org= ，Doom 会在启动或此文件变动时时自动 tangle 此文件中的代码到对应的文件中。
+
+如果你在浏览器中打开这个文件，你可以考虑在 Emacs Org mode 中打开它以获得更好的阅读体验 :).
+
+在更改各种package.el和init.el后，请记得运行 =doom sync= 。
+** 灵感
+
+- [[https://github.com/cnsunyour/.doom.d][cnsunyour's Doom Emacs]]
+- [[https://github.com/manateelazycat/lazycat-emacs][Lazycat Emacs]]
+- [[https://github.com/h0cheung/doom-emacs-config][H-cheung's Doom Emacs]] 本配置基于此修改而来。
+
+* 目录 :QUOTE:TOC_3:
+#+BEGIN_QUOTE
+- [[#概述][概述]]
+  - [[#灵感][灵感]]
+- [[#init.el][init.el]]
+- [[#config.el][config.el]]
+- [[#packages.el][packages.el]]
+- [[#个人模块][个人模块]]
+  - [[#meow][meow]]
+  - [[#baosize][baosize]]
+    - [[#awesome-tray][awesome-tray]]
+    - [[#blink-search][blink-search]]
+#+END_QUOTE
+* init.el
+本部分决定了Doom所启用的模块和加载顺序。
+#+begin_src emacs-lisp :tangle init.el
+;;; init.el -*- lexical-binding: t; -*-
+(doom! :completion
+;;     (corfu +icons +orderless +dabbrev)
+       (vertico +icons)           ; the search engine of the future
+
+       :ui
+       ;;deft              ; notational velocity for Emacs
+       ;;doom              ; what makes DOOM look the way it does
+       doom-dashboard
+       modeline
+       (popup +defaults)
+       hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+       ;;indent-guides     ; highlighted indent columns
+       ;; ligatures         ; ligatures and symbols to make your code pretty again
+       ;; minimap           ; show a map of the code on the side
+       (vc-gutter +pretty) ; vcs diff in the fringe
+       workspaces        ; tab emulation, persistence & separate workspaces
+
+       :checkers
+       (syntax +childframe +flymake)             ; tasing you for every semicolon you forget
+
+       :editor
+       meow
+       ;; file-templates    ; auto-snippets for empty files
+       ;; fold              ; (nigh) universal code folding
+       ;; format
+       snippets          ; my elves. They type so I don't have to
+
+       :emacs
+       ;; (ibuffer +icons)
+       ;; (dired +icons +dirvish)
+       ;; electric
+       ;; vc
+       ;; undo              ; persistent, smarter undo for your inevitable mistakes
+
+       :term
+       ;; eshell            ; the elisp shell that works everywhere
+       vterm                  ; the best terminal emulation
+
+       :tools
+       eval     ; run code, run (also, repls)
+       editorconfig
+       ;;(lsp +peek +eglot)
+       ;; debugger
+       magit             ; a git porcelain for Emacs
+       ;; (lookup +dictionary +docsets)             ; navigate your code and its documentation
+
+       :os
+       ;; tty
+
+       :lang
+       ;;(cc +lsp)
+       ;;(json +lsp)
+       ;;(python +lsp +pyright +cpython)
+       ;;(yaml +lsp)
+       ;;(sh +lsp)
+       emacs-lisp        ; drown in parentheses
+       markdown          ; writing docs for people to ignore
+       (org +pretty)              ; organize your plain life in plain text
+
+       :email
+       ;;(mu4e +org +gmail)
+       ;;notmuch
+       ;;(wanderlust +gmail)
+
+       :config
+       literate
+       ;;use-package
+       (default +bindings)
+
+       :baosize
+       themes
+       chinese
+       tools
+       ;;awesome-tray
+       ;; holo-layer
+       eaf
+       blink-search
+       ;; ;;dape
+       sort-tab
+       (mycorfu +icons)
+       color-rg
+       lsp
+       treesit-context
+       ;; aweshell
+       vterm-run
+       flymake)
+#+end_src
+* config.el
+:PROPERTIES:
+:header-args: :tangle config.el
+:END:
+** 文件头
+设置 =lexical-binding= 。
+#+begin_src emacs-lisp
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+#+end_src
+** 窗口透明
+85%真透明（只透明背景，不透明文字）
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(alpha-background . 85))
 #+end_src
-* 设置字体
+** 设置字体
+VictorMono & 霞鹜文楷，emoji设置特殊字体
 #+begin_src emacs-lisp
 (setq doom-font (font-spec :family "VictorMono Nerd Font" :size 17 :weight 'Regular)
       doom-symbol-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
@@ -17,7 +149,8 @@
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (add-hook 'after-setting-font-hook #'+font-set-emoji)
 #+end_src
-* Treesitter
+** Treesitter
+默认的高亮太素了，但是定义多了影响速度，设置一下jit-lock-defer-time
 #+begin_src emacs-lisp
 (setq treesit-font-lock-level 4
       major-mode-remap-alist
@@ -58,7 +191,8 @@
 (add-hook 'meow-insert-mode-hook (lambda () (setq jit-lock-defer-time 0.25)))
 (add-hook 'meow-normal-mode-hook (lambda () (setq jit-lock-defer-time 0)))
 #+end_src
-* C++
+** C++
+缩进和调试
 #+begin_src emacs-lisp
 (add-hook 'c++-ts-mode-hook (lambda ()
 (setq c-basic-offset 4)
@@ -72,17 +206,19 @@
            (gdb (concat "gdb -i=mi /tmp/cpp-" filename))))
      (message "buffer-file-name is nil")))))
 #+end_src
-* 键绑定
+** 键绑定
+Org Agend 搜索
 #+begin_src emacs-lisp
 (bind-keys ("C-c f o" . consult-org-agenda))
 #+end_src
-* POSIX shell
+** POSIX shell
+由于本人使用fish作为默认shell所以要做一点操作才行
 #+begin_src emacs-lisp
 (setq shell-file-name (executable-find "bash"))
 (setq-default vterm-shell (executable-find "fish"))
 (setq-default explicit-shell-file-name (executable-find "fish"))
 #+end_src
-* 悬浮窗口
+** 悬浮窗口
 corfu 貌似不应该出现在这里，但是不放这里就没法工作
 #+begin_src emacs-lisp 
 (standard-display-unicode-special-glyphs) ; 终端中的弹窗不设置会使用ASCII边框
@@ -90,8 +226,9 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
   (global-corfu-mode)
   (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode))
 #+end_src
-* 退出Emacs
-别在提醒我 "Really kill emacs?" 了。
+** 退出Emacs
+别再提醒我 "Really kill emacs?" 了。
+从 manateelazycat 大佬的配置上抄的，但我并不知道新语法 advice-add 怎么用。
 #+begin_src emacs-lisp
 ;; (advice-add 'save-buffer-kill-emacs :around (lambda (fn &rest)
 ;;   (require 'noflet)
@@ -103,7 +240,7 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
   (setq confirm-kill-emacs nil)
   (noflet (process-list) ad-do-it))
 #+end_src
-* 自定义Variables和Faces
+** 自定义Variables和Faces
 我不知道这是干嘛用的，但它既然在这里……
 #+begin_src emacs-lisp
 (custom-set-variables)
@@ -116,4 +253,256 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
 ;; If you edit it by hand, you could mess it up, so be careful.
 ;; Your init file should contain only one such instance.
 ;; If there is more than one, they won't work right.
+#+end_src
+* packages.el
+Emacs 核心所需的插件
+#+begin_src emacs-lisp :tangle packages.el
+;; -*- no-byte-compile: t; -*-
+;;; $DOOMDIR/packages.el
+(unpin! t)
+;;(package! vc-msg)
+;;(package! power-mode)
+;;(package! imenu-list)
+(package! noflet)
+(package! cal-china-x)
+;;(package! railgun :recipe(:host github :repo "gynamics/railgun.el"))
+#+end_src
+* 个人模块
+** meow
+Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻量级的Meow了
+=M-x meow-tutor= 以学习Meow按键（类似于vim-tutor）
+#+begin_src emacs-lisp :tangle modules/editor/meow/packages.el
+;; -*- no-byte-compile: t; -*-
+;;; $DOOMDIR/modules/editor/meow/packages.el
+
+(package! meow)
+#+end_src
+#+begin_src emacs-lisp :tangle modules/editor/meow/config.el
+;;; editor/meow/config.el -*- lexical-binding: t; -*-
+(defun meow/setup ()
+  (setq meow-use-cursor-position-hack t
+        meow-use-clipboard t
+        meow-use-enhanced-selection-effect t)
+  (bind-keys :map meow-normal-state-keymap
+             ("0" . meow-expand-0)
+             ("1" . meow-expand-1)
+             ("2" . meow-expand-2)
+             ("3" . meow-expand-3)
+             ("4" . meow-expand-4)
+             ("5" . meow-expand-5)
+             ("6" . meow-expand-6)
+             ("7" . meow-expand-7)
+             ("8" . meow-expand-8)
+             ("9" . meow-expand-9)
+             ("-" . negative-argument)
+             (";" . meow-reverse)
+             ("," . meow-inner-of-thing)
+             ("." . meow-bounds-of-thing)
+             ("'" . repeat)))
+(defun meow-append-this-line ()
+  (interactive)
+  (move-end-of-line 1)
+  (meow-insert))
+(defun meow-insert-this-line ()
+  (interactive)
+  (move-beginning-of-line 1)
+  (meow-insert))
+(defun meow/setup-qwerty ()
+  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+  (meow/setup)
+  (bind-keys :map meow-normal-state-keymap
+   ("[" . meow-beginning-of-thing)
+   ("]" . meow-end-of-thing)
+   ("a" . meow-append)
+   ("o" . meow-open-below)
+   ("A" . meow-append-this-line)
+   ("b" . meow-back-word)
+   ("B" . meow-back-symbol)
+   ("c" . meow-change)
+   ("e" . meow-next-word)
+   ("E" . meow-next-symbol)
+   ("f" . meow-find)
+   ("g" . meow-cancel-selection)
+   ("G" . meow-grab)
+   ("h" . meow-left)
+   ("H" . meow-left-expand)
+   ("i" . meow-insert)
+   ("I" . meow-insert-this-line)
+   ("O" . meow-open-above)
+   ("j" . meow-next)
+   ("J" . meow-next-expand)
+   ("k" . meow-prev)
+   ("K" . meow-prev-expand)
+   ("l" . meow-right)
+   ("L" . meow-right-expand)
+   ("v" . meow-visit)
+   ("m" . meow-join)
+   ("n" . meow-search)
+   ("%" . meow-block)
+   ("p" . meow-yank)
+   ("q" . meow-quit)
+   ("Q" . meow-goto-line)
+   ("r" . meow-replace)
+   ("R" . meow-swap-grab)
+   ("d" . meow-kill)
+   ("t" . meow-till)
+   ("u" . meow-undo)
+   ("U" . meow-undo-in-selection)
+   ("/" . meow-comment)
+   ("w" . meow-mark-word)
+   ("W" . meow-mark-symbol)
+   ("x" . meow-line)
+   ("X" . meow-goto-line)
+   ("y" . meow-save)
+   ("Y" . meow-sync-grab)
+   ("z" . meow-pop-selection)))
+
+(use-package meow
+  :hook (doom-after-modules-config . meow-global-mode)
+  :demand t
+  :config
+  (meow/setup-qwerty)
+  (bind-keys :map meow-keymap ([remap describe-key] . helpful-key))
+  (meow-define-keys
+   'normal
+   '("s" . avy-goto-char)
+   '("F" . avy-goto-char-2)))
+#+end_src
+** baosize
+*** awesome-tray
+懒猫的底部状态栏，代替 =modeline= ，与 =sort-tab= 一样以最小窗口空间占用为理念。
+**** config.el
+:PROPERTIES:
+:header-args: :tangle modules/baosize/awesome-tray/config.el
+:END:
+给默认模块加图标。
+***** lexical-binding
+#+begin_src emacs-lisp
+;;; config.el -*- lexical-binding: t; -*-
+#+end_src
+***** lsp 模块
+显示 =lsp-bridge= 状态和诊断数目
+#+begin_src emacs-lisp
+(defun awesome-tray-lsp-module () (if (not (equal lsp-bridge-mode nil))
+  (if (not (equal lsp-bridge-diagnostic-count nil))
+      (concat " " (int-to-string lsp-bridge-diagnostic-count))
+      " ")
+  ""))
+(defface awesome-tray-module-lsp-face
+  '((((background light)) :inherit awesome-tray-orange-face)
+    (t :inherit awesome-tray-orange-face))
+  "Lsp-bridge face."
+  :group 'awesome-tray)
+#+end_src
+***** belong 模块
+显示当前光标所在函数
+#+begin_src emacs-lisp
+(defun awesome-tray-mybelong-module ()
+    (let ((origin (if (modulep 'treesit)
+      (let ((current-seconds (awesome-tray-current-seconds)))
+        (if (or (not (eq (current-buffer) awesome-tray-belong-last-buffer))
+                (> (- current-seconds awesome-tray-belong-last-time) awesome-tray-belong-update-duration))
+            (progn
+              (setq awesome-tray-belong-last-time current-seconds)
+              (setq awesome-tray-belong-last-buffer (current-buffer))
+              (awesome-tray-update-belong-cache))
+          awesome-tray-belong-cache))"")))
+        (if (equal origin "") "" (concat "󰡱 " origin))))
+#+end_src
+***** meow 模块
+显示 =meow= 状态
+#+begin_src emacs-lisp
+(defun awesome-tray-mymeow-module ()
+  (let ((origin (with-demoted-errors
+      ""
+    (if (and (modulep 'meow) awesome-tray-meow-show-mode)
+        meow--indicator
+      ""))))
+    (concat "󰄛" origin)))
+#+end_src
+***** git 模块
+显示 =Git= 状态
+#+begin_src emacs-lisp
+(defun awesome-tray-mygit-module ()
+  (let ((origin (if (executable-find "git")
+      (progn
+        (if (not (string= (buffer-file-name) awesome-tray-git-buffer-filename))
+            (awesome-tray-git-command-update-cache))
+        awesome-tray-git-command-cache)
+    "")))
+    (if (equal origin "") "" (concat " " origin))))
+#+end_src
+***** 调用 awesome-tray
+添加上述模块到 =awesome-tray= 核心并挂上启动时的钩子
+#+begin_src emacs-lisp
+(use-package 'awesome-tray
+:hook (doom-after-init . awesome-tray-mode)
+:custom
+(awesome-tray-buffer-read-only-style "󰌾 ")
+(awesome-tray-mode-line-active-color "#4ea9e6")
+(awesome-tray-belong-update-duration 1)
+(awesome-tray-active-modules '("winum"
+                               "lsp"
+                               "input-method"
+                               "mybelong"
+                               "mymeow"
+                               "file-path"
+                               "buffer-read-only"
+                               "mygit"
+                               "󰥔"
+                               "date"
+                               "clock"))
+(awesome-tray-input-method-local-style "㞢")
+:config
+(add-to-list 'awesome-tray-module-alist
+       '("winum" . (awesome-tray-winum-module awesome-tray-winum-module-face)))
+(add-to-list 'awesome-tray-module-alist
+       '("mybelong" . (awesome-tray-mybelong-module awesome-tray-module-belong-face)))
+(add-to-list 'awesome-tray-module-alist
+       '("mymeow" . (awesome-tray-mymeow-module awesome-tray-module-meow-face)))
+(add-to-list 'awesome-tray-module-alist
+       '("mygit" . (awesome-tray-mygit-module awesome-tray-module-git-face)))
+(add-to-list 'awesome-tray-module-alist
+       '("lsp" . (awesome-tray-lsp-module awesome-tray-module-lsp-face))))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/awesome-tray/packages.el
+;; -*- no-byte-compile: t; -*-
+;;; $DOOMDIR/modules/baosize/awesome-tray/packages.el
+(package! awesome-tray
+  :recipe (:host github :repo "manateelazycat/awesome-tray"))
+#+end_src
+*** blink-search
+懒猫的多源搜索，据说很快就可以取代 =vertico+consult= 全家桶了。
+**** config.el
+:PROPERTIES:
+:header-args: :tangle modules/baosize/blink-search/config.el
+:END:
+***** 声明
+#+begin_src emacs-lisp
+;;; $DOOMDIR/modules/baosize/blink-search/config.el -*- lexical-binding: t; -*-
+(use-package blink-search
+#+end_src
+***** 设定位置
+由于某种原因， =blink-search= 不能正常加载，需要指定 =load-path= 。
+注意如果把 Doom 安装在 =~/.config/emacs= 需要更改位置。
+#+begin_src emacs-lisp
+:load-path "~/.emacs.d/.local/straight/repos/blink-search/"
+#+end_src
+***** 绑定键位
+就使用默认的 =C-M-g= 吧。
+#+begin_src emacs-lisp
+:bind (("C-M-g" . blink-search))
+#+end_src
+***** 模式设置
+进入 =blink-search= 时肯定得是 =meow-insert-mode= 啊
+#+begin_src emacs-lisp
+:config (add-hook 'blink-search-mode-hook #'meow-insert))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/blink-search/packages.el
+;; -*- no-byte-compile: t; -*-
+;;; $DOOMDIR/modules/baosize/blink-search/packages.el
+(package! blink-search
+  :recipe (:host github :repo "manateelazycat/blink-search"))
 #+end_src
