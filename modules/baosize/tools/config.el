@@ -11,7 +11,6 @@
   (setq super-save-auto-save-when-idle t)
   (setq super-save-silent t)
   (super-save-mode 1))
-(use-package eee :defer t)
 (use-package keyfreq
   :defer t
   :hook (doom-first-input . keyfreq-mode)

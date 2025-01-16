@@ -13,11 +13,10 @@
 
 在更改各种package.el和init.el后，请记得运行 =doom sync= 。
 
-这个配置仍在不断优化中，目前启动速度极慢，达 0.7s 。
+这个配置仍在不断优化中，目前启动速度极慢，达 0.7s （在 WSL 中测试）。
 ** 灵感
-
-- [[https://github.com/cnsunyour/.doom.d][cnsunyour's Doom Emacs]]
-- [[https://github.com/manateelazycat/lazycat-emacs][Lazycat Emacs]]
+- [[https://github.com/cnsunyour/.doom.d][cnsunyour's Doom Emacs]] 本配置中中文输入法部分借鉴了此处的写法。
+- [[https://github.com/manateelazycat/lazycat-emacs][Lazycat Emacs]] 本配置中半数插件取材于此。
 - [[https://github.com/h0cheung/doom-emacs-config][H-cheung's Doom Emacs]] 本配置基于此修改而来。
 
 * 目录 :QUOTE:TOC_3:
@@ -38,7 +37,7 @@
     - [[#sort-tab][sort-tab]]
     - [[#chinese][chinese]]
     - [[#lsp][lsp]]
-    - [[#mycorfu][mycorfu]]
+    - [[#corfu][corfu]]
     - [[#tools][tools]]
     - [[#treesit-context][treesit-context]]
     - [[#vterm-run][vterm-run]]
@@ -48,64 +47,189 @@
 本部分决定了Doom所启用的模块和加载顺序。
 #+begin_src emacs-lisp :tangle init.el
 ;;; init.el -*- lexical-binding: t; -*-
-(doom! :completion
-;;     (corfu +icons +orderless +dabbrev)
-       (vertico +icons)           ; the search engine of the future
+
+;; This file controls what Doom modules are enabled and what order they load
+;; in. Remember to run 'doom sync' after modifying it!
+
+;; NOTE Press 'SPC h d h' (or 'C-h d h' for non-vim users) to access Doom's
+;;      documentation. There you'll find a link to Doom's Module Index where all
+;;      of our modules are listed, including what flags they support.
+
+;; NOTE Move your cursor over a module's name (or its flags) and press 'K' (or
+;;      'C-c c k' for non-vim users) to view its documentation. This works on
+;;      flags as well (those symbols that start with a plus).
+;;
+;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
+;;      directory (for easy access to its source code).
+
+(doom! :input
+       ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
+       ;;chinese
+       ;;japanese
+       ;;layout            ; auie,ctsrnm is the superior home row
+
+       :completion
+       ;;(company +childframe)          ; the ultimate code completion backend
+       ;;(corfu +icons)    ; complete with cap(f), cape and a flying feather!
+       ;;helm              ; the *other* search engine for love and life
+       ;;ido               ; the other *other* search engine...
+       ;;ivy               ; a search engine for love and life
+       (vertico +icons)    ; the search engine of the future
 
        :ui
        ;;deft              ; notational velocity for Emacs
-       doom              ; what makes DOOM look the way it does
-       doom-dashboard
-       modeline
-       (popup +defaults)
-       hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+       doom                ; what makes DOOM look the way it does
+       doom-dashboard      ; a nifty splash screen for Emacs
+       ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
+       ;;(emoji +unicode)  ; 🙂
+       hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;indent-guides     ; highlighted indent columns
-       ;; ligatures         ; ligatures and symbols to make your code pretty again
-       ;; minimap           ; show a map of the code on the side
+       ;;ligatures         ; ligatures and symbols to make your code pretty again
+       ;;minimap           ; show a map of the code on the side
+       modeline            ; snazzy, Atom-inspired modeline, plus API
+       ;;nav-flash         ; blink cursor line after big motions
+       ;;neotree           ; a project drawer, like NERDTree for vim
+       ;;ophints           ; highlight the region an operation acts on
+       (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       ;;tabs              ; a tab bar for Emacs
+       ;;treemacs          ; a project drawer, like neotree but cooler
+       ;;unicode           ; extended unicode support for various languages
        (vc-gutter +pretty) ; vcs diff in the fringe
-       workspaces        ; tab emulation, persistence & separate workspaces
+       ;;vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       ;;window-select     ; visually switch windows
+       workspaces          ; tab emulation, persistence & separate workspaces
+       ;;zen               ; distraction-free coding or writing
+
+       :editor
+       meow                ; come to the dark side, we have cookies
+       ;;file-templates    ; auto-snippets for empty files
+       ;;fold              ; (nigh) universal code folding
+       ;;(format +onsave)  ; automated prettiness
+       ;;god               ; run Emacs commands without modifier keys
+       ;;lispy             ; vim for lisp, for people who don't like vim
+       ;;multiple-cursors  ; editing in many places at once
+       ;;objed             ; text object editing for the innocent
+       ;;parinfer          ; turn lisp into python, sort of
+       ;;rotate-text       ; cycle region at point between text candidates
+       snippets            ; my elves. They type so I don't have to
+       ;;word-wrap         ; soft wrapping with language-aware indent
+
+       :emacs
+       ;;dired             ; making dired pretty [functional]
+       ;;electric          ; smarter, keyword-based electric-indent
+       ;;eww               ; the internet is gross
+       ;;ibuffer           ; interactive buffer management
+       ;;undo              ; persistent, smarter undo for your inevitable mistakes
+       ;;vc                ; version-control and Emacs, sitting in a tree
+
+       :term
+       ;;eshell            ; the elisp shell that works everywhere
+       ;;shell             ; simple shell REPL for Emacs
+       ;;term              ; basic terminal emulator for Emacs
+       vterm               ; the best terminal emulation in Emacs
 
        :checkers
        (syntax +childframe +flymake)             ; tasing you for every semicolon you forget
-
-       :editor
-       meow
-       ;; file-templates    ; auto-snippets for empty files
-       ;; fold              ; (nigh) universal code folding
-       ;; format
-       snippets          ; my elves. They type so I don't have to
-
-       :emacs
-       ;; (ibuffer +icons)
-       ;; (dired +icons +dirvish)
-       ;; electric
-       ;; vc
-       ;; undo              ; persistent, smarter undo for your inevitable mistakes
-
-       :term
-       ;; eshell            ; the elisp shell that works everywhere
-       vterm                  ; the best terminal emulation
+       ;;(spell +flyspell) ; tasing you for misspelling mispelling
+       ;;grammar           ; tasing grammar mistake every you make
 
        :tools
-       eval     ; run code, run (also, repls)
-       editorconfig
-       ;;(lsp +peek +eglot)
-       ;; debugger
-       magit             ; a git porcelain for Emacs
-       ;; (lookup +dictionary +docsets)             ; navigate your code and its documentation
+       ;;ansible
+       ;;biblio            ; Writes a PhD for you (citation needed)
+       ;;collab            ; buffers with friends
+       ;;debugger          ; FIXME stepping through code, to help you add bugs
+       ;;direnv
+       ;;docker
+       editorconfig        ; let someone else argue about tabs vs spaces
+       ;;ein               ; tame Jupyter notebooks with emacs
+       eval                ; run code, run (also, repls)
+       lookup              ; navigate your code and its documentation
+       ;; (lsp +eglot)     ; M-x vscode
+       magit               ; a git porcelain for Emacs
+       ;;make              ; run make tasks from Emacs
+       ;;pass              ; password manager for nerds
+       ;;pdf               ; pdf enhancements
+       ;;prodigy           ; FIXME managing external services & code builders
+       ;;terraform         ; infrastructure as code
+       ;;tmux              ; an API for interacting with tmux
+       ;;tree-sitter       ; syntax and parsing, sitting in a tree...
+       ;;upload            ; map local to remote projects via ssh/ftp
 
        :os
-       ;; tty
+       (:if (featurep :system 'macos) macos)  ; improve compatibility with macOS
+       ;;tty               ; improve the terminal Emacs experience
 
        :lang
-       ;;(cc +lsp)
-       ;;(json +lsp)
-       ;;(python +lsp +pyright +cpython)
-       ;;(yaml +lsp)
-       ;;(sh +lsp)
-       emacs-lisp        ; drown in parentheses
-       markdown          ; writing docs for people to ignore
-       (org +pretty)              ; organize your plain life in plain text
+       ;;agda              ; types of types of types of types...
+       ;;beancount         ; mind the GAAP
+       ;;(cc +lsp)         ; C > C++ == 1
+       ;;clojure           ; java with a lisp
+       ;;common-lisp       ; if you've seen one lisp, you've seen them all
+       ;;coq               ; proofs-as-programs
+       ;;crystal           ; ruby at the speed of c
+       ;;csharp            ; unity, .NET, and mono shenanigans
+       ;;data              ; config/data formats
+       ;;(dart +flutter)   ; paint ui and not much else
+       ;;dhall
+       ;;elixir            ; erlang done right
+       ;;elm               ; care for a cup of TEA?
+       emacs-lisp          ; drown in parentheses
+       ;;erlang            ; an elegant language for a more civilized age
+       ;;ess               ; emacs speaks statistics
+       ;;factor
+       ;;faust             ; dsp, but you get to keep your soul
+       ;;fortran           ; in FORTRAN, GOD is REAL (unless declared INTEGER)
+       ;;fsharp            ; ML stands for Microsoft's Language
+       ;;fstar             ; (dependent) types and (monadic) effects and Z3
+       ;;gdscript          ; the language you waited for
+       ;;(go +lsp)         ; the hipster dialect
+       ;;(graphql +lsp)    ; Give queries a REST
+       ;;(haskell +lsp)    ; a language that's lazier than I am
+       ;;hy                ; readability of scheme w/ speed of python
+       ;;idris             ; a language you can depend on
+       ;;json              ; At least it ain't XML
+       ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
+       ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
+       ;;julia             ; a better, faster MATLAB
+       ;;kotlin            ; a better, slicker Java(Script)
+       ;;latex             ; writing papers in Emacs has never been so fun
+       ;;lean              ; for folks with too much to prove
+       ;;ledger            ; be audit you can be
+       ;;lua               ; one-based indices? one-based indices
+       markdown            ; writing docs for people to ignore
+       ;;nim               ; python + lisp at the speed of c
+       ;;nix               ; I hereby declare "nix geht mehr!"
+       ;;ocaml             ; an objective camel
+       (org +pretty)       ; organize your plain life in plain text
+       ;;php               ; perl's insecure younger brother
+       ;;plantuml          ; diagrams for confusing people more
+       ;;graphviz          ; diagrams for confusing yourself even more
+       ;;purescript        ; javascript, but functional
+       ;;python            ; beautiful is better than ugly
+       ;;qt                ; the 'cutest' gui framework ever
+       ;;racket            ; a DSL for DSLs
+       ;;raku              ; the artist formerly known as perl6
+       ;;rest              ; Emacs as a REST client
+       ;;rst               ; ReST in peace
+       ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+       ;;(rust +lsp)       ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       ;;scala             ; java, but good
+       ;;(scheme +guile)   ; a fully conniving family of lisps
+       ;;sh                ; she sells {ba,z,fi}sh shells on the C xor
+       ;;sml
+       ;;solidity          ; do you need a blockchain? No.
+       ;;swift             ; who asked for emoji variables?
+       ;;terra             ; Earth and Moon in alignment for performance.
+       ;;web               ; the tubes
+       ;;yaml              ; JSON, but readable
+       ;;zig               ; C, but simpler
+
+       :app
+       ;;calendar
+       ;;emms
+       ;;everywhere        ; *leave* Emacs!? You must be joking
+       ;;irc               ; how neckbeards socialize
+       ;;(rss +org)        ; emacs as an RSS reader
 
        :email
        ;;(mu4e +org +gmail)
@@ -118,29 +242,25 @@
        (default +bindings)
 
        :baosize
-       ;;themes
        chinese
        tools
        ;;awesome-tray
-       ;; holo-layer
+       ;;holo-layer
        eaf
        blink-search
-       ;; ;;dape
+       (mycorfu +icons)    ; complete with cap(f), cape and a flying feather!
        sort-tab
-       (mycorfu +icons)
        color-rg
-       lsp
+       (lsp +eglot)        ; M-x vscode
        treesit-context
-       ;; aweshell
-       vterm-run
-       flymake)
+       vterm-run)
 #+end_src
 * config.el
 :PROPERTIES:
 :header-args: :tangle config.el
 :END:
 #+begin_src emacs-lisp
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;;; config.el -*- lexical-binding: t; -*-
 #+end_src
 85%真透明（只透明背景，不透明文字）
 #+begin_src emacs-lisp
@@ -267,7 +387,7 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
 Emacs 核心所需的插件
 #+begin_src emacs-lisp :tangle packages.el
 ;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/packages.el
+;;; packages.el
 (unpin! t)
 ;;(package! vc-msg)
 ;;(package! power-mode)
@@ -282,12 +402,12 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 =M-x meow-tutor= 以学习Meow按键（类似于vim-tutor）
 #+begin_src emacs-lisp :tangle modules/editor/meow/packages.el
 ;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/modules/editor/meow/packages.el
+;;; modules/editor/meow/packages.el
 
 (package! meow)
 #+end_src
 #+begin_src emacs-lisp :tangle modules/editor/meow/config.el
-;;; editor/meow/config.el -*- lexical-binding: t; -*-
+;;; modules/editor/meow/config.el -*- lexical-binding: t; -*-
 (defun meow/setup ()
   (setq meow-use-cursor-position-hack t
         meow-use-clipboard t
@@ -386,7 +506,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 :END:
 给默认模块加图标。
 #+begin_src emacs-lisp
-;;; config.el -*- lexical-binding: t; -*-
+;;; modules/baosize/awesome-tray/config.el -*- lexical-binding: t; -*-
 #+end_src
 显示 =lsp-bridge= 状态和诊断数目
 #+begin_src emacs-lisp
@@ -472,7 +592,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 **** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/awesome-tray/packages.el
 ;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/modules/baosize/awesome-tray/packages.el
+;;; modules/baosize/awesome-tray/packages.el
 (package! awesome-tray
   :recipe (:host github :repo "manateelazycat/awesome-tray"))
 #+end_src
@@ -484,7 +604,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 :END:
 声明
 #+begin_src emacs-lisp
-;;; $DOOMDIR/modules/baosize/blink-search/config.el -*- lexical-binding: t; -*-
+;;; modules/baosize/blink-search/config.el -*- lexical-binding: t; -*-
 (use-package blink-search
 #+end_src
 由于某种原因， =blink-search= 不能正常加载，需要指定 =load-path= 。
@@ -503,7 +623,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 **** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/blink-search/packages.el
 ;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/modules/baosize/blink-search/packages.el
+;;; modules/baosize/blink-search/packages.el
 (package! blink-search
   :recipe (:host github :repo "manateelazycat/blink-search"))
 #+end_src
@@ -511,7 +631,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 懒猫的搜索插件，类似于 =el-search= ，但是更易用，更快
 **** config.el
 #+begin_src emacs-lisp :tangle modules/baosize/color-rg/config.el
-;;; $DOOMDIR/modules/baosize/color-rg/config.el -*- lexical-binding: t; -*-
+;;; modules/baosize/color-rg/config.el -*- lexical-binding: t; -*-
 (use-package color-rg
   :bind
   (("C-c r i" . color-rg-search-input)
@@ -526,7 +646,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 **** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/color-rg/packages.el
 ;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/modules/baosize/color-rg/packages.el
+;;; modules/baosize/color-rg/packages.el
 (package! color-rg
   :recipe (:host github :repo "manateelazycat/color-rg"))
 #+end_src
@@ -537,7 +657,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 :header-args: :tangle modules/baosize/eaf/config.el
 :END:
 #+begin_src emacs-lisp
-;;; baosize/eaf/config.el -*- lexical-binding: t; -*-
+;;; modules/baosize/eaf/config.el -*- lexical-binding: t; -*-
 #+end_src
 判断是否是终端，是则不加载 EAF 以节省启动时间
 #+begin_src emacs-lisp
@@ -655,7 +775,7 @@ ESC 退出焦点
 :END:
 #+begin_src emacs-lisp
 ;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/modules/baosize/eaf/packages.el
+;;; modules/baosize/eaf/packages.el
 #+end_src
 eaf 需要编译相关依赖
 #+begin_src emacs-lisp
@@ -755,7 +875,7 @@ eaf 需要编译相关依赖
 :header-args: :tangle modules/baosize/holo-layer/config.el
 :END:
 #+begin_src emacs-lisp
-;;; baosize/holo-layer/config.el -*- lexical-binding: t; -*-
+;;; modules/baosize/holo-layer/config.el -*- lexical-binding: t; -*-
 #+end_src
 解决找不到函数的 bug
 #+begin_src emacs-lisp
@@ -778,7 +898,7 @@ eaf 需要编译相关依赖
 **** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/holo-layer/packages.el
 ;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/modules/baosize/holo-layer/packages.el
+;;; modules/baosize/holo-layer/packages.el
 (package! holo-layer
   :recipe (:host github :repo "manateelazycat/holo-layer"
            :files ("*")))
@@ -787,7 +907,7 @@ eaf 需要编译相关依赖
 懒猫的标签栏，启用 =holo-layer= 即可显示图标
 **** config.el
 #+begin_src emacs-lisp :tangle modules/baosize/sort-tab/config.el
-;;; $DOOMDIR/modules/baosize/sort-tab/config.el -*- lexical-binding: t; -*-
+;;; modules/baosize/sort-tab/config.el -*- lexical-binding: t; -*-
 (use-package sort-tab
   :defer t
   :hook
@@ -806,7 +926,7 @@ eaf 需要编译相关依赖
 **** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/sort-tab/packages.el
 ;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/modules/baosize/sort-tab/packages.el
+;;; modules/baosize/sort-tab/packages.el
 (package! sort-tab
   :recipe (:host github :repo "manateelazycat/sort-tab"))
 #+end_src
@@ -817,7 +937,7 @@ eaf 需要编译相关依赖
 :header-args: :tangle modules/baosize/chinese/config.el
 :END:
 #+begin_src emacs-lisp
-;;; baosize/chinese/config.el -*- lexical-binding: t; -*-
+;;; modules/baosize/chinese/config.el -*- lexical-binding: t; -*-
 #+end_src
 使用 =ace-pinyin= 以支持 =avy= 跳转到中文
 使用 =pinyin-lib= 以支持 =consult= 搜索中文
@@ -900,7 +1020,7 @@ Rime 本身相关设置
 **** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/chinese/packages.el 
 ;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/modules/baosize/chinese/packages.el
+;;; modules/baosize/chinese/packages.el
 
 
 (package! rime)
@@ -909,7 +1029,133 @@ Rime 本身相关设置
 (when (modulep! :editor evil) (package! evil-pinyin))
 #+end_src
 *** lsp
-*** mycorfu
+*** corfu
+Doom 默认的 corfu 模块很慢，而且和各种配置都不大兼容，所以自己手搓一份得了。
+**** autoload.el
+自动加载一些定义的 API
+#+begin_src emacs-lisp :tangle modules/baosize/mycorfu/autoload.el 
+;;; modules/baosize/mycorfu/autoload.el -*- lexical-binding: t; -*-
+;;;###if (modulep! +minibuffer)
+
+;;;###autoload
+(defun +corfu--enable-in-minibuffer ()
+  (unless (or (bound-and-true-p mct--active)
+              (bound-and-true-p vertico--input)
+              (memq this-command '(evil-ex
+                                   evil-ex-search-forward
+                                   evil-ex-search-backward))
+              (and (modulep! :completion helm)
+                   (helm--alive-p))
+              (corfu-mode +1))))
+#+end_src
+**** config.el
+:PROPERTIES:
+:header-args: :tangle modules/baosize/mycorfu/config.el
+:END:
+#+begin_src emacs-lisp
+;;; modules/baosize/mycorfu/config.el -*- lexical-binding: t; -*-
+#+end_src
+懒加载 corfu
+#+begin_src emacs-lisp
+(use-package corfu
+  :defer t
+  :hook
+  (doom-first-buffer . global-corfu-mode)
+#+end_src
+启用 minibuffer 补全，在最小化配置删掉 =vertico= 时很有用
+#+begin_src emacs-lisp
+  :config
+  (when (featurep! +minibuffer)
+    (add-hook 'minibuffer-setup-hook #'+corfu--enable-in-minibuffer))
+#+end_src
+自动弹出补全
+#+begin_src emacs-lisp
+  :custom
+  (corfu-separator ?\s)
+  (corfu-auto t)
+  (corfu-auto-delay 0.0)
+#+end_src
+增加补全文档弹出延时以提高响应速度
+#+begin_src emacs-lisp
+  (corfu-popupinfo-delay '(0.1 . 0.1))
+#+end_src
+不要求精确匹配，启用循环匹配
+#+begin_src emacs-lisp
+  (corfu-on-exact-match nil)
+  (corfu-quit-no-match t)
+  (corfu-cycle t)
+#+end_src
+敲两个字符或者按下 TAB 键时弹出补全
+#+begin_src emacs-lisp
+  (corfu-auto-prefix 2)
+  (tab-always-indent 'complete)
+#+end_src
+弹出补全时绑定基本快捷键
+#+begin_src emacs-lisp
+  :bind
+  (:map corfu-map
+   ("C-SPC"    . #'corfu-insert-separator)
+   ("C-n"      . #'corfu-next)
+   ("C-p"      . #'corfu-previous)
+   ("M-p"      . #'corfu-popupinfo-scroll-up)
+   ("M-n"      . #'corfu-popupinfo-scroll-down)
+   ("M-d"      . #'corfu-popupinfo-toggle)
+   ("C-x C-k"  . #'cape-dict)
+   ("C-x C-f"  . #'cape-file)))
+#+end_src
+启用 orderless 方式补全
+#+begin_src emacs-lisp
+(use-package orderless
+ :when (modulep! +orderless)
+ :init
+ (setq completion-styles '(orderless partial-completion)
+       completion-category-defaults nil
+       completion-category-overrides '((file (styles . (partial-completion))))))
+#+end_src
+给 corfu 增加图标（延时加载）
+#+begin_src emacs-lisp
+(use-package nerd-icons-corfu
+  :when (modulep! +icons)
+  :defer t
+  :init
+  (with-eval-after-load 'corfu
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)))
+#+end_src
+给 corfu 拓展各种源（延时加载）
+#+begin_src emacs-lisp
+(use-package cape
+  :defer t
+  :init
+  (bind-keys ([remap dabbrev-expand] . cape-dabbrev))
+  (add-hook 'latex-mode-hook (lambda ()(defun +corfu--latex-set-capfs ()
+                                (add-to-list 'completion-at-point-functions #'cape-tex))))
+  (when (modulep! :checkers spell)
+    (add-to-list 'completion-at-point-functions #'cape-dict)
+    (add-to-list 'completion-at-point-functions #'cape-ispell))
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-keyword t)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev t))
+#+end_src
+corfu 基于历史记录的排序方式，在 corfu 之后加载
+#+begin_src emacs-lisp
+(use-package corfu-history
+  :after corfu
+  :hook (corfu-mode . (lambda ()
+                        (corfu-history-mode 1)
+                        (savehist-mode 1)
+                        (add-to-list 'savehist-additional-variables 'corfu-history))))
+#+end_src
+**** packages.el
+安装对应插件
+#+begin_src emacs-lisp :tangled modules/baosize/mycorfu/packages.el
+;; -*- no-byte-compile: t; -*-
+;;; modules/baosize/mycorfu/packages.el
+(package! corfu
+  :recipe (:files (:defaults "extensions/*.el")))
+(when (modulep! +icons)
+(package! nerd-icons-corfu))
+(package! cape)
+#+end_src
 *** tools
 *** treesit-context
 :PROPERTIES:
@@ -919,7 +1165,7 @@ Rime 本身相关设置
 试着整理一下，当学习 =Emacs Lisp= 了。
 定义基本变量，以及文件头
 #+begin_src emacs-lisp
-;;; $DOOMDIR/modules/baosize/treesit-context    /config.el -*- lexical-binding: t; -*-
+;;; modules/baosize/treesit-context/config.el -*- lexical-binding: t; -*-
 (defgroup treesit-context nil
   "Show the context of the currently visible buffer contents."
   :group 'treesit)

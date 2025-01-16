@@ -1,5 +1,5 @@
-;;; completion/corfu/autoload/corfu.el -*- lexical-binding: t; -*-
-;;;###if (modulep! :completion corfu +minibuffer)
+;;; modules/baosize/mycorfu/autoload.el -*- lexical-binding: t; -*-
+;;;###if (modulep! +minibuffer)
 
 ;;;###autoload
 (defun +corfu--enable-in-minibuffer ()

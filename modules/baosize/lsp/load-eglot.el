@@ -31,10 +31,7 @@
   (c++-ts-mode . eglot-ensure)
   :init
   (setq eglot-sync-connect 1
-        eglot-autoshutdown t
-        eglot-auto-display-help-buffer nil)
-  (when (modulep! :checkers syntax -flymake)
-    (setq eglot-stay-out-of '(flymake)))
+        eglot-autoshutdown t)
   :config
   (add-to-list 'eglot-server-programs
                `(c++-ts-mode . ("clangd"
@@ -42,7 +39,6 @@
 			                    "--header-insertion=iwyu")))
   (set-popup-rule! "^\\*eglot-help" :size 0.15 :quit t :select t)
   (set-popup-rule! "*xref*" :size 0.15 :quit t :select t)
-  (set-popup-rule! "*eldoc*" :size 0.2 :quit t :select t)
   (set-lookup-handlers! 'eglot--managed-mode
     :definition      #'xref-find-definitions
     :references      #'xref-find-references
@@ -54,7 +50,6 @@
     :bind
   (("C-c lr" . eglot-rename)
    ("C-c la" . eglot-code-actions)
-   ("C-c lj" . eglot-find-declaration)
    ("C-c lf" . eglot-format)
    ("C-c lx" . flymake-show-buffer-diagnostics)
    ("C-c ln" . flymake-goto-next-error)
@@ -69,4 +64,3 @@
 (use-package eglot-booster
   :after eglot
   :config (eglot-booster-mode))
-(provide 'load-eglot)

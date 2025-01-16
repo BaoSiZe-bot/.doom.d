@@ -80,4 +80,4 @@
         ("C-c lx" . flymake-show-buffer-diagnostics)
         ("C-c ln" . flymake-goto-next-error)
         ("C-c lp" . flymake-goto-prev-error)))))
-(require 'load-eglot))))
+(when (modulep! +eglot)(load! "load-eglot")))))
