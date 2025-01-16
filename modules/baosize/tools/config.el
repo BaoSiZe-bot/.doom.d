@@ -11,9 +11,9 @@
   (setq super-save-auto-save-when-idle t)
   (setq super-save-silent t)
   (super-save-mode 1))
-(use-package eee
-  :defer t)
+(use-package eee :defer t)
 (use-package keyfreq
+  :defer t
   :hook (doom-first-input . keyfreq-mode)
         (doom-first-input . keyfreq-autosave-mode))
 (use-package paren
@@ -24,6 +24,7 @@
         show-paren-when-point-in-periphery t
         show-paren-context-when-offscreen t))
 (use-package colorful-mode
+  :defer t
   :hook (prog-mode text-mode))
 (use-package symbol-overlay
     :bind
@@ -36,6 +37,7 @@
     ;; (add-hook 'text-mode-hook #'symbol-overlay-mode)
 
 (use-package breadcrumb
+  :defer t
   :hook (prog-mode . breadcrumb-local-mode))
 (use-package winum
   :defer 0.5

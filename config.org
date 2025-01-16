@@ -439,6 +439,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 添加上述模块到 =awesome-tray= 核心并挂上启动时的钩子
 #+begin_src emacs-lisp
 (use-package 'awesome-tray
+:defer t
 :hook (doom-after-init . awesome-tray-mode)
 :custom
 (awesome-tray-buffer-read-only-style "󰌾 ")
@@ -788,7 +789,7 @@ eaf 需要编译相关依赖
 #+begin_src emacs-lisp :tangle modules/baosize/sort-tab/config.el
 ;;; $DOOMDIR/modules/baosize/sort-tab/config.el -*- lexical-binding: t; -*-
 (use-package sort-tab
-;;  :defer t
+  :defer t
   :hook
   (doom-after-init . sort-tab-mode)
   :init
@@ -911,4 +912,101 @@ Rime 本身相关设置
 *** mycorfu
 *** tools
 *** treesit-context
+:PROPERTIES:
+:header-args: :tangle modules/baosize/treesit-context/config.el
+:END:
+类似于 [[https://github.com/nvim-treesitter/nvim-treesitter-context][Nvim Treesitter Context]] 的显示代码层级的插件，代码高度借鉴[[https://emacs-china.org/t/treesit-context-tree-sitter-topsy/25162][Emacs China]]
+试着整理一下，当学习 =Emacs Lisp= 了。
+定义基本变量，以及文件头
+#+begin_src emacs-lisp
+;;; $DOOMDIR/modules/baosize/treesit-context    /config.el -*- lexical-binding: t; -*-
+(defgroup treesit-context nil
+  "Show the context of the currently visible buffer contents."
+  :group 'treesit)
+(defvar treesit-context--buffer (generate-new-buffer "*treesit-context-posframe-buffer*")
+  "Buffer used to display the context.")
+(defvar treesit-context--list nil
+  "List used to store the context needs showing.")
+(defvar treesit-context--timer nil
+  "Timer for updating the context.")
+#+end_src
+声明显示函数（ =Emacs Lisp= 加载的时候会先读取所有源码，然后在源码中查找定义，也就是说无需计较声明顺序，不像某些 C 语言）
+#+begin_src emacs-lisp
+(defun treesit-context ()
+  "Show code context."
+  (interactive)
+  (unless (not (treesit-available-p))
+    (local-unset-key (kbd "C-g"))
+    (local-set-key (kbd "C-g") 'treesit-context-abort)
+    ;; (add-hook 'post-command-hook #'treesit-context--update nil 'local)
+    (setq treesit-context--timer (run-with-idle-timer 0.1 t 'treesit-context--update))
+    (treesit-context--update)))
+#+end_src
+声明删除窗口的函数（不知道该怎么称呼这东西了）
+#+begin_src emacs-lisp
+(defun treesit-context-abort ()
+  "Abort showing code context."
+  (interactive)
+  (posframe-hide treesit-context--buffer)
+  (local-set-key (kbd "C-g") 'keyboard-quit)
+  ;; (kill-buffer treesit-context--buffer)
+  ;; (remove-hook 'post-command-hook #'treesit-context--update 'local)
+  (when treesit-context--timer
+    (cancel-timer treesit-context--timer)))
+#+end_src
+我们可以显示像 loop,fucntion,condition,class 之类的各种 =tree-sitter node= ，这个时候我们就要维护一个变量记录我们要显示什么东西了。
+#+begin_src emacs-lisp
+(defun treesit-context--add-to-list (node)
+  "Add the text of the node into `treesit-context--list'."
+  (if (or (string= (treesit-node-type node) "struct_specifier")
+	      (string= (treesit-node-type node) "function_definition"))
+      (progn
+	(let* ((text (treesit-node-text node))
+	       (buf (generate-new-buffer "*treesit-context-temp-buffer*"))
+	       (text-showed nil))
+	  (with-current-buffer buf
+	    (goto-char (point-min))	    (insert text)
+	    (goto-char (point-min))
+	    (setq text-showed (buffer-substring
+			       (point-min) (line-end-position))))
+	  (push text-showed treesit-context--list)
+	  (kill-buffer buf)))))
+#+end_src
+我们需要从 =tree-sitter= 中查询上下文以显示代码层级。
+#+begin_src emacs-lisp
+(defun treesit-context--get-context-from-list ()
+  "Get the context of `treesit-context--list'"
+  (let ((context ""))
+    (dolist (text treesit-context--list)
+      (setq context (concat context text "\n")))
+    context))
+#+end_src
+光标是会动的，层级是会变化的，窗口是要更新的。
+#+begin_src emacs-lisp
+(defun treesit-context--update ()
+  "Update `treesit-context--ov'."
+  (unless (or (minibufferp) (not (buffer-live-p treesit-context--buffer)))
+    (setq treesit-context--list nil)
+    (ignore-errors
+      (let* ((node (treesit-node-at (point))))
+	(cl-loop while node
+		 do (treesit-context--add-to-list node)
+		 do (setq node (treesit-node-parent node)))))
+    (if treesit-context--list
+	(progn
+	  (with-current-buffer treesit-context--buffer
+	    (erase-buffer)
+	    (insert (treesit-context--get-context-from-list)))
+	  (when (posframe-workable-p)
+	    (posframe-show treesit-context--buffer
+			   :poshandler #'posframe-poshandler-window-top-right-corner
+			   :background-color "#454545"
+			   :border-width 5
+			   :border-color "#454545")))
+      (posframe-hide treesit-context--buffer))))
+#+end_src
+在 C++ 中自启动 treesit-context
+#+begin_src emacs-lisp
+(add-hook 'c++-ts-mode-hook #'treesit-context)
+#+end_src
 *** vterm-run

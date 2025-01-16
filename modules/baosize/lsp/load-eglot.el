@@ -1,10 +1,3 @@
-(defvar +lsp-defer-shutdown 3
-  "If non-nil, defer shutdown of LSP servers for this many seconds after last
-workspace buffer is closed.
-
-This delay prevents premature server shutdown when a user still intends on
-working on that project after closing the last buffer, or when programmatically
-killing and opening many LSP/eglot-powered buffers.")
 ;;
 ;;; Common
 (defvar +lsp--default-read-process-output-max nil)
@@ -46,12 +39,10 @@ killing and opening many LSP/eglot-powered buffers.")
   (add-to-list 'eglot-server-programs
                `(c++-ts-mode . ("clangd"
                                 "--background-index"
-			                    "--header-insertion=iwyu"
-			                    "--completion-style=detailed"
-			                    "--function-arg-placeholders"
-			                    "--fallback-style=llvm"
-			                    )))
+			                    "--header-insertion=iwyu")))
   (set-popup-rule! "^\\*eglot-help" :size 0.15 :quit t :select t)
+  (set-popup-rule! "*xref*" :size 0.15 :quit t :select t)
+  (set-popup-rule! "*eldoc*" :size 0.2 :quit t :select t)
   (set-lookup-handlers! 'eglot--managed-mode
     :definition      #'xref-find-definitions
     :references      #'xref-find-references
@@ -60,26 +51,7 @@ killing and opening many LSP/eglot-powered buffers.")
     :documentation   #'+eglot-lookup-documentation)
   (cl-callf plist-put eglot-events-buffer-config :size 0)
   (add-to-list 'doom-debug-variables '(eglot-events-buffer-config :size 2000000 :format full))
-  (defadvice! +lsp--defer-server-shutdown-a (fn &optional server)
-    "Defer server shutdown for a few seconds.
-This gives the user a chance to open other project files before the server is
-auto-killed (which is a potentially expensive process). It also spares the
-server an expensive restart when its buffer is reverted."
-    :around #'eglot--managed-mode
-    (letf! (defun eglot-shutdown (server)
-             (if (or (null +lsp-defer-shutdown)
-                     (eq +lsp-defer-shutdown 0))
-                 (prog1 (funcall eglot-shutdown server)
-                   (+lsp-optimization-mode -1))
-               (run-at-time
-                (if (numberp +lsp-defer-shutdown) +lsp-defer-shutdown 3)
-                nil (lambda (server)
-                      (unless (eglot--managed-buffers server)
-                        (prog1 (funcall eglot-shutdown server)
-                          (+lsp-optimization-mode -1))))
-                server)))
-      (funcall fn server)))
-  :bind
+    :bind
   (("C-c lr" . eglot-rename)
    ("C-c la" . eglot-code-actions)
    ("C-c lj" . eglot-find-declaration)

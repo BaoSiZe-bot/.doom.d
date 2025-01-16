@@ -17,3 +17,4 @@ modules/baosize/sort-tab/config.el
 modules/baosize/sort-tab/packages.el
 modules/baosize/chinese/config.el
 modules/baosize/chinese/packages.el
+modules/baosize/treesit-context/config.el
