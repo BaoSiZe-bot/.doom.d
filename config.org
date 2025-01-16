@@ -370,6 +370,7 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
   (noflet (process-list) ad-do-it))
 #+end_src
 自定义Variables和Faces
+
 我不知道这是干嘛用的，但它既然在这里……
 #+begin_src emacs-lisp
 (custom-set-variables)
@@ -399,6 +400,7 @@ Emacs 核心所需的插件
 * 个人模块
 ** meow
 Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻量级的Meow了
+
 =M-x meow-tutor= 以学习Meow按键（类似于vim-tutor）
 #+begin_src emacs-lisp :tangle modules/editor/meow/packages.el
 ;; -*- no-byte-compile: t; -*-
@@ -608,6 +610,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 (use-package blink-search
 #+end_src
 由于某种原因， =blink-search= 不能正常加载，需要指定 =load-path= 。
+
 注意如果把 Doom 安装在 =~/.config/emacs= 需要更改位置。
 #+begin_src emacs-lisp
 :load-path "~/.emacs.d/.local/straight/repos/blink-search/"
@@ -869,6 +872,7 @@ eaf 需要编译相关依赖
 #+end_src
 *** holo-layer
 懒猫开发的各种特效，没有准 =Linux= 环境所以目前唯一成功的环境是 =wslg+sway= 。
+
 这个模块会破坏 =blink-search= 的窗口，不建议启用。
 **** config.el
 :PROPERTIES:
@@ -940,6 +944,7 @@ eaf 需要编译相关依赖
 ;;; modules/baosize/chinese/config.el -*- lexical-binding: t; -*-
 #+end_src
 使用 =ace-pinyin= 以支持 =avy= 跳转到中文
+
 使用 =pinyin-lib= 以支持 =consult= 搜索中文
 #+begin_src emacs-lisp
 (use-package ace-pinyin
@@ -1162,7 +1167,9 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 :header-args: :tangle modules/baosize/treesit-context/config.el
 :END:
 类似于 [[https://github.com/nvim-treesitter/nvim-treesitter-context][Nvim Treesitter Context]] 的显示代码层级的插件，代码高度借鉴[[https://emacs-china.org/t/treesit-context-tree-sitter-topsy/25162][Emacs China]]
+
 试着整理一下，当学习 =Emacs Lisp= 了。
+
 定义基本变量，以及文件头
 #+begin_src emacs-lisp
 ;;; modules/baosize/treesit-context/config.el -*- lexical-binding: t; -*-
