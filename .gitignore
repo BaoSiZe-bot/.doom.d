@@ -17,4 +17,6 @@ modules/baosize/sort-tab/config.el
 modules/baosize/sort-tab/packages.el
 modules/baosize/chinese/config.el
 modules/baosize/chinese/packages.el
-modules/baosize/treesit-context/config.el
+modules/baosize/treesit-context/autoload.el
+modules/baosize/vterm-run/config.el
+modules/baosize/vterm-run/autoload.el

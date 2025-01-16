@@ -84,30 +84,30 @@
        ;;(emoji +unicode)  ; 🙂
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;indent-guides     ; highlighted indent columns
-       ;;ligatures         ; ligatures and symbols to make your code pretty again
-       ;;minimap           ; show a map of the code on the side
+       ligatures           ; ligatures and symbols to make your code pretty again
+       minimap             ; show a map of the code on the side
        modeline            ; snazzy, Atom-inspired modeline, plus API
-       ;;nav-flash         ; blink cursor line after big motions
+       nav-flash           ; blink cursor line after big motions
        ;;neotree           ; a project drawer, like NERDTree for vim
        ;;ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
        ;;treemacs          ; a project drawer, like neotree but cooler
-       ;;unicode           ; extended unicode support for various languages
+       unicode             ; extended unicode support for various languages
        (vc-gutter +pretty) ; vcs diff in the fringe
-       ;;vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       vi-tilde-fringe     ; fringe tildes to mark beyond EOB
        ;;window-select     ; visually switch windows
        workspaces          ; tab emulation, persistence & separate workspaces
-       ;;zen               ; distraction-free coding or writing
+       zen                 ; distraction-free coding or writing
 
        :editor
        meow                ; come to the dark side, we have cookies
-       ;;file-templates    ; auto-snippets for empty files
-       ;;fold              ; (nigh) universal code folding
-       ;;(format +onsave)  ; automated prettiness
+       file-templates      ; auto-snippets for empty files
+       fold                ; (nigh) universal code folding
+       (format +onsave)    ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
-       ;;multiple-cursors  ; editing in many places at once
+       multiple-cursors    ; editing in many places at once
        ;;objed             ; text object editing for the innocent
        ;;parinfer          ; turn lisp into python, sort of
        ;;rotate-text       ; cycle region at point between text candidates
@@ -137,7 +137,7 @@
        ;;ansible
        ;;biblio            ; Writes a PhD for you (citation needed)
        ;;collab            ; buffers with friends
-       ;;debugger          ; FIXME stepping through code, to help you add bugs
+       debugger            ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
        editorconfig        ; let someone else argue about tabs vs spaces
@@ -157,7 +157,7 @@
 
        :os
        (:if (featurep :system 'macos) macos)  ; improve compatibility with macOS
-       ;;tty               ; improve the terminal Emacs experience
+       (tty +osc)          ; improve the terminal Emacs experience
 
        :lang
        ;;agda              ; types of types of types of types...
@@ -328,6 +328,7 @@ C++ 缩进和调试
 (add-hook 'c++-ts-mode-hook (lambda ()
 (setq c-basic-offset 4)
 (rainbow-delimiters-mode-enable)
+(treesit-context)
 (bind-key "C-c d c" #'cpp-gdb 'c++-ts-mode-map)
  (defun cpp-gdb ()
    (interactive)
@@ -986,7 +987,7 @@ eaf 需要编译相关依赖
            rime-predicate-hydra-p
            rime-predicate-prog-in-code-p
            rime-predicate-space-after-cc-p
-           rime-predicate-org-in-src-block-p
+           ;; rime-predicate-org-in-src-block-p
            rime-predicate-org-latex-mode-p
            rime-predicate-punctuation-after-space-cc-p
            rime-predicate-punctuation-after-ascii-p
@@ -1152,7 +1153,7 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 #+end_src
 **** packages.el
 安装对应插件
-#+begin_src emacs-lisp :tangled modules/baosize/mycorfu/packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/mycorfu/packages.el
 ;; -*- no-byte-compile: t; -*-
 ;;; modules/baosize/mycorfu/packages.el
 (package! corfu
@@ -1164,7 +1165,7 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 *** tools
 *** treesit-context
 :PROPERTIES:
-:header-args: :tangle modules/baosize/treesit-context/config.el
+:header-args: :tangle modules/baosize/treesit-context/autoload.el
 :END:
 类似于 [[https://github.com/nvim-treesitter/nvim-treesitter-context][Nvim Treesitter Context]] 的显示代码层级的插件，代码高度借鉴[[https://emacs-china.org/t/treesit-context-tree-sitter-topsy/25162][Emacs China]]
 
@@ -1172,7 +1173,8 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 
 定义基本变量，以及文件头
 #+begin_src emacs-lisp
-;;; modules/baosize/treesit-context/config.el -*- lexical-binding: t; -*-
+;;; modules/baosize/treesit-context/autoload.el -*- lexical-binding: t; -*-
+;;;###autoload
 (defgroup treesit-context nil
   "Show the context of the currently visible buffer contents."
   :group 'treesit)
@@ -1185,6 +1187,7 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 #+end_src
 声明显示函数（ =Emacs Lisp= 加载的时候会先读取所有源码，然后在源码中查找定义，也就是说无需计较声明顺序，不像某些 C 语言）
 #+begin_src emacs-lisp
+;;;###autoload
 (defun treesit-context ()
   "Show code context."
   (interactive)
@@ -1197,6 +1200,7 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 #+end_src
 声明删除窗口的函数（不知道该怎么称呼这东西了）
 #+begin_src emacs-lisp
+;;;###autoload
 (defun treesit-context-abort ()
   "Abort showing code context."
   (interactive)
@@ -1209,6 +1213,7 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 #+end_src
 我们可以显示像 loop,fucntion,condition,class 之类的各种 =tree-sitter node= ，这个时候我们就要维护一个变量记录我们要显示什么东西了。
 #+begin_src emacs-lisp
+;;;###autoload
 (defun treesit-context--add-to-list (node)
   "Add the text of the node into `treesit-context--list'."
   (if (or (string= (treesit-node-type node) "struct_specifier")
@@ -1227,6 +1232,7 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 #+end_src
 我们需要从 =tree-sitter= 中查询上下文以显示代码层级。
 #+begin_src emacs-lisp
+;;;###autoload
 (defun treesit-context--get-context-from-list ()
   "Get the context of `treesit-context--list'"
   (let ((context ""))
@@ -1236,6 +1242,7 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 #+end_src
 光标是会动的，层级是会变化的，窗口是要更新的。
 #+begin_src emacs-lisp
+;;;###autoload
 (defun treesit-context--update ()
   "Update `treesit-context--ov'."
   (unless (or (minibufferp) (not (buffer-live-p treesit-context--buffer)))
@@ -1258,8 +1265,92 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 			   :border-color "#454545")))
       (posframe-hide treesit-context--buffer))))
 #+end_src
-在 C++ 中自启动 treesit-context
-#+begin_src emacs-lisp
-(add-hook 'c++-ts-mode-hook #'treesit-context)
-#+end_src
 *** vterm-run
+**** autoload.el
+:PROPERTIES:
+:header-args: :tangle modules/baosize/vterm-run/autoload.el
+:END:
+判断是否开启了 =vterm= 模块
+#+begin_src emacs-lisp
+;;; modules/baosize/vterm-run/autoload.el -*- lexical-binding: t; -*-
+;;;###if (modulep! :term vterm)
+#+end_src
+将内容发送给 =vterm=
+#+begin_src emacs-lisp
+;;;###autoload
+(defun run-in-vterm (command)
+  "Execute string COMMAND in a new vterm.
+   Interactively, prompt for COMMAND with the current buffer's file
+   name supplied. When called from Dired, supply the name of the
+   file at point.
+   Like `async-shell-command`, but run in a vterm for full terminal features.
+   The new vterm buffer is named in the form `*foo bar.baz*`, the
+   command and its arguments in earmuffs.
+   When the command terminates, the shell remains open, but when the
+   shell exits, the buffer is killed."
+  (interactive
+   (list
+    (let* ((f (cond (buffer-file-name)
+                    ((eq major-mode 'dired-mode)
+                     (dired-get-filename nil t))))
+           (filename (if f
+                         (concat " " (shell-quote-argument f))
+                       "")))
+      (read-shell-command "Terminal command: "
+                          (cons filename 0)
+                          (cons 'shell-command-history 1)
+                          (list filename)))))
+  (+vterm/toggle nil)
+  (vterm-send-string command)
+  (vterm-send-return))
+#+end_src
+运行代码
+#+begin_src emacs-lisp
+;;;###autoload
+(defun run-code ()
+  (interactive)
+  (if buffer-file-name
+    (let ((file-name (shell-quote-argument
+                      (file-name-sans-extension
+                       (file-name-nondirectory buffer-file-name))))
+          (file-path (shell-quote-argument buffer-file-name))
+          (dir (shell-quote-argument
+                (if (doom-project-root) (doom-project-root)
+                  (file-name-directory buffer-file-name)))))
+      (pcase major-mode
+        ('c-ts-mode (run-in-vterm (concat "cd " dir " && "
+                                        "gcc -O2 -std=c11 -g3 "
+                                        file-path
+                                        " -o /tmp/c-" file-name
+                                        " && /tmp/c-" file-name)))
+        ('c++-ts-mode (run-in-vterm (concat "cd " dir " && "
+                                          "g++ -O2 -std=gnu++17 -g3 "
+                                          file-path
+                                          " -o /tmp/cpp-" file-name
+                                          " && /tmp/cpp-" file-name)))
+        ('python-ts-mode (run-in-vterm (concat "cd " dir " && "
+                                             "python " file-path)))
+        (_ (message "not supported"))))
+  (message "buffer-file-name is nil")))
+#+end_src
+进行代码错误检查
+#+begin_src emacs-lisp
+;;;###autoload
+(defun run-cpp-fsanitize ()
+  (interactive)
+  (if buffer-file-name
+      (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+            (dir (if (doom-project-root) (doom-project-root) (file-name-directory buffer-file-name))))
+        (run-in-vterm (concat "cd " dir " && " "clang++ -O2 -std=c++17 -fsanitize=undefined " buffer-file-name " -o /tmp/cpp-" filename " && /tmp/cpp-" filename)))
+    (message "buffer-file-name is nil")))
+#+end_src
+**** config.el
+绑定一些快捷键
+#+begin_src emacs-lisp :tangle modules/baosize/vterm-run/config.el
+;;; modules/baosize/vterm-run/config.el -*- lexical-binding: t; -*-
+(when (modulep! :term vterm)
+  (bind-keys ("C-c o TAB" . run-in-vterm)
+        ("C-c oo" . run-code)
+        ("C-c ot" . +vterm/toggle)
+        ("C-c oF" . run-cpp-fsanitize)))
+#+end_src
