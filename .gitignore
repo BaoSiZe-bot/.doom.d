@@ -23,3 +23,9 @@ modules/baosize/vterm-run/autoload.el
 modules/baosize/popweb/config.el
 modules/baosize/popweb/packages.el
 modules/baosize/mycorfu/autoload.el
+modules/baosize/symbol-overlay/config.el
+modules/baosize/symbol-overlay/packages.el
+modules/baosize/winum/config.el
+modules/baosize/winum/packages.el
+modules/baosize/super-save/config.el
+modules/baosize/super-save/packages.el
