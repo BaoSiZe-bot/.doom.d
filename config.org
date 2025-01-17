@@ -35,6 +35,7 @@
     - [[#eaf][EAF]]
     - [[#holo-layer][holo-layer]]
     - [[#sort-tab][sort-tab]]
+    - [[#popweb][popweb]]
     - [[#chinese][chinese]]
     - [[#lsp][lsp]]
     - [[#corfu][corfu]]
@@ -61,7 +62,8 @@
 ;;
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
-
+(setq inhibit-startup-screen t)
+(setq initial-major-mode 'text-mode)
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
        ;;chinese
@@ -192,7 +194,7 @@
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
-       ;;latex             ; writing papers in Emacs has never been so fun
+       latex               ; writing papers in Emacs has never been so fun
        ;;lean              ; for folks with too much to prove
        ;;ledger            ; be audit you can be
        ;;lua               ; one-based indices? one-based indices
@@ -247,6 +249,7 @@
        ;;awesome-tray
        ;;holo-layer
        eaf
+       popweb
        blink-search
        (mycorfu +icons)    ; complete with cap(f), cape and a flying feather!
        sort-tab
@@ -281,6 +284,11 @@ VictorMono & 霞鹜文楷，emoji设置特殊字体
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (add-hook 'after-setting-font-hook #'+font-set-emoji)
+#+end_src
+平滑滚动
+#+begin_src emacs-lisp
+(setq scroll-step 0
+      scroll-conservatively 10000)
 #+end_src
 Treesitter 默认的高亮太素了，但是定义多了影响速度，设置一下jit-lock-defer-time
 #+begin_src emacs-lisp
@@ -935,6 +943,42 @@ eaf 需要编译相关依赖
 (package! sort-tab
   :recipe (:host github :repo "manateelazycat/sort-tab"))
 #+end_src
+*** popweb
+懒猫开发的多媒体弹窗，目前支持预览 =LaTeX= ，弹出各种翻译。
+**** config.el
+:PROPERTIES:
+:header-args: :tangle modules/baosize/popweb/config.el
+:END:
+指定 =load-path= 
+#+begin_src emacs-lisp
+;;; modules/baosize/popweb/config.el -*- lexical-binding: t; -*-
+;;(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/org-roam")
+(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/latex")
+(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/dict")
+;;(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/color-picker")
+;;(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/anki-review")
+(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/url-preview")
+#+end_src
+加载对应应用
+#+begin_src emacs-lisp
+(use-package popweb
+  :defer 0.5
+  :config
+  (use-package popweb-url)
+;;(use-package color-picker)
+  (use-package popweb-dict)
+  (use-package popweb-latex
+    :hook (latex-mode . popweb-latex-mode)))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/popweb/packages.el
+;; -*- no-byte-compile: t; -*-
+;;; modules/baosize/popweb/packages.el
+(package! popweb
+  :recipe (:host github
+           :repo "manateelazycat/popweb"
+           :files ("*")))
+#+end_src
 *** chinese
 设置 emacs-rime 输入法， Rime 在 =~/.local/share/emacs-rime= 文件夹中设置。 
 **** config.el
@@ -1071,7 +1115,7 @@ Doom 默认的 corfu 模块很慢，而且和各种配置都不大兼容，所�
 启用 minibuffer 补全，在最小化配置删掉 =vertico= 时很有用
 #+begin_src emacs-lisp
   :config
-  (when (featurep! +minibuffer)
+  (when (modulep! +minibuffer)
     (add-hook 'minibuffer-setup-hook #'+corfu--enable-in-minibuffer))
 #+end_src
 自动弹出补全
@@ -1142,6 +1186,12 @@ Doom 默认的 corfu 模块很慢，而且和各种配置都不大兼容，所�
   (add-to-list 'completion-at-point-functions #'cape-keyword t)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev t))
 #+end_src
+添加 english helper 插件
+#+begin_src emacs-lisp
+(use-package corfu-english-helper
+  :defer t
+  :hook (text-mode . toggle-corfu-english-helper))
+#+end_src
 corfu 基于历史记录的排序方式，在 corfu 之后加载
 #+begin_src emacs-lisp
 (use-package corfu-history
@@ -1161,6 +1211,7 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 (when (modulep! +icons)
 (package! nerd-icons-corfu))
 (package! cape)
+(package! corfu-english-helper :recipe(:host github :repo "manateelazycat/corfu-english-helper" :files ("*")))
 #+end_src
 *** tools
 *** treesit-context
