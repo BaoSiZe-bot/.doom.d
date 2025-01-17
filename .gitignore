@@ -4,3 +4,4 @@ packages.el
 modules/baosize/mycorfu/autoload.el
 modules/baosize/vterm-run/autoload.el
 modules/baosize/treesit-context/autoload.el
+modules/baosize/emacs-lsp-booster/doctor.el

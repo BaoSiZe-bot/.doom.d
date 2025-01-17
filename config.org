@@ -47,6 +47,7 @@
     - [[#super-save][super-save]]
     - [[#keyfreq][keyfreq]]
     - [[#colorful-mode][colorful-mode]]
+    - [[#emacs-lsp-booster][emacs-lsp-booster]]
 #+END_QUOTE
 
 * init.el
@@ -268,6 +269,7 @@
        winum
        super-save
        keyfreq
+       emacs-lsp-booster
        colorful-mode
        vterm-run)
 #+end_src
@@ -734,27 +736,21 @@ ESC 退出焦点
 #+begin_src emacs-lisp
   (defun luogu-open-problem (pid)
     (interactive "M[Luogu] ProblemID: ")
-    (require 'eaf-browser)
     (eaf-open-browser (concat "https://www.luogu.com.cn/problem/" pid)))
   (defun luogu-open-discuss (did)
     (interactive "M[Luogu] DiscussID: ")
-    (require 'eaf-browser)
     (eaf-open-browser (concat "https://www.luogu.com.cn/discuss/" did)))
   (defun luogu-open-training (tid)
     (interactive "M[Luogu] TrainingID: ")
-    (require 'eaf-browser)
     (eaf-open-browser (concat "https://www.luogu.com.cn/training/" tid)))
   (defun luogu-open-user-home (uid)
     (interactive "M[Luogu] UserID: ")
-    (require 'eaf-browser)
     (eaf-open-browser (concat "https://www.luogu.com.cn/user/" uid)))
   (defun luogu-open-contest (cid)
     (interactive "M[Luogu] ContestID: ")
-    (require 'eaf-browser)
     (eaf-open-browser (concat "https://www.luogu.com.cn/contest/" cid)))
   (defun luogu-open-team (teamid)
     (interactive "M[Luogu] TeamID: ")
-    (require 'eaf-browser)
     (eaf-open-browser (concat "https://www.luogu.com.cn/team/" teamid)))
 #+end_src
 浏览器键绑定
@@ -1555,4 +1551,61 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 ;; -*- no-byte-compile: t; -*-
 ;;; modules/baosize/super-save/packages.el
 (package! colorful-mode)
+#+end_src
+*** emacs-lsp-booster
+为 lsp-mode 和 eglot 进行加速（将 json 转换为 elisp 形式，加速解析）
+**** config.el
+没啥好说的，都是从项目主页抄的。
+#+begin_src emacs-lisp :tangle modules/baosize/emacs-lsp-booster/config.el
+;;; modules/baosize/emacs-lsp-booster/config.el
+(if (modulep! :tools lsp +eglot)
+  (use-package eglot-booster
+    :after eglot
+    :config (eglot-booster-mode))
+  (progn (defun lsp-booster--advice-json-parse (old-fn &rest args)
+  "Try to parse bytecode instead of json."
+  (or
+   (when (equal (following-char) ?#)
+     (let ((bytecode (read (current-buffer))))
+       (when (byte-code-function-p bytecode)
+         (funcall bytecode))))
+   (apply old-fn args)))
+  (advice-add (if (progn (require 'json)
+                         (fboundp 'json-parse-buffer))
+                  'json-parse-buffer
+                'json-read)
+              :around
+              #'lsp-booster--advice-json-parse)
+  (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+    "Prepend emacs-lsp-booster command to lsp CMD."
+    (let ((orig-result (funcall old-fn cmd test?)))
+      (if (and (not test?)                             ;; for check lsp-server-present?
+               (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+               lsp-use-plists
+               (not (functionp 'json-rpc-connection))  ;; native json-rpc
+               (executable-find "emacs-lsp-booster"))
+          (progn
+            (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
+              (setcar orig-result command-from-exec-path))
+            (message "Using emacs-lsp-booster for %s!" orig-result)
+            (cons "emacs-lsp-booster" orig-result))
+        orig-result)))
+  (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)))
+
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/emacs-lsp-booster/packages.el
+;; -*- no-byte-compile: t; -*-
+;;; modules/baosize/emacs-lsp-booster/packages.el
+(when (modulep! :tools lsp +eglot)
+  (package! eglot-booster
+    :recipe(:host github
+            :repo "jdtsmith/eglot-booster")))
+#+end_src
+**** doctor.el
+要是没有 emacs-lsp-booster 可执行文件的话……
+#+begin_src emacs-lisp :tangle modules/baosize/emacs-lsp-booster/doctor.el
+;;; modules/baosize/emacs-lsp-booster/doctor.el
+(unless (executable-find "emacs-lsp-booster")
+  (warn! "LSP will crash when emacs-lsp-booster can't found in PATH!"))
 #+end_src
