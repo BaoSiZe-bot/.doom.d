@@ -44,7 +44,9 @@
     - [[#vterm-run][vterm-run]]
     - [[#winum][winum]]
     - [[#symbol-overlay][symbol-overlay]]
-    - [[#symbol-overlay-1][symbol-overlay]]
+    - [[#super-save][super-save]]
+    - [[#keyfreq][keyfreq]]
+    - [[#colorful-mode][colorful-mode]]
 #+END_QUOTE
 
 * init.el
@@ -265,6 +267,8 @@
        symbol-overlay
        winum
        super-save
+       keyfreq
+       colorful-mode
        vterm-run)
 #+end_src
 * config.el
@@ -344,35 +348,6 @@ C++ 缩进和调试
 (add-hook 'c++-ts-mode-hook (lambda ()
 (setq c-basic-offset 4)
 (rainbow-delimiters-mode-enable)
-(defun lsp-booster--advice-json-parse (old-fn &rest args)
-  "Try to parse bytecode instead of json."
-  (or
-   (when (equal (following-char) ?#)
-     (let ((bytecode (read (current-buffer))))
-       (when (byte-code-function-p bytecode)
-         (funcall bytecode))))
-   (apply old-fn args)))
-(advice-add (if (progn (require 'json)
-                       (fboundp 'json-parse-buffer))
-                'json-parse-buffer
-              'json-read)
-            :around
-            #'lsp-booster--advice-json-parse)
-(defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
-  "Prepend emacs-lsp-booster command to lsp CMD."
-  (let ((orig-result (funcall old-fn cmd test?)))
-    (if (and (not test?)                             ;; for check lsp-server-present?
-             (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
-             lsp-use-plists
-             (not (functionp 'json-rpc-connection))  ;; native json-rpc
-             (executable-find "emacs-lsp-booster"))
-        (progn
-          (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
-            (setcar orig-result command-from-exec-path))
-          (message "Using emacs-lsp-booster for %s!" orig-result)
-          (cons "emacs-lsp-booster" orig-result))
-      orig-result)))
-(advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
 (lsp!)
 (treesit-context)
 (bind-key "C-c d c" #'cpp-gdb 'c++-ts-mode-map)
@@ -1512,6 +1487,7 @@ corfu 基于历史记录的排序方式，在 corfu 之后加载
 Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多种功能
 **** config.el
 #+begin_src emacs-lisp :tangle modules/baosize/symbol-overlay/config.el
+;;; modules/baosize/symbol-overlay/config.el -*- lexical-binding: t; -*-
 (use-package symbol-overlay
     :bind
     (("M-i" . symbol-overlay-put)
@@ -1526,10 +1502,11 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 ;;; modules/baosize/symbol-overlay/packages.el
 (package! symbol-overlay)
 #+end_src
-*** symbol-overlay
+*** super-save
 自动保存
 **** config.el
 #+begin_src emacs-lisp :tangle modules/baosize/super-save/config.el
+;;; modules/baosize/super-save/config.el -*- lexical-binding: t; -*-
 (use-package super-save
   :defer 0.5
   :config
@@ -1546,4 +1523,36 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 ;; -*- no-byte-compile: t; -*-
 ;;; modules/baosize/super-save/packages.el
 (package! super-save)
+#+end_src
+*** keyfreq
+记录按键频率，方便优化
+**** config.el
+#+begin_src emacs-lisp :tangle modules/baosize/keyfreq/config.el
+;;; modules/baosize/keyfreq/config.el -*- lexical-binding: t; -*-
+(use-package keyfreq
+  :defer t
+  :hook (doom-first-input . keyfreq-mode)
+        (doom-first-input . keyfreq-autosave-mode))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/keyfreq/packages.el
+;; -*- no-byte-compile: t; -*-
+;;; modules/baosize/keyfreq/packages.el
+(package! keyfreq
+  :recipe (:host github :repo "dacap/keyfreq"))
+#+end_src
+*** colorful-mode
+在文件中将颜色标上对应高亮（比如"SpringGreen3"在 =el= 文件中会变绿）
+**** config.el
+#+begin_src emacs-lisp :tangle modules/baosize/colorful-mode/config.el
+;;; modules/baosize/colorful-mode/config.el -*- lexical-binding: t; -*-
+(use-package colorful-mode
+  :defer t
+  :hook (prog-mode text-mode))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/colorful-mode/packages.el
+;; -*- no-byte-compile: t; -*-
+;;; modules/baosize/super-save/packages.el
+(package! colorful-mode)
 #+end_src
