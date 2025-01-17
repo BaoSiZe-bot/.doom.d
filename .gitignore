@@ -22,3 +22,4 @@ modules/baosize/vterm-run/config.el
 modules/baosize/vterm-run/autoload.el
 modules/baosize/popweb/config.el
 modules/baosize/popweb/packages.el
+modules/baosize/mycorfu/autoload.el
