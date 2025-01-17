@@ -255,7 +255,6 @@
 
        :baosize
        chinese
-       tools
        ;;awesome-tray
        ;;holo-layer
        eaf
@@ -372,7 +371,31 @@ Org-mode 相关
 (setq-default vterm-shell (executable-find "fish"))
 (setq-default explicit-shell-file-name (executable-find "fish"))
 #+end_src
+显示时间
+#+begin_src emacs-lisp
+(display-time-mode)
+#+end_src
+支持 FooBar 类 subword 移动
+#+begin_src emacs-lisp
+(global-subword-mode)
+#+end_src
+设置括号匹配，用绿色高亮
+#+begin_src emacs-lisp 
+(use-package paren
+  :defer t
+  :custom-face (show-paren-match ((t (:foreground "SpringGreen3" :underline t :weight bold))))
+  :config
+  (setq show-paren-when-point-inside-paren t
+        show-paren-when-point-in-periphery t
+        show-paren-context-when-offscreen t))
+#+end_src
+打开面包屑导航
+#+begin_src emacs-lisp
+(when (modulep! :tools lsp)
+  (add-hook 'lsp-mode-hook #'lsp-headerline-breadcrumb-mode))
+#+end_src
 悬浮窗口
+
 corfu 貌似不应该出现在这里，但是不放这里就没法工作
 #+begin_src emacs-lisp 
 (standard-display-unicode-special-glyphs) ; 终端中的弹窗不设置会使用ASCII边框
@@ -380,9 +403,11 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
   (global-corfu-mode)
   (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode))
 #+end_src
-别再提醒我 "Really kill emacs?" 了。
+简化提示，用 y/n 代替 yes/no ，别再提醒我 "Really kill emacs?" 了。
+
 从 manateelazycat 大佬的配置上抄的，但我并不知道新语法 advice-add 怎么用。
 #+begin_src emacs-lisp
+(fset 'yes-or-no-p 'y-or-n-p)
 ;; (advice-add 'save-buffer-kill-emacs :around (lambda (fn &rest)
 ;;   (require 'noflet)
 ;;   (setq confirm-kill-emacs nil)
