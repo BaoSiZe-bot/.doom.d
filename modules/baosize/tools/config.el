@@ -35,9 +35,9 @@
     ;; (add-hook 'prog-mode-hook #'symbol-overlay-mode)
     ;; (add-hook 'text-mode-hook #'symbol-overlay-mode)
 
-(use-package breadcrumb
-  :defer t
-  :hook (prog-mode . breadcrumb-local-mode))
+(if (modulep! :tools lsp)
+  (add-hook 'lsp-mode-hook #'lsp-headerline-breadcrumb-mode))
+
 (use-package winum
   :defer 0.5
   :config

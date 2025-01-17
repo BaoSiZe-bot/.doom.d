@@ -45,7 +45,13 @@
 #+END_QUOTE
 
 * init.el
-本部分决定了Doom所启用的模块和加载顺序。
+本部分决定了 Doom 所启用的模块和加载顺序。
+
+这是我个人的配置，不客制化，而我已经熟练了 Doom 的快捷键，所以 Dashboard 对我来说并不重要。
+
+在 Meow 的背景下， nav-flash 毫无用处。
+
+在 C++ 中自动格式化不是个好想法，尤其当设置了自动保存时。
 #+begin_src emacs-lisp :tangle init.el
 ;;; init.el -*- lexical-binding: t; -*-
 
@@ -62,8 +68,6 @@
 ;;
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
-(setq inhibit-startup-screen t)
-(setq initial-major-mode 'text-mode)
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
        ;;chinese
@@ -81,7 +85,7 @@
        :ui
        ;;deft              ; notational velocity for Emacs
        doom                ; what makes DOOM look the way it does
-       doom-dashboard      ; a nifty splash screen for Emacs
+       ;;doom-dashboard      ; a nifty splash screen for Emacs
        ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
        ;;(emoji +unicode)  ; 🙂
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
@@ -89,12 +93,12 @@
        ligatures           ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
        modeline            ; snazzy, Atom-inspired modeline, plus API
-       nav-flash           ; blink cursor line after big motions
+       ;;nav-flash           ; blink cursor line after big motions
        ;;neotree           ; a project drawer, like NERDTree for vim
        ;;ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
-       ;;treemacs          ; a project drawer, like neotree but cooler
+       treemacs          ; a project drawer, like neotree but cooler
        unicode             ; extended unicode support for various languages
        (vc-gutter +pretty) ; vcs diff in the fringe
        ;;vi-tilde-fringe   ; fringe tildes to mark beyond EOB
@@ -106,7 +110,7 @@
        meow                ; come to the dark side, we have cookies
        ;;file-templates    ; auto-snippets for empty files
        fold                ; (nigh) universal code folding
-       (format +onsave)    ; automated prettiness
+       format              ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        multiple-cursors    ; editing in many places at once
@@ -117,12 +121,12 @@
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       ;;dired             ; making dired pretty [functional]
+       (dired +icons)      ; making dired pretty [functional]
        ;;electric          ; smarter, keyword-based electric-indent
-       ;;eww               ; the internet is gross
-       ;;ibuffer           ; interactive buffer management
-       ;;undo              ; persistent, smarter undo for your inevitable mistakes
-       ;;vc                ; version-control and Emacs, sitting in a tree
+       ;;eww                 ; the internet is gross
+       (ibuffer +icons)    ; interactive buffer management
+       undo                ; persistent, smarter undo for your inevitable mistakes
+       vc                  ; version-control and Emacs, sitting in a tree
 
        :term
        ;;eshell            ; the elisp shell that works everywhere
@@ -132,7 +136,7 @@
 
        :checkers
        (syntax +childframe +flymake)             ; tasing you for every semicolon you forget
-       ;;(spell +flyspell) ; tasing you for misspelling mispelling
+       ;;(spell +flyspell)   ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
@@ -146,7 +150,7 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        eval                ; run code, run (also, repls)
        lookup              ; navigate your code and its documentation
-       ;; (lsp +eglot)     ; M-x vscode
+       (lsp +peek +lsp)    ; M-x vscode
        magit               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -198,7 +202,7 @@
        ;;lean              ; for folks with too much to prove
        ;;ledger            ; be audit you can be
        ;;lua               ; one-based indices? one-based indices
-       markdown            ; writing docs for people to ignore
+       (markdown +grip)    ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
@@ -227,7 +231,7 @@
        ;;zig               ; C, but simpler
 
        :app
-       ;;calendar
+       calendar
        ;;emms
        ;;everywhere        ; *leave* Emacs!? You must be joking
        ;;irc               ; how neckbeards socialize
@@ -251,10 +255,9 @@
        eaf
        popweb
        blink-search
-       (mycorfu +icons)    ; complete with cap(f), cape and a flying feather!
+       (mycorfu +icons +orderless)    ; complete with cap(f), cape and a flying feather!
        sort-tab
        color-rg
-       (lsp +eglot)        ; M-x vscode
        treesit-context
        vterm-run)
 #+end_src
@@ -280,7 +283,6 @@ VictorMono & 霞鹜文楷，emoji设置特殊字体
       doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
       doom-big-font (font-spec :family "VictorMono Nerd Font" :size 20 :weight 'Regular)
       nerd-icons-font-family "VictorMono Nerd Font")
-(set-fontset-font t 'han (font-spec :family "霞鹜文楷" :size 19 :weight 'Regular))
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (add-hook 'after-setting-font-hook #'+font-set-emoji)
@@ -336,6 +338,7 @@ C++ 缩进和调试
 (add-hook 'c++-ts-mode-hook (lambda ()
 (setq c-basic-offset 4)
 (rainbow-delimiters-mode-enable)
+(lsp!)
 (treesit-context)
 (bind-key "C-c d c" #'cpp-gdb 'c++-ts-mode-map)
  (defun cpp-gdb ()
@@ -708,6 +711,10 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
                                ("google" . "http://www.google.com/search?ie=utf-8&q=%s")
                                ("duckduckgo" . "https://duckduckgo.com/?q=%s"))
 #+end_src
+设置为默认浏览器
+#+begin_src emacs-lisp
+  (browse-url-browser-function #'eaf-open-browser)
+#+end_src
 ESC 退出焦点
 #+begin_src emacs-lisp
   :config
@@ -773,12 +780,17 @@ ESC 退出焦点
 (use-package eaf-file-manager
  :bind (("C-c e /" . eaf-open-in-file-manager)))
 #+end_src
+启动预览
+#+begin_src emacs-lisp
+(use-package eaf-org-previewer
+  :after-call org-mode)
+(use-package eaf-markdown-previewer
+  :after-call (markdown-mode gfm-mode))
+#+end_src
 目前存在没修好的 bug 的一些包
 #+begin_src emacs-lisp
 ;; (setq eaf-pdf-dark-mode t)
 ;; (use-package eaf-git :bind (("C-c e g" . eaf-open-git)))
-;; (add-hook org-mode (lambda () (progn (setq eaf-org-dark-mode t) (require 'eaf)(require 'eaf-org-previewer))))
-;; (add-hook markdown-mode (lambda ()(progn (setq eaf-markdown-dark-mode t) (require 'eaf)(require 'eaf-markdown-previewer))))
 )
 #+end_src
 **** packages.el
@@ -852,20 +864,23 @@ eaf 需要编译相关依赖
            (+eaf-install-deps-for-app
             (concat straight-base-dir "/straight/" straight-build-dir "/eaf-file-manager"))))
 #+end_src
+安装预览插件
+#+begin_src emacs-lisp
+(package! eaf-org-previewer
+ :recipe (:host github :repo "emacs-eaf/eaf-org-previewer"
+          :files ("*")
+          :post-build
+          (+eaf-install-deps-for-app
+           (concat straight-base-dir "/straight/" straight-build-dir "/eaf-org-previewer"))))
+(package! eaf-markdown-previewer
+ :recipe (:host github :repo "emacs-eaf/eaf-markdown-previewer"
+          :files ("*")
+          :post-build
+          (+eaf-install-deps-for-app
+           (concat straight-base-dir "/straight/" straight-build-dir "/eaf-markdown-previewer"))))
+#+end_src
 一些有 bug 的包
 #+begin_src emacs-lisp
-;;(package! eaf-org-previewer
-;;  :recipe (:host github :repo "emacs-eaf/eaf-org-previewer"
-;;           :files ("*")
-;;           :post-build
-;;           (+eaf-install-deps-for-app
-;;            (concat straight-base-dir "/straight/" straight-build-dir "/eaf-org-previewer"))))
-;;(package! eaf-markdown-previewer
-;;  :recipe (:host github :repo "emacs-eaf/eaf-markdown-previewer"
-;;           :files ("*")
-;;           :post-build
-;;           (+eaf-install-deps-for-app
-;;            (concat straight-base-dir "/straight/" straight-build-dir "/eaf-markdown-previewer"))))
 ;;(package! eaf-pdf-viewer
 ;;  :recipe (:host github :repo "emacs-eaf/eaf-pdf-viewer"
 ;;           :files ("*")
