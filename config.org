@@ -17,6 +17,7 @@
 ** 灵感
 - [[https://github.com/cnsunyour/.doom.d][cnsunyour's Doom Emacs]] 本配置中中文输入法部分借鉴了此处的写法。
 - [[https://github.com/manateelazycat/lazycat-emacs][Lazycat Emacs]] 本配置中半数插件取材于此。
+- [[https://seagle0128.github.io/.emacs.d][Centaur Emacs]] 本配置中 UI 配置绝大多数由此而来。
 - [[https://github.com/h0cheung/doom-emacs-config][H-cheung's Doom Emacs]] 本配置基于此修改而来。
 
 * 目录 :QUOTE:TOC_3:
@@ -37,9 +38,7 @@
     - [[#sort-tab][sort-tab]]
     - [[#popweb][popweb]]
     - [[#chinese][chinese]]
-    - [[#lsp][lsp]]
-    - [[#corfu][corfu]]
-    - [[#tools][tools]]
+    - [[#corfu-english-helper][corfu-english-helper]]
     - [[#treesit-context][treesit-context]]
     - [[#vterm-run][vterm-run]]
     - [[#winum][winum]]
@@ -48,6 +47,9 @@
     - [[#keyfreq][keyfreq]]
     - [[#colorful-mode][colorful-mode]]
     - [[#emacs-lsp-booster][emacs-lsp-booster]]
+    - [[#nyan][nyan]]
+    - [[#avy-thing-edit][avy-thing-edit]]
+    - [[#super-eglot][super-eglot]]
 #+END_QUOTE
 
 * init.el
@@ -74,6 +76,11 @@
 ;;
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
+(setq initial-frame-alist '((top . 0.5)
+                            (left . 0.5)
+                            (width . 0.628)
+                            (height . 0.8)
+                            (fullscreen)))
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
        ;;chinese
@@ -82,18 +89,18 @@
 
        :completion
        ;;(company +childframe)          ; the ultimate code completion backend
-       ;;(corfu +icons +orderless +dabbrev)    ; complete with cap(f), cape and a flying feather!
+       (corfu +icons +orderless +dabbrev)    ; complete with cap(f), cape and a flying feather!
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ;;ivy               ; a search engine for love and life
-       (vertico +icons)    ; the search engine of the future
+       (vertico +icons +childframe)    ; the search engine of the future
 
        :ui
        ;;deft              ; notational velocity for Emacs
        doom                ; what makes DOOM look the way it does
        ;;doom-dashboard    ; a nifty splash screen for Emacs
        ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
-       ;;(emoji +unicode)  ; 🙂
+       ;;(emoji +ascii +github)    ; 🙂
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;indent-guides     ; highlighted indent columns
        ligatures           ; ligatures and symbols to make your code pretty again
@@ -104,17 +111,17 @@
        ;;ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
-       (treemacs +lsp)     ; a project drawer, like neotree but cooler
-       ;;unicode             ; extended unicode support for various languages
+       treemacs            ; a project drawer, like neotree but cooler
+       unicode             ; extended unicode support for various languages
        (vc-gutter +pretty) ; vcs diff in the fringe
        ;;vi-tilde-fringe   ; fringe tildes to mark beyond EOB
-       window-select     ; visually switch windows
+       window-select       ; visually switch windows
        workspaces          ; tab emulation, persistence & separate workspaces
        zen                 ; distraction-free coding or writing
 
        :editor
        meow                ; come to the dark side, we have cookies
-       ;;file-templates    ; auto-snippets for empty files
+       file-templates      ; auto-snippets for empty files
        fold                ; (nigh) universal code folding
        format              ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
@@ -156,7 +163,7 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        eval                ; run code, run (also, repls)
        lookup              ; navigate your code and its documentation
-       (lsp +peek +lsp)    ; M-x vscode
+       (lsp +eglot)        ; M-x vscode
        magit               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -260,9 +267,11 @@
        eaf
        popweb
        ;;blink-search
-       (mycorfu +icons +orderless)    ; complete with cap(f), cape and a flying feather!
+       ;;(mycorfu +icons +orderless)    ; complete with cap(f), cape and a flying feather!
        sort-tab
+       corfu-english-helper
        ;;color-rg
+       nyan
        treesit-context
        symbol-overlay
        winum
@@ -270,6 +279,8 @@
        keyfreq
        emacs-lsp-booster
        colorful-mode
+       avy-thing-edit
+       super-eglot
        vterm-run)
 #+end_src
 * config.el
@@ -283,9 +294,9 @@
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(alpha-background . 85))
 #+end_src
-moonlight 主题
+monokai 主题
 #+begin_src emacs-lisp
-(setq doom-theme 'doom-moonlight)
+(setq doom-theme 'doom-monokai-pro)
 #+end_src
 VictorMono & 霞鹜文楷，emoji设置特殊字体
 #+begin_src emacs-lisp
@@ -300,8 +311,23 @@ VictorMono & 霞鹜文楷，emoji设置特殊字体
 #+end_src
 平滑滚动
 #+begin_src emacs-lisp
-(setq scroll-step 0
-      scroll-conservatively 10000)
+(when (display-graphic-p)
+  (setq mouse-wheel-scroll-amount '(1 ((shift) . hscroll))
+        mouse-wheel-scroll-amount-horizontal 1
+        mouse-wheel-progressive-speed nil))
+(setq scroll-step 1
+      scroll-margin 0
+      scroll-conservatively 100000
+      auto-window-vscroll nil
+      scroll-preserve-screen-position t)
+(if (fboundp 'pixel-scroll-precision-mode)
+    (pixel-scroll-precision-mode t)
+  (unless sys/macp
+    (use-package good-scroll
+      :diminish
+      :hook (after-init . good-scroll-mode)
+      :bind (([remap next] . good-scroll-up-full-screen)
+             ([remap prior] . good-scroll-down-full-screen)))))
 #+end_src
 Treesitter 默认的高亮太素了，但是定义多了影响速度，设置一下jit-lock-defer-time
 #+begin_src emacs-lisp
@@ -360,10 +386,10 @@ C++ 缩进和调试
            (gdb (concat "gdb -i=mi /tmp/cpp-" filename))))
      (message "buffer-file-name is nil")))))
 #+end_src
-Org-mode 相关
+键绑定
 #+begin_src emacs-lisp
-(bind-keys ("C-c f o" . consult-org-agenda))
-(remove-hook 'org-mode-hook #'+literate-enable-recompile-h)
+(bind-keys ("C-c f o" . consult-org-agenda)
+           ("C-s" . consult-line))
 #+end_src
 由于本人使用fish作为默认shell所以要做一点操作才行
 #+begin_src emacs-lisp
@@ -373,7 +399,44 @@ Org-mode 相关
 #+end_src
 显示时间
 #+begin_src emacs-lisp
+(use-package time
+  :init (setq display-time-default-load-average nil
+              display-time-format "%H:%M"))
 (display-time-mode)
+#+end_src
+让符号更漂亮
+#+begin_src emacs-lisp
+(setq prettify-org-symbols-alist
+  '(("[ ]"            . ?)
+    ("[-]"            . ?)
+    ("[X]"            . ?)
+
+    (":PROPERTIES:"   . ?)
+    (":ID:"           . ?🪪)
+    (":END:"          . ?🔚)
+
+    ("#+ARCHIVE:"     . ?📦)
+    ("#+AUTHOR:"      . ?👤)
+    ("#+CREATOR:"     . ?💁)
+    ("#+DATE:"        . ?📆)
+    ("#+DESCRIPTION:" . ?⸙)
+    ("#+EMAIL:"       . ?📧)
+    ("#+HEADERS"      . ?☰)
+    ("#+OPTIONS:"     . ?⚙)
+    ("#+SETUPFILE:"   . ?⚒)
+    ("#+TAGS:"        . ?🏷)
+    ("#+TITLE:"       . ?📓)
+
+    ("#+BEGIN_SRC"    . ?✎)
+    ("#+END_SRC"      . ?□)
+    ("#+BEGIN_QUOTE"  . ?«)
+    ("#+END_QUOTE"    . ?»)
+    ("#+RESULTS:"     . ?💻)))
+(when prettify-org-symbols-alist
+  (if prettify-symbols-alist (push prettify-org-symbols-alist prettify-symbols-alist)
+     (setq prettify-symbols-alist prettify-org-symbols-alist)))
+(global-prettify-symbols-mode)
+(add-hook 'org-mode-hook #'+org-pretty-mode)
 #+end_src
 支持 FooBar 类 subword 移动
 #+begin_src emacs-lisp
@@ -391,7 +454,7 @@ Org-mode 相关
 #+end_src
 打开面包屑导航
 #+begin_src emacs-lisp
-(when (modulep! :tools lsp)
+(when (modulep! :tools lsp +lsp)
   (add-hook 'lsp-mode-hook #'lsp-headerline-breadcrumb-mode))
 #+end_src
 悬浮窗口
@@ -399,9 +462,104 @@ Org-mode 相关
 corfu 貌似不应该出现在这里，但是不放这里就没法工作
 #+begin_src emacs-lisp 
 (standard-display-unicode-special-glyphs) ; 终端中的弹窗不设置会使用ASCII边框
+(use-package posframe
+    :init
+    (defface posframe-border
+      `((t (:inherit region)))
+      "Face used by the `posframe' border."
+      :group 'posframe)
+    (defvar posframe-border-width 2
+      "Default posframe border width.")
+    :config
+    (with-no-warnings
+      (defun my-posframe--prettify-frame (&rest _)
+        (set-face-background 'fringe nil posframe--frame))
+      (advice-add #'posframe--create-posframe :after #'my-posframe--prettify-frame)
+
+      (defun posframe-poshandler-frame-center-near-bottom (info)
+        (cons (/ (- (plist-get info :parent-frame-width)
+                    (plist-get info :posframe-width))
+                 2)
+              (/ (+ (plist-get info :parent-frame-height)
+                    (* 2 (plist-get info :font-height)))
+                 2)))))
+(use-package! org-modern
+  :after org
+  :config
+  (add-hook 'org-mode-hook #'org-modern-mode))
+(use-package transient-posframe
+    :defines posframe-border-width
+    :custom-face
+    (transient-posframe ((t (:inherit tooltip))))
+    (transient-posframe-border ((t (:inherit posframe-border :background unspecified))))
+    :hook (after-init . transient-posframe-mode)
+    :init
+    (setq transient-posframe-border-width posframe-border-width
+          transient-posframe-min-width 80
+          transient-posframe-min-height nil
+          transient-posframe-poshandler 'posframe-poshandler-frame-center
+          transient-posframe-parameters '((left-fringe . 8)
+                                          (right-fringe . 8)))
+    :config
+    (with-no-warnings
+      ;; FIXME:https://github.com/yanghaoxie/transient-posframe/issues/5#issuecomment-1974871665
+      (defun my-transient-posframe--show-buffer (buffer _alist)
+        "Show BUFFER in posframe and we do not use _ALIST at this period."
+        (when (posframe-workable-p)
+          (let* ((posframe
+	              (posframe-show buffer
+			                     :font transient-posframe-font
+			                     :position (point)
+			                     :poshandler transient-posframe-poshandler
+			                     :background-color (face-attribute 'transient-posframe :background nil t)
+			                     :foreground-color (face-attribute 'transient-posframe :foreground nil t)
+                                 :initialize #'transient-posframe--initialize
+			                     :min-width transient-posframe-min-width
+			                     :min-height transient-posframe-min-height
+			                     :internal-border-width transient-posframe-border-width
+			                     :internal-border-color (face-attribute 'transient-posframe-border :background nil t)
+			                     :override-parameters transient-posframe-parameters)))
+            (frame-selected-window posframe))))
+      (advice-add #'transient-posframe--show-buffer :override #'my-transient-posframe--show-buffer)
+
+      (setq transient-mode-line-format nil) ; without line
+
+      (defun transient-posframe--initialize ()
+        "Initialize transient posframe."
+        (setq window-resize-pixelwise t)
+        (setq window-size-fixed nil))
+
+      (defun transient-posframe--resize (window)
+        "Resize transient posframe."
+        (fit-frame-to-buffer-1 (window-frame window)
+                               nil transient-posframe-min-height
+                               nil transient-posframe-min-width))
+      (advice-add 'transient--fit-window-to-buffer :override #'transient-posframe--resize)
+
+      (defun my-transient-posframe--hide ()
+        "Hide transient posframe."
+        (posframe-hide transient--buffer-name))
+      (advice-add #'transient-posframe--delete :override #'my-transient-posframe--hide)))
+(setq vertico-posframe-poshandler #'posframe-poshandler-frame-center-near-bottom
+      vertico-posframe-parameters '((left-fringe  . 8)(right-fringe . 8)))
+(with-eval-after-load 'xref
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref))
 (with-eval-after-load 'corfu
   (global-corfu-mode)
-  (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode))
+  (bind-keys :map corfu-map
+   ("C-SPC"    . corfu-insert-separator)
+   ("C-n"      . corfu-next)
+   ("C-p"      . corfu-previous)
+   ("M-p"      . corfu-popupinfo-scroll-up)
+   ("M-n"      . corfu-popupinfo-scroll-down)
+   ("M-d"      . corfu-popupinfo-toggle)
+   ("RET"      . corfu-insert)
+   ("C-x C-k"  . cape-dict)
+   ("C-x C-f"  . cape-file))
+  (setq corfu-on-exact-match 'insert)
+  (setq corfu-preselect 'valid)
+  (setq corfu-auto-delay 0))
 #+end_src
 简化提示，用 y/n 代替 yes/no ，别再提醒我 "Really kill emacs?" 了。
 
@@ -442,8 +600,10 @@ Emacs 核心所需的插件
 ;;(package! vc-msg)
 ;;(package! power-mode)
 ;;(package! imenu-list)
+(package! org-modern)
 (package! noflet)
-(package! cal-china-x)
+(package! transient-posframe)
+;;(package! cal-china-x)
 ;;(package! railgun :recipe(:host github :repo "gynamics/railgun.el"))
 #+end_src
 * 个人模块
@@ -662,7 +822,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 
 注意如果把 Doom 安装在 =~/.config/emacs= 需要更改位置。
 #+begin_src emacs-lisp
-:load-path "~/.emacs.d/.local/straight/repos/blink-search/"
+:load-path "~/.config/doomemacs/.local/straight/repos/blink-search/"
 #+end_src
 绑定键位就使用默认的 =C-M-g= 吧。
 #+begin_src emacs-lisp
@@ -938,7 +1098,7 @@ eaf 需要编译相关依赖
 #+end_src
 解决找不到函数的 bug
 #+begin_src emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/blink-search/backend/")
+(add-to-list 'load-path "~/.config/doomemacs/.local/straight/repos/blink-search/backend/")
 #+end_src
 启动 =holo-layer=
 #+begin_src emacs-lisp
@@ -998,12 +1158,12 @@ eaf 需要编译相关依赖
 指定 =load-path= 
 #+begin_src emacs-lisp
 ;;; modules/baosize/popweb/config.el -*- lexical-binding: t; -*-
-;;(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/org-roam")
-(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/latex")
-(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/dict")
-;;(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/color-picker")
-;;(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/anki-review")
-(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/popweb/extension/url-preview")
+;;(add-to-list 'load-path "~/.config/doomemacs/.local/straight/repos/popweb/extension/org-roam")
+(add-to-list 'load-path "~/.config/doomemacs/.local/straight/repos/popweb/extension/latex")
+(add-to-list 'load-path "~/.config/doomemacs/.local/straight/repos/popweb/extension/dict")
+;;(add-to-list 'load-path "~/.config/doomemacs/.local/straight/repos/popweb/extension/color-picker")
+;;(add-to-list 'load-path "~/.config/doomemacs/.local/straight/repos/popweb/extension/anki-review")
+(add-to-list 'load-path "~/.config/doomemacs/.local/straight/repos/popweb/extension/url-preview")
 #+end_src
 加载对应应用
 #+begin_src emacs-lisp
@@ -1124,166 +1284,24 @@ Rime 本身相关设置
 (package! pinyinlib)
 (when (modulep! :editor evil) (package! evil-pinyin))
 #+end_src
-*** lsp
-*** corfu
-Doom 默认的 corfu 模块很慢，而且和各种配置都不大兼容，所以自己手搓一份得了。
-**** autoload.el
-自动加载一些定义的 API
-#+begin_src emacs-lisp :tangle modules/baosize/mycorfu/autoload.el 
-;;; modules/baosize/mycorfu/autoload.el -*- lexical-binding: t; -*-
-;;;###if (modulep! +minibuffer)
-
-;;;###autoload
-(defun +corfu--enable-in-minibuffer ()
-  (unless (or (bound-and-true-p mct--active)
-              (bound-and-true-p vertico--input)
-              (memq this-command '(evil-ex
-                                   evil-ex-search-forward
-                                   evil-ex-search-backward))
-              (and (modulep! :completion helm)
-                   (helm--alive-p))
-              (corfu-mode +1))))
-#+end_src
+*** corfu-english-helper
+用 corfu 输入英文单词
 **** config.el
 :PROPERTIES:
-:header-args: :tangle modules/baosize/mycorfu/config.el
+:header-args: :tangle modules/baosize/corfu-english-helper/config.el
 :END:
 #+begin_src emacs-lisp
-;;; modules/baosize/mycorfu/config.el -*- lexical-binding: t; -*-
-#+end_src
-懒加载 corfu
-#+begin_src emacs-lisp
-(use-package corfu
-  :defer t
-  :hook
-  (doom-first-buffer . global-corfu-mode)
-#+end_src
-启用 minibuffer 补全，在最小化配置删掉 =vertico= 时很有用
-#+begin_src emacs-lisp
-  :config
-  (when (modulep! +minibuffer)
-    (add-hook 'minibuffer-setup-hook #'+corfu--enable-in-minibuffer))
-#+end_src
-自动弹出补全
-#+begin_src emacs-lisp
-  :custom
-  (corfu-separator ?\s)
-  (corfu-auto t)
-  (corfu-auto-delay 0.0)
-#+end_src
-增加补全文档弹出延时以提高响应速度
-#+begin_src emacs-lisp
-  (corfu-popupinfo-delay '(0.1 . 0.1))
-#+end_src
-精确匹配，启用循环匹配16项
-#+begin_src emacs-lisp
-  (corfu-on-exact-match t)
-  (corfu-quit-no-match t)
-  (corfu-cycle t)
-  (corfu-count 16)
-#+end_src
-敲两个字符或者按下 TAB 键时弹出补全
-#+begin_src emacs-lisp
-  (corfu-auto-prefix 2)
-  (tab-always-indent 'complete)
-#+end_src
-更好的集成 lsp-mode
-#+begin_src emacs-lisp
-  :config
-  (add-to-list 'completion-category-overrides `(lsp-capf (styles ,@completion-styles)))
-#+end_src
-弹出补全时绑定基本快捷键
-#+begin_src emacs-lisp
-  :bind
-  (:map corfu-map
-   ("C-SPC"    . #'corfu-insert-separator)
-   ("C-n"      . #'corfu-next)
-   ("C-p"      . #'corfu-previous)
-   ("M-p"      . #'corfu-popupinfo-scroll-up)
-   ("M-n"      . #'corfu-popupinfo-scroll-down)
-   ("M-d"      . #'corfu-popupinfo-toggle)
-   ("C-x C-k"  . #'cape-dict)
-   ("C-x C-f"  . #'cape-file)))
-#+end_src
-启用 orderless 方式补全
-#+begin_src emacs-lisp
-(use-package orderless
- :when (modulep! +orderless)
- :init
- (setq completion-styles '(orderless partial-completion)
-       completion-category-defaults nil
-       completion-category-overrides '((file (styles orderless partial-completion)))))
-#+end_src
-给 corfu 增加图标（延时加载）
-#+begin_src emacs-lisp
-(use-package nerd-icons-corfu
-  :when (modulep! +icons)
-  :defer t
-  :init
-  (with-eval-after-load 'corfu
-    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)))
-#+end_src
-给 corfu 拓展各种源（延时加载）
-#+begin_src emacs-lisp
-(use-package cape
-  :defer t
-  :init
-  (bind-keys ([remap dabbrev-expand] . cape-dabbrev))
-  (add-hook 'latex-mode-hook (lambda ()(defun +corfu--latex-set-capfs ()
-                                (add-to-list 'completion-at-point-functions #'cape-tex))))
-  (when (modulep! :checkers spell)
-    (add-to-list 'completion-at-point-functions #'cape-dict)
-    (add-to-list 'completion-at-point-functions #'cape-ispell))
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-  (add-to-list 'completion-at-point-functions #'cape-keyword t)
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev t)
-  (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
-  (advice-add #'lsp-completion-at-point :around #'cape-wrap-nonexclusive)
-  (advice-add #'comint-completion-at-point :around #'cape-wrap-nonexclusive)
-  (advice-add #'eglot-completion-at-point :around #'cape-wrap-nonexclusive)
-  (advice-add #'pcomplete-completions-at-point :around #'cape-wrap-nonexclusive))
-#+end_src
-添加 english helper 插件
-#+begin_src emacs-lisp
+;;; modules/baosize/corfu-english-helper/config.el -*- lexical-binding: t; -*-
 (use-package corfu-english-helper
   :defer t
   :hook (text-mode . toggle-corfu-english-helper))
 #+end_src
-添加 yasnippet 源
-#+begin_src emacs-lisp
-(use-package! yasnippet-capf
-  :when (modulep! :editor snippets)
-  :defer t
-  :init
-  (add-hook! 'yas-minor-mode-hook
-    (defun +corfu-add-yasnippet-capf-h ()
-      (add-hook 'completion-at-point-functions #'yasnippet-capf 30 t))))
-#+end_src
-corfu 基于历史记录的排序方式，在 corfu 之后加载
-#+begin_src emacs-lisp
-(use-package corfu-history
-  :after corfu
-  :hook (corfu-mode . (lambda ()
-                        (corfu-history-mode 1)
-                        (savehist-mode 1)
-                        (add-to-list 'savehist-additional-variables 'corfu-history))))
-#+end_src
 **** packages.el
-安装对应插件
-#+begin_src emacs-lisp :tangle modules/baosize/mycorfu/packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/corfu-english-helper/packages.el
 ;; -*- no-byte-compile: t; -*-
-;;; modules/baosize/mycorfu/packages.el
-(package! corfu
-  :recipe (:files (:defaults "extensions/*.el")))
-(when (modulep! +icons)
-(package! nerd-icons-corfu))
-(package! yasnippet-capf
-  :recipe (:host github :repo "elken/yasnippet-capf"))
-(package! cape)
+;;; modules/baosize/corfu-english-helper/packages.el
 (package! corfu-english-helper :recipe(:host github :repo "manateelazycat/corfu-english-helper" :files ("*")))
 #+end_src
-*** tools
 *** treesit-context
 :PROPERTIES:
 :header-args: :tangle modules/baosize/treesit-context/autoload.el
@@ -1633,4 +1651,87 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 ;;; modules/baosize/emacs-lsp-booster/doctor.el
 (unless (executable-find "emacs-lsp-booster")
   (warn! "LSP will crash when emacs-lsp-booster can't found in PATH!"))
+#+end_src
+*** nyan
+在 modeline 上的彩虹猫
+**** config.el
+#+begin_src emacs-lisp :tangle modules/baosize/nyan/config.el
+;;; modules/baosize/nyan/config.el -*- lexical-binding: t; -*-
+(use-package nyan-mode
+  :hook (doom-modeline-mode)
+  :custom
+  ;; (nyan-animate-nyancat t)
+  (nyan-wavy-trail t))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/nyan/packages.el
+;; -*- no-byte-compile: t -*-
+;;; modules/baosize/nyan/packages.el
+(package! nyan-mode
+  :recipe (:host github
+           :repo "zakudriver/nyan-mode"
+           :files ("*")))
+#+end_src
+*** avy-thing-edit
+ 类似于 neovim 中 flash.nvim 的远程跳转编辑（ =Operator-PENDING mode= 下的 r 键）
+**** config.el
+#+begin_src emacs-lisp :tangle modules/baosize/avy-thing-edit/config.el
+;;; modules/baosize/avy-thing-edit/config.el -*- lexical-binding: t; -*-
+(use-package thing-edit
+  :defer t
+  :config
+  (use-package avy-thing-edit
+    :defer t
+    :custom
+    (avy-thing-edit-jump-command 'avy-goto-word-0)))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/avy-thing-edit/packages.el
+;; -*- no-byte-compile: t -*-
+;;; modules/baosize/avy-thing-edit/config.el
+(package! avy-thing-edit
+  :recipe (:host github
+           :repo "lyjdwh/avy-thing-edit"))
+(package! thing-edit
+  :recipe (:host github
+           :repo "manateelazycat/thing-edit"))
+#+end_src
+*** super-eglot
+我尝试用这个模块以将 eglot 打造得和 vscode 一样优秀（ lsp-mode 提供了一个基于 lsp 的高亮，这对于 eglot 来说是极为困难的）
+
+它目前包含了 breadcrumb 和 eldoc-box 。
+**** config.el
+:PROPERTIES:
+:header-args: :tangle modules/baosize/super-eglot/config.el
+:END:
+#+begin_src emacs-lisp
+;;; modules/baosize/super-eglot/config.el -*- lexical-binding: t; -*-
+#+end_src
+面包屑导航
+#+begin_src emacs-lisp
+(use-package breadcrumb
+  :hook (prog-mode . breadcrumb-local-mode))
+#+end_src
+弹出文档和提示
+#+begin_src emacs-lisp
+(use-package eldoc-box
+  :custom
+  (eldoc-box-lighter nil)
+  (eldoc-box-only-multi-line t)
+  (eldoc-box-clear-with-C-g t)
+  :custom-face
+  (eldoc-box-border ((t (:inherit posframe-border :background unspecified))))
+  (eldoc-box-body ((t (:inherit tooltip))))
+  :hook ((eglot-managed-mode . eldoc-box-hover-at-point-mode))
+  :config
+  ;; Prettify `eldoc-box' frame
+  (setf (alist-get 'left-fringe eldoc-box-frame-parameters) 8
+  (alist-get 'right-fringe eldoc-box-frame-parameters) 8))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/super-eglot/packages.el
+;; -*- no-byte-compile: t -*-
+;;; modules/baosize/super-eglot/packages.el
+(package! breadcrumb)
+(package! eldoc-box)
 #+end_src
