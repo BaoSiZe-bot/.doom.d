@@ -102,7 +102,7 @@
        ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
        ;;(emoji +ascii +github)    ; 🙂
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
-       ;;indent-guides     ; highlighted indent columns
+       indent-guides     ; highlighted indent columns
        ligatures           ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
        modeline            ; snazzy, Atom-inspired modeline, plus API
@@ -437,6 +437,25 @@ C++ 缩进和调试
      (setq prettify-symbols-alist prettify-org-symbols-alist)))
 (global-prettify-symbols-mode)
 (add-hook 'org-mode-hook #'+org-pretty-mode)
+#+end_src
+彩色缩进
+#+begin_src emacs-lisp
+(use-package indent-bars
+  :custom
+  (indent-bars-color '(highlight :face-bg t :blend 0.225))
+  (indent-bars-treesit-support t)
+  (indent-bars-pattern ".")
+  (indent-bars-no-descend-string t)
+  (indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1))
+  (indent-bars-highlight-current-depth t)
+  (indent-bars-pattern "|")  
+  (indent-bars-display-on-blank-lines nil)
+  (indent-bars-treesit-ignore-blank-lines-types '("module"))
+  (indent-bars-prefer-character t)
+  (indent-bars-treesit-scope '((python function_definition class_definition for_statement
+				                       if_statement with_statement while_statement)))
+  :hook ((prog-mode yaml-mode) . indent-bars-mode)
+  :config (require 'indent-bars-ts))
 #+end_src
 支持 FooBar 类 subword 移动
 #+begin_src emacs-lisp
@@ -1498,29 +1517,25 @@ Rime 本身相关设置
 ***** config.el
 #+begin_src emacs-lisp :tangle modules/baosize/winum/config.el 
 ;;; modules/baosize/winum/config.el -*- lexical-binding: t; -*-
-(use-package winum
-  :defer 0.5
-  :config
-  (winum-mode)
-  :init
-  (setq winum-keymap
-      (let ((map (make-sparse-keymap)))
-        (define-key map (kbd "M-0") 'winum-select-window-0-or-10)
-        (define-key map (kbd "M-1") 'winum-select-window-1)
-        (define-key map (kbd "M-2") 'winum-select-window-2)
-        (define-key map (kbd "M-3") 'winum-select-window-3)
-        (define-key map (kbd "M-4") 'winum-select-window-4)
-        (define-key map (kbd "M-5") 'winum-select-window-5)
-        (define-key map (kbd "M-6") 'winum-select-window-6)
-        (define-key map (kbd "M-7") 'winum-select-window-7)
-        (define-key map (kbd "M-8") 'winum-select-window-8)
-        map)))
+(defun aw--select-window (number)
+    "Slecet the specified window."
+    (when (numberp number)
+      (let ((found nil))
+        (dolist (win (aw-window-list))
+          (when (and (window-live-p win)
+                     (eq number
+                         (string-to-number
+                          (window-parameter win 'ace-window-path))))
+            (setq found t)
+            (aw-switch-to-window win)))
+        (unless found
+          (message "No specified window: %d" number)))))
 #+end_src
 ***** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/winum/packages.el
 ;; -*- no-byte-compile: t; -*-
 ;;; modules/baosize/winum/packages.el
-(package! winum)
+;; (package! winum)
 #+end_src
 *** symbol-overlay
 Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多种功能
@@ -1728,10 +1743,31 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
   (setf (alist-get 'left-fringe eldoc-box-frame-parameters) 8
   (alist-get 'right-fringe eldoc-box-frame-parameters) 8))
 #+end_src
+code-action 提示
+#+begin_src emacs-lisp
+(use-package sideline
+  :init
+  (setq sideline-backends-left-skip-current-line t   ; don't display on current line (left)
+        sideline-backends-right-skip-current-line t  ; don't display on current line (right)
+        sideline-order-left 'down                    ; or 'up
+        sideline-order-right 'up                     ; or 'down
+        sideline-format-left "%s   "                 ; format for left aligment
+        sideline-format-right "   %s"                ; format for right aligment
+        sideline-priority 100                        ; overlays' priority
+        sideline-display-backend-name t))            ; display the backend name
+(use-package sideline-eglot
+  :init
+  (setq sideline-backends-right '(sideline-eglot)))
+(add-hook 'eglot-managed-mode-hook #'sideline-mode) 
+#+end_src
 **** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/super-eglot/packages.el
 ;; -*- no-byte-compile: t -*-
 ;;; modules/baosize/super-eglot/packages.el
 (package! breadcrumb)
 (package! eldoc-box)
+(package! sideline)
+(package! sideline-eglot
+  :recipe (:host github
+           :repo "emacs-sideline/sideline-eglot"))
 #+end_src
