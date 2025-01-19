@@ -1744,7 +1744,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 (use-package nyan-mode
   :hook (doom-modeline-mode)
   :custom
-  ;; (nyan-animate-nyancat t)
+  (nyan-animate-nyancat t)
   (nyan-wavy-trail t))
 #+end_src
 **** packages.el
