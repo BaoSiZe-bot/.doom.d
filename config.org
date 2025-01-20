@@ -107,7 +107,7 @@
        nav-flash           ; blink cursor line after big motions
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints             ; highlight the region an operation acts on
-       (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       (popup +all)        ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
        treemacs            ; a project drawer, like neotree but cooler
        unicode             ; extended unicode support for various languages
@@ -140,7 +140,7 @@
        vc                  ; version-control and Emacs, sitting in a tree
 
        :term
-       ;;eshell            ; the elisp shell that works everywhere
+       eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
        vterm               ; the best terminal emulation in Emacs
@@ -327,6 +327,52 @@ VictorMono & 霞鹜文楷，emoji设置特殊字体
       :bind (([remap next] . good-scroll-up-full-screen)
              ([remap prior] . good-scroll-down-full-screen)))))
 #+end_src
+Centaur Emacs 中的一些基础设置
+#+begin_src emacs-lisp
+(use-package simple
+  :ensure nil
+  :hook ((after-init . size-indication-mode)
+         (text-mode . visual-line-mode)
+         ((prog-mode markdown-mode conf-mode) . enable-trailing-whitespace))
+  :init
+  (setq column-number-mode t
+        line-number-mode t
+        kill-whole-line t               ; Kill line including '\n'
+        line-move-visual nil
+        track-eol t                     ; Keep cursor at end of lines. Require line-move-visual is nil.
+        set-mark-command-repeat-pop t)  ; Repeating C-SPC after popping mark pops it again
+
+  ;; Visualize TAB, (HARD) SPACE, NEWLINE
+  (setq-default show-trailing-whitespace nil) ; Don't show trailing whitespace by default
+  (defun enable-trailing-whitespace ()
+    "Show trailing spaces and delete on saving."
+    (setq show-trailing-whitespace t)
+    (add-hook 'before-save-hook #'delete-trailing-whitespace nil t))
+
+  ;; Prettify the process list
+  (with-no-warnings
+    (defun my-list-processes--prettify ()
+      "Prettify process list."
+      (when-let* ((entries tabulated-list-entries))
+        (setq tabulated-list-entries nil)
+        (dolist (p (process-list))
+          (when-let* ((val (cadr (assoc p entries)))
+                      (name (aref val 0))
+                      (pid (aref val 1))
+                      (status (aref val 2))
+                      (status (list status
+                                    'face
+                                    (if (memq status '(stop exit closed failed))
+                                        'error
+                                      'success)))
+                      (buf-label (aref val 3))
+                      (tty (list (aref val 4) 'face 'font-lock-doc-face))
+                      (thread (list (aref val 5) 'face 'font-lock-doc-face))
+                      (cmd (list (aref val 6) 'face 'completions-annotations)))
+            (push (list p (vector name pid status buf-label tty thread cmd))
+		          tabulated-list-entries)))))
+    (advice-add #'list-processes--refresh :after #'my-list-processes--prettify)))
+#+end_src
 Treesitter 默认的高亮太素了，但是定义多了影响速度，设置一下jit-lock-defer-time
 #+begin_src emacs-lisp
 (setq treesit-font-lock-level 4
@@ -490,6 +536,11 @@ C++ 缩进和调试
   (setq blink-matching-paren-highlight-offscreen t
         show-paren-context-when-offscreen 'child-frame))
 #+end_src
+设置 doom-modeline
+#+begin_src emacs-lisp
+(setq doom-modeline-major-mode-icon t
+      doom-modeline-major-mode-color-icon t)
+#+end_src
 打开面包屑导航
 #+begin_src emacs-lisp
 (when (modulep! :tools lsp +lsp)
@@ -526,16 +577,16 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
   :config
   (add-hook 'org-mode-hook #'org-modern-mode))
 (use-package transient-posframe
+    :after (transient posframe)
     :defines posframe-border-width
     :custom-face
     (transient-posframe ((t (:inherit tooltip))))
     (transient-posframe-border ((t (:inherit posframe-border :background unspecified))))
-    :hook (after-init . transient-posframe-mode)
     :init
     (setq transient-posframe-border-width posframe-border-width
           transient-posframe-min-width 80
           transient-posframe-min-height nil
-          transient-posframe-poshandler 'posframe-poshandler-frame-center
+          transient-posframe-poshandler 'posframe-poshandler-point-frame-center
           transient-posframe-parameters '((left-fringe . 8)
                                           (right-fringe . 8)))
     :config
@@ -545,18 +596,18 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
         "Show BUFFER in posframe and we do not use _ALIST at this period."
         (when (posframe-workable-p)
           (let* ((posframe
-	              (posframe-show buffer
-			                     :font transient-posframe-font
-			                     :position (point)
-			                     :poshandler transient-posframe-poshandler
-			                     :background-color (face-attribute 'transient-posframe :background nil t)
-			                     :foreground-color (face-attribute 'transient-posframe :foreground nil t)
-                                 :initialize #'transient-posframe--initialize
-			                     :min-width transient-posframe-min-width
-			                     :min-height transient-posframe-min-height
-			                     :internal-border-width transient-posframe-border-width
-			                     :internal-border-color (face-attribute 'transient-posframe-border :background nil t)
-			                     :override-parameters transient-posframe-parameters)))
+                      (posframe-show buffer
+        		                     :font transient-posframe-font
+        		                     :position (point)
+        		                     :poshandler transient-posframe-poshandler
+        		                     :background-color (face-attribute 'transient-posframe :background nil t)
+        		                     :foreground-color (face-attribute 'transient-posframe :foreground nil t)
+                                             :initialize #'transient-posframe--initialize
+        		                     :min-width transient-posframe-min-width
+        		                     :min-height transient-posframe-min-height
+        		                     :internal-border-width transient-posframe-border-width
+        		                     :internal-border-color (face-attribute 'transient-posframe-border :background nil t)
+        		                     :override-parameters transient-posframe-parameters)))
             (frame-selected-window posframe))))
       (advice-add #'transient-posframe--show-buffer :override #'my-transient-posframe--show-buffer)
 
@@ -582,7 +633,8 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
       vertico-posframe-parameters '((left-fringe  . 8)(right-fringe . 8)))
 (with-eval-after-load 'xref
     (setq xref-show-xrefs-function #'consult-xref
-          xref-show-definitions-function #'consult-xref))
+          xref-show-definitions-function #'consult-xref)
+    (transient-posframe-mode))
 (with-eval-after-load 'corfu
   (global-corfu-mode)
   (bind-keys :map corfu-map
@@ -615,11 +667,12 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
 
 我不知道这是干嘛用的，但它既然在这里……
 #+begin_src emacs-lisp
-(custom-set-variables)
+(custom-set-variables
 ;; custom-set-variables was added by Custom.
 ;; If you edit it by hand, you could mess it up, so be careful.
 ;; Your init file should contain only one such instance.
 ;; If there is more than one, they won't work right.
+ )
 (custom-set-faces)
 ;; custom-set-faces was added by Custom.
 ;; If you edit it by hand, you could mess it up, so be careful.
@@ -1015,7 +1068,8 @@ ESC 退出焦点
 #+end_src
 目前存在没修好的 bug 的一些包
 #+begin_src emacs-lisp
-;; (setq eaf-pdf-dark-mode t)
+(with-eval-after-load 'eaf
+  (use-package eaf-pdf-viewer))
 ;; (use-package eaf-git :bind (("C-c e g" . eaf-open-git)))
 )
 #+end_src
@@ -1107,12 +1161,12 @@ eaf 需要编译相关依赖
 #+end_src
 一些有 bug 的包
 #+begin_src emacs-lisp
-;;(package! eaf-pdf-viewer
-;;  :recipe (:host github :repo "emacs-eaf/eaf-pdf-viewer"
-;;           :files ("*")
-;;           :post-build
-;;           (+eaf-install-deps-for-app
-;;            (concat straight-base-dir "/straight/" straight-build-dir "/eaf-pdf-viewer"))))
+(package! eaf-pdf-viewer
+ :recipe (:host github :repo "emacs-eaf/eaf-pdf-viewer"
+          :files ("*")
+          :post-build
+          (+eaf-install-deps-for-app
+           (concat straight-base-dir "/straight/" straight-build-dir "/eaf-pdf-viewer"))))
 ;;(package! eaf-git
 ;;  :recipe (:host github :repo "emacs-eaf/eaf-git"
 ;;           :files ("*")
@@ -1683,6 +1737,8 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 #+end_src
 *** emacs-lsp-booster
 为 lsp-mode 和 eglot 进行加速（将 json 转换为 elisp 形式，加速解析）
+
+在 emacs 30 之后， emacs 对 json 的解析速度已经超越了对于 emacs-lisp array 的解析速度：）到那时 emacs-lsp-booster 如果再 parse json 造成的将是负优化。
 **** config.el
 没啥好说的，都是从项目主页抄的。
 #+begin_src emacs-lisp :tangle modules/baosize/emacs-lsp-booster/config.el
@@ -1803,7 +1859,6 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 弹出文档和提示
 #+begin_src emacs-lisp
 (use-package eldoc-box
-  :defer t
   :custom
   (eldoc-box-lighter nil)
   (eldoc-box-only-multi-line t)
@@ -1811,7 +1866,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
   :custom-face
   (eldoc-box-border ((t (:inherit posframe-border :background unspecified))))
   (eldoc-box-body ((t (:inherit tooltip))))
-  :hook ((eglot-managed-mode . eldoc-box-hover-at-point-mode))
+  :hook (eglot-managed-mode . eldoc-box-hover-at-point-mode)
   :config
   ;; Prettify `eldoc-box' frame
   (setf (alist-get 'left-fringe eldoc-box-frame-parameters) 8
@@ -1820,8 +1875,8 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 code-action 提示
 #+begin_src emacs-lisp
 (use-package sideline
-  :demand
-  :hook (eglot-managed-mode sideline-mode)
+  :defer t
+  :hook (eglot-managed-mode . sideline-mode)
   :init
   (setq sideline-backends-left-skip-current-line t   ; don't display on current line (left)
         sideline-backends-right-skip-current-line t  ; don't display on current line (right)
@@ -1832,6 +1887,7 @@ code-action 提示
         sideline-priority 100                        ; overlays' priority
         sideline-display-backend-name t))            ; display the backend name
 (use-package sideline-eglot
+  :defer 1
   :init
   (setq sideline-backends-right '(sideline-eglot)))
 #+end_src
