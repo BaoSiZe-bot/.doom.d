@@ -107,7 +107,7 @@
        nav-flash           ; blink cursor line after big motions
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints             ; highlight the region an operation acts on
-       (popup +all)        ; tame sudden yet inevitable temporary windows
+       (popup +defaults)    ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
        treemacs            ; a project drawer, like neotree but cooler
        unicode             ; extended unicode support for various languages
@@ -268,7 +268,6 @@
        sort-tab
        corfu-english-helper
        ;;color-rg
-       nyan
        ;; nyan
        treesit-context
        symbol-overlay
@@ -292,15 +291,15 @@
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(alpha-background . 85))
 #+end_src
-monokai 主题
+nord 主题
 #+begin_src emacs-lisp
-(setq doom-theme 'doom-monokai-pro)
+(setq doom-theme 'doom-nord-light)
 #+end_src
 VictorMono & 霞鹜文楷，emoji设置特殊字体
 #+begin_src emacs-lisp
-(setq doom-font (font-spec :family "VictorMono Nerd Font" :size 14 :weight 'Regular)
-      doom-symbol-font (font-spec :family "霞鹜文楷" :size 14 :weight 'Regular)
-      doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 14 :weight 'Regular)
+(setq doom-font (font-spec :family "VictorMono Nerd Font" :size 13 :weight 'Regular)
+      doom-symbol-font (font-spec :family "霞鹜文楷" :size 13 :weight 'Regular)
+      doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 13 :weight 'Regular)
       doom-big-font (font-spec :family "VictorMono Nerd Font" :size 16 :weight 'Regular)
       nerd-icons-font-family "VictorMono Nerd Font")
 (defun +font-set-emoji (&rest _)
@@ -330,7 +329,6 @@ VictorMono & 霞鹜文楷，emoji设置特殊字体
 Centaur Emacs 中的一些基础设置
 #+begin_src emacs-lisp
 (use-package simple
-  :ensure nil
   :hook ((after-init . size-indication-mode)
          (text-mode . visual-line-mode)
          ((prog-mode markdown-mode conf-mode) . enable-trailing-whitespace))
@@ -524,7 +522,6 @@ C++ 缩进和调试
 设置括号匹配，用绿色高亮
 #+begin_src emacs-lisp 
 (use-package paren
-  :ensure nil
   :custom-face
   (show-paren-match ((((class color) (background light))
                       (:box (:line-width (-1 . -1) :color "gray70")))
@@ -729,9 +726,11 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
              ("." . meow-bounds-of-thing)
              ("'" . repeat)))
 (defun meow-append-this-line ()
+  (interactive)
   (move-end-of-line 1)
   (meow-insert))
 (defun meow-insert-this-line ()
+  (interactive)
   (move-beginning-of-line 1)
   (meow-insert))
 (defun meow/setup-qwerty ()
@@ -1500,9 +1499,9 @@ Rime 本身相关设置
 	  (when (posframe-workable-p)
 	    (posframe-show treesit-context--buffer
 			   :poshandler #'posframe-poshandler-window-top-right-corner
-			   :background-color "#454545"
+			   :background-color "#cde0ed"
 			   :border-width 5
-			   :border-color "#454545")))
+			   :border-color "#cde0ed")))
       (posframe-hide treesit-context--buffer))))
 #+end_src
 *** vterm-run
@@ -1548,7 +1547,7 @@ Rime 本身相关设置
 #+begin_src emacs-lisp
 ;;;###autoload
 (defun run-code ()
-  "运行代码” 
+  "运行代码"
   (interactive)
   (if buffer-file-name
     (let ((file-name (shell-quote-argument
@@ -1578,7 +1577,7 @@ Rime 本身相关设置
 #+begin_src emacs-lisp
 ;;;###autoload
 (defun run-cpp-fsanitize ()
-  "检查未定义行为“
+  "检查未定义行为"
   (interactive)
   (if buffer-file-name
       (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
@@ -1810,7 +1809,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 (use-package nyan-mode
   :hook (doom-modeline-mode)
   :custom
-  (nyan-animate-nyancat t)
+  ;; (nyan-animate-nyancat t)
   (nyan-wavy-trail t))
 #+end_src
 **** packages.el
