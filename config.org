@@ -261,14 +261,14 @@
        :baosize
        chinese
        ;;awesome-tray
-       ;;holo-layer
+       holo-layer
        eaf
        popweb
        ;;blink-search
        sort-tab
        corfu-english-helper
-       ;;color-rg
-       ;; nyan
+       color-rg
+       ;;nyan
        treesit-context
        symbol-overlay
        winum
