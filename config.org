@@ -424,6 +424,7 @@ C++ 缩进和调试
 (treesit-context)
 (bind-key "C-c d c" #'cpp-gdb 'c++-ts-mode-map)
  (defun cpp-gdb ()
+   "open compile and C++ debug"
    (interactive)
    (if buffer-file-name
        (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name))))
@@ -577,7 +578,7 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
   :config
   (add-hook 'org-mode-hook #'org-modern-mode))
 (use-package transient-posframe
-    :after (transient posframe)
+    :defer 2    
     :defines posframe-border-width
     :custom-face
     (transient-posframe ((t (:inherit tooltip))))
@@ -628,13 +629,13 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
       (defun my-transient-posframe--hide ()
         "Hide transient posframe."
         (posframe-hide transient--buffer-name))
-      (advice-add #'transient-posframe--delete :override #'my-transient-posframe--hide)))
+      (advice-add #'transient-posframe--delete :override #'my-transient-posframe--hide))
+    (transient-posframe-mode 1))
 (setq vertico-posframe-poshandler #'posframe-poshandler-point-window-center
       vertico-posframe-parameters '((left-fringe  . 8)(right-fringe . 8)))
 (with-eval-after-load 'xref
     (setq xref-show-xrefs-function #'consult-xref
-          xref-show-definitions-function #'consult-xref)
-    (transient-posframe-mode))
+          xref-show-definitions-function #'consult-xref))
 (with-eval-after-load 'corfu
   (global-corfu-mode)
   (bind-keys :map corfu-map
@@ -728,11 +729,9 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
              ("." . meow-bounds-of-thing)
              ("'" . repeat)))
 (defun meow-append-this-line ()
-  (interactive)
   (move-end-of-line 1)
   (meow-insert))
 (defun meow-insert-this-line ()
-  (interactive)
   (move-beginning-of-line 1)
   (meow-insert))
 (defun meow/setup-qwerty ()
@@ -1008,21 +1007,27 @@ ESC 退出焦点
 洛谷小插件😅
 #+begin_src emacs-lisp
   (defun luogu-open-problem (pid)
+    "打开题目"
     (interactive "M[Luogu] ProblemID: ")
     (eaf-open-browser (concat "https://www.luogu.com.cn/problem/" pid)))
   (defun luogu-open-discuss (did)
+    "打开讨论"
     (interactive "M[Luogu] DiscussID: ")
     (eaf-open-browser (concat "https://www.luogu.com.cn/discuss/" did)))
   (defun luogu-open-training (tid)
+    "打开题单"
     (interactive "M[Luogu] TrainingID: ")
     (eaf-open-browser (concat "https://www.luogu.com.cn/training/" tid)))
   (defun luogu-open-user-home (uid)
+    "打开用户主页"
     (interactive "M[Luogu] UserID: ")
     (eaf-open-browser (concat "https://www.luogu.com.cn/user/" uid)))
   (defun luogu-open-contest (cid)
+    "打开比赛"
     (interactive "M[Luogu] ContestID: ")
     (eaf-open-browser (concat "https://www.luogu.com.cn/contest/" cid)))
   (defun luogu-open-team (teamid)
+    "打开团队"
     (interactive "M[Luogu] TeamID: ")
     (eaf-open-browser (concat "https://www.luogu.com.cn/team/" teamid)))
 #+end_src
@@ -1543,6 +1548,7 @@ Rime 本身相关设置
 #+begin_src emacs-lisp
 ;;;###autoload
 (defun run-code ()
+  "运行代码” 
   (interactive)
   (if buffer-file-name
     (let ((file-name (shell-quote-argument
@@ -1572,6 +1578,7 @@ Rime 本身相关设置
 #+begin_src emacs-lisp
 ;;;###autoload
 (defun run-cpp-fsanitize ()
+  "检查未定义行为“
   (interactive)
   (if buffer-file-name
       (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
