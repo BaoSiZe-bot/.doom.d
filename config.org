@@ -261,14 +261,14 @@
        :baosize
        chinese
        ;;awesome-tray
-       ;;holo-layer
+       holo-layer
        eaf
        popweb
        ;;blink-search
        ;;(mycorfu +icons +orderless)    ; complete with cap(f), cape and a flying feather!
        sort-tab
        corfu-english-helper
-       ;;color-rg
+       color-rg
        nyan
        treesit-context
        symbol-overlay
@@ -292,15 +292,15 @@
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(alpha-background . 85))
 #+end_src
-monokai 主题
+one 主题无需配置
 #+begin_src emacs-lisp
-(setq doom-theme 'doom-monokai-pro)
+;; (setq doom-theme 'doom-one)
 #+end_src
 VictorMono & 霞鹜文楷，emoji设置特殊字体
 #+begin_src emacs-lisp
 (setq doom-font (font-spec :family "VictorMono Nerd Font" :size 17 :weight 'Regular)
-      doom-symbol-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
-      doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 17 :weight 'Regular)
+      doom-symbol-font (font-spec :family "LXGW WenKai Mono GB" :size 17 :weight 'Regular)
+      doom-variable-pitch-font (font-spec :family "LXGW WenKai Mono GB" :size 17 :weight 'Regular)
       doom-big-font (font-spec :family "VictorMono Nerd Font" :size 20 :weight 'Regular)
       nerd-icons-font-family "VictorMono Nerd Font")
 (defun +font-set-emoji (&rest _)
