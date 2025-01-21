@@ -19,11 +19,30 @@
 - [[https://github.com/manateelazycat/lazycat-emacs][Lazycat Emacs]] 本配置中半数插件取材于此。
 - [[https://seagle0128.github.io/.emacs.d][Centaur Emacs]] 本配置中 UI 配置绝大多数由此而来。
 - [[https://github.com/h0cheung/doom-emacs-config][H-cheung's Doom Emacs]] 本配置基于此修改而来。
+** 截图
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot1.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot2.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot3.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot4.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot5.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot6.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot7.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot8.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot9.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot10.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot11.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot12.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot13.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot14.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot15.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot16.png]]
+[[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot17.png]]
 
 * 目录 :QUOTE:TOC_3:
 #+BEGIN_QUOTE
 - [[#概述][概述]]
   - [[#灵感][灵感]]
+  - [[#截图][截图]]
 - [[#initel][init.el]]
 - [[#configel][config.el]]
 - [[#packagesel][packages.el]]
@@ -50,6 +69,7 @@
     - [[#nyan][nyan]]
     - [[#avy-thing-edit][avy-thing-edit]]
     - [[#super-eglot][super-eglot]]
+    - [[#dape][dape]]
 #+END_QUOTE
 
 * init.el
@@ -271,14 +291,15 @@
        ;;nyan
        treesit-context
        symbol-overlay
-       winum
+       winum                          
        super-save
        ;; keyfreq
        ;; emacs-lsp-booster
        colorful-mode
        ;; avy-thing-edit
        super-eglot
-       vterm-run)
+       vterm-run
+       dape)
 #+end_src
 * config.el
 :PROPERTIES:
@@ -1229,8 +1250,10 @@ eaf 需要编译相关依赖
   :init
   (bind-keys ("C-c b]" . sort-tab-select-next-tab)
         ("C-c bn" . sort-tab-select-next-tab)
+        ("C-<tab>" . sort-tab-select-next-tab)
         ("C-c b[" . sort-tab-select-prev-tab)
         ("C-c bp" . sort-tab-select-prev-tab)
+        ("C-<iso-lefttab>" . sort-tab-select-prev-tab)
         ("C-c bl" . sort-tab-select-last-tab)
         ("C-c bK" . sort-tab-close-all-tabs)
         ("C-c bO" . sort-tab-close-other-tabs)
@@ -1605,8 +1628,7 @@ Rime 本身相关设置
   (aw-leading-char-face ((t (:inherit font-lock-keyword-face :foreground unspecified :bold t :height 3.0))))
   (aw-minibuffer-leading-char-face ((t (:inherit font-lock-keyword-face :bold t :height 1.0))))
   (aw-mode-line-face ((t (:inherit mode-line-emphasis :bold t))))
-  :bind (([remap other-window] . ace-window)
-         ("C-c w" . ace-window-hydra/body))
+  :bind (([remap other-window] . ace-window))
   :hook (emacs-startup . ace-window-display-mode)
   :config
   (defun toggle-window-split ()
@@ -1634,10 +1656,6 @@ Rime 本身相关设置
             (select-window first-win)
             (if this-win-2nd (other-window 1))))
       (user-error "`toggle-window-split' only supports two windows")))
-
-  ;; Bind hydra to dispatch list
-  (add-to-list 'aw-dispatch-alist '(?w ace-window-hydra/body) t)
-
   ;; Select widnow via `M-1'...`M-9'
   (defun aw--select-window (number)
     "Slecet the specified window."
@@ -1837,7 +1855,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 **** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/avy-thing-edit/packages.el
 ;; -*- no-byte-compile: t -*-
-;;; modules/baosize/avy-thing-edit/config.el
+;;; modules/baosize/avy-thing-edit/packages.el
 (package! avy-thing-edit
   :recipe (:host github
            :repo "lyjdwh/avy-thing-edit"))
@@ -1907,4 +1925,24 @@ code-action 提示
 (package! sideline-eglot
   :recipe (:host github
            :repo "emacs-sideline/sideline-eglot"))
+#+end_src
+*** dape
+不依赖于 lsp-mode 的 DAP 服务
+**** config.el
+#+begin_src emacs-lisp :tangle modules/baosize/dape/config.el
+;;; modules/baosize/dape/config.el -*- lexical-binding:t; -*-
+(use-package dape
+    :bind (("<f5>" . dape))
+    :custom (dape-buffer-window-arrangment 'right)
+    :config
+    ;; Save buffers on startup, useful for interpreted languages
+    (add-hook 'dape-on-start-hooks
+              (defun dape--save-on-start ()
+                (save-some-buffers t t))))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/dape/packages.el
+;; -*- no-byte-compile: t -*-
+;;; modules/baosize/dape/packages.el
+(package! dape)
 #+end_src
