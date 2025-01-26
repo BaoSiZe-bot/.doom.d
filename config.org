@@ -298,17 +298,10 @@ one 主题无需配置
 #+end_src
 VictorMono & 霞鹜文楷，emoji设置特殊字体
 #+begin_src emacs-lisp
-<<<<<<< HEAD
 (setq doom-font (font-spec :family "VictorMono Nerd Font" :size 14 :weight 'Regular)
-      doom-symbol-font (font-spec :family "霞鹜文楷" :size 14 :weight 'Regular)
-      doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 14 :weight 'Regular)
+      doom-symbol-font (font-spec :family "LXGW WenKai Mono GB" :size 14 :weight 'Regular)
+      doom-variable-pitch-font (font-spec :family "LXGW WenKai Mono GB" :size 14 :weight 'Regular)
       doom-big-font (font-spec :family "VictorMono Nerd Font" :size 16 :weight 'Regular)
-=======
-(setq doom-font (font-spec :family "VictorMono Nerd Font" :size 14 :weight 'Regular)
-      doom-symbol-font (font-spec :family "霞鹜文楷" :size 14 :weight 'Regular)
-      doom-variable-pitch-font (font-spec :family "霞鹜文楷" :size 14 :weight 'Regular)
-      doom-big-font (font-spec :family "VictorMono Nerd Font" :size 16 :weight 'Regular)
->>>>>>> 6128d2634caf047a15b1a86c708a156d65b93e28
       nerd-icons-font-family "VictorMono Nerd Font")
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
@@ -1208,10 +1201,16 @@ eaf 需要编译相关依赖
   :custom
   (holo-layer-enable-cursor-animation t)
   (holo-layer-enable-type-animation t)
+  (holo-layer-cursor-animation-interval 3)
+  (holo-layer-cursor-animation-duration 50)
+  (holo-layer-enable-window-border t)
+  ;; (holo-layer-enable-place-info t)
+  (holo-layer-enable-window-number-background t)
+  ;; (holo-layer-hide-mode-line t)
   ;; (holo-layer-enable-indent-rainbow t)
   (holo-layer-cursor-color nil)
   (holo-layer-cursor-alpha 255)
-  (holo-layer-type-animation-style 'supernova)
+  (holo-layer-type-animation-style "supernova")
   (holo-layer-sort-tab-ui t)
   :config
   (holo-layer-enable)))
@@ -1237,6 +1236,8 @@ eaf 需要编译相关依赖
   :init
   (bind-keys ("C-c b]" . sort-tab-select-next-tab)
         ("C-c bn" . sort-tab-select-next-tab)
+        ("C-<tab>" . sort-tab-select-next-tab)
+        ("C-<iso-lefttab>" . sort-tab-select-prev-tab)
         ("C-c b[" . sort-tab-select-prev-tab)
         ("C-c bp" . sort-tab-select-prev-tab)
         ("C-c bl" . sort-tab-select-last-tab)
@@ -1555,7 +1556,7 @@ Rime 本身相关设置
 #+begin_src emacs-lisp
 ;;;###autoload
 (defun run-code ()
-  "运行代码” 
+  "运行代码"
   (interactive)
   (if buffer-file-name
     (let ((file-name (shell-quote-argument
@@ -1585,7 +1586,7 @@ Rime 本身相关设置
 #+begin_src emacs-lisp
 ;;;###autoload
 (defun run-cpp-fsanitize ()
-  "检查未定义行为“
+  "检查未定义行为"
   (interactive)
   (if buffer-file-name
       (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
