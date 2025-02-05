@@ -570,6 +570,23 @@ C++ 缩进和调试
 corfu 貌似不应该出现在这里，但是不放这里就没法工作
 #+begin_src emacs-lisp 
 (standard-display-unicode-special-glyphs) ; 终端中的弹窗不设置会使用ASCII边框
+(when (and (display-graphic-p) (not (daemonp)))
+  (use-package nova
+    :after posframe
+    :config
+  ;;(use-package nova-eldoc
+  ;;  :after eldoc-box
+  ;;  :config (nova-eldoc-mode 1))
+  ;;(use-package nova-corfu
+  ;;  :after corfu
+  ;;  :config (nova-corfu-mode 1))
+  ;;(use-package nova-corfu-popupinfo
+  ;;  :after corfu
+  ;;  :config (nova-corfu-popupinfo-mode 1))
+    ;; (use-package nova-vertico
+    ;;   :after vertico
+    ;;   :config (nova-vertico-mode 1))
+      ))
 (use-package posframe
     :init
     (defface posframe-border
@@ -710,6 +727,7 @@ Emacs 核心所需的插件
 (package! org-modern)
 (package! noflet)
 (package! transient-posframe)
+(package! nova :recipe (:host github :repo "thisisran/nova"))
 ;;(package! cal-china-x)
 ;;(package! railgun :recipe(:host github :repo "gynamics/railgun.el"))
 #+end_src
