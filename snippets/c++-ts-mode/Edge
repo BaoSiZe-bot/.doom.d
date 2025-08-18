@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: Edge
-# key: List-forward star
+# key: Edge
+# name: List-forward star
 # --
 struct Edge
 {

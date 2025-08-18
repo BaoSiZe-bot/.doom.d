@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: topo
 # key: topo
+# name: topo
 # --
 int q[${1:100000}];
 inline void topo(int rr[], int d[])

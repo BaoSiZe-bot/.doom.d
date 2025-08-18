@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: fd
-# key: Find-Union Set
+# key: fd
+# name: Find-Union Set
 # --
 
 int p[100005], h[100005]; //TODO: add memset(p, 0xff, sizeof p);

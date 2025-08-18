@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: dij
-# key: dijkstra
+# key: dij
+# name: dijkstra
 # --
 int d[${1:10005}];
 bool f[$1];

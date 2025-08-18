@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: hung
-# key: hungarian
+# key: hung
+# name: hungarian
 # --
 int mp[${1:205}][$1], md[$1], vs[$1], n;
 inline bool Hungarian(int x)

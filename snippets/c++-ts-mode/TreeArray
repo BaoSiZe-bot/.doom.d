@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: tr
-# key: TreeArray
+# key: tr
+# name: TreeArray
 # --
 int s[${1:100005}];
 inline int lb(int x)

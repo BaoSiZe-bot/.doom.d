@@ -1,7 +1,6 @@
 # -*- mode: snippet -*-
-# name: tarscc
-# key: Tarjan
-# condition: t
+# key: tarscc
+# name: Tarjan
 # --
 int ep[${1:500005}], dfn[$1], low[$1], stk[$1], pos[$1], top, gtm, pts;
 inline void tarjan(int x)

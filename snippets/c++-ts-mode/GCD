@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: gcd
-# key: GCD
+# key: gcd
+# name: GCD
 # --
 inline int gcd(int x, int y)
 {

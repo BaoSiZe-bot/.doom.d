@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: qpmod
-# key: Quick Pow(mod)
+# key: qpmod
+# name: Quick Pow(mod)
 # --
 inline int qp(int a, int b, int p)
 {

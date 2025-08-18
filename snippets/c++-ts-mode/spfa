@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: spfa
 # key: spfa
+# name: spfa
 # --
 bool f[${1:100005}];
 int q[$1], d[$1], hd, tl;

@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: qp
-# key: Quick Pow
+# key: qp
+# name: Quick Pow
 # --
 inline int qp(int a, int b)
 {

@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name:lca
-# key: LCA
+# key:lca
+# name: LCA
 # --
 int d[500005], f[22][500005];
 inline void dfs(int ro, int fa)

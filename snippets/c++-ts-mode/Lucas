@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: lucas
-# key: Lucas
+# key: lucas
+# name: Lucas
 # --
 inline int C(int m, int n, int p)
 {

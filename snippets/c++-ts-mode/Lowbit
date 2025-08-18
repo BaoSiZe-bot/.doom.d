@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: lowbit
-# key: Lowbit
+# key: lowbit
+# name: Lowbit
 # --
 
 inline int lb(int x)

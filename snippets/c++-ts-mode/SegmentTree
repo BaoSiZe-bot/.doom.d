@@ -1,60 +1,112 @@
 # -*- mode: snippet -*-
-# name: bld
-# key: SegmentTree
+# key: bld
+# name: SegmentTree
 # --
-struct Node
+struct dat
 {
     int l, r;
-    ${1://TODO: add data in Node}
-}s[3000005];
-inline void psd(int x)
+    ${1://TODO: write dat and init.}
+};
+struct tag
 {
-    ${2://TODO: add pushdown}
+    ${2://TODO: write tag, init and equalling check.}
+};
+static dat f(const tag &t, const dat &d)
+{
+    dat nw = d;
+    ${3://TODO: how tag affects dat}
+    return nw;
 }
-inline void psu(int x)
+static tag g(const tag &x, const tag &y)
 {
-    ${3: //TODO: add pushup}
+    tag nw = x;
+    ${4://TODO: how to merge tag(x is the new one, y is the old one)}
+    return nw;
 }
-inline void bld(int x, int l, int r)
+static dat h(const dat &a, const dat &b)
 {
-    ${5://TODO: add init}
-    if (l == r)
+    dat nw;
+    nw.l = a.l;
+    nw.r = b.r;
+    ${5://TODO: how to merge dat(x is the left one, y is the right one)}
+    return nw;
+}
+static dat lf(${6:int} x, int id)
+{
+    dat lf;
+    lf.l = lf.r = id;
+    ${7://TODO: make a leaf node by passing a argument x}
+    return lf;
+}
+static const tag tt;
+template <const size_t N, typename dat, typename tag, typename T, T I[]> struct SegmentTree
+{
+#define ci const int &
+#define ct const tag &
+#define cd const dat &
+    dat d[N];
+    tag t[N];
+    void init(ci rt, ci l, ci r)
     {
-        ${6://TODO: add one-node init.}
-        return;
+        t[rt] = tt;
+        if (l == r)
+        {
+            d[rt] = lf(I[l], l);
+            return;
+        }
+        int mid = (l + r) >> 1;
+        init(rt << 1, l, mid);
+        init(rt << 1 | 1, mid + 1, r);
+        d[rt] = h(d[rt << 1], d[rt << 1 | 1]);
     }
-    int mid = (l + r) >> 1;
-    bld(x << 1, l, mid);
-    bld(x << 1 | 1, mid + 1, r);
-    psu(x);
-}
-inline void add(int x, int l, int r, int v)
-{
-    if (l <= s[x].l && s[x].r <= r)
+    void pushdown(ci rt)
     {
-        ${7://TODO: add full add.}
-        return;
+        if (t[rt] == tt)
+            return;
+        d[rt << 1] = f(t[rt], d[rt << 1]);
+        t[rt << 1] = g(t[rt], t[rt << 1]);
+        d[rt << 1 | 1] = f(t[rt], d[rt << 1 | 1]);
+        t[rt << 1 | 1] = g(t[rt], t[rt << 1 | 1]);
+        t[rt] = tt;
     }
-    psd(x);
-    int mid = (s[x].l + s[x].r) >> 1;
-    if (l <= mid)
-        add(x << 1, l, r, v);
-    if (r > mid)
-        add(x << 1 | 1, l, r, v);
-    psu(x);
-}
-inline int qry(int x, int l, int r)
-{
-    if (l <= s[x].l && s[x].r <= r)
+    void upd(ci rt, ci l, ci r, ct k)
     {
-        ${8://TODO: add full return(qry).}
+        if (d[rt].r < l || r < d[rt].l)
+            return;
+        if (l <= d[rt].l && d[rt].r <= r)
+        {
+            t[rt] = g(k, t[rt]);
+            d[rt] = f(k, d[rt]);
+            return;
+        }
+        pushdown(rt);
+        upd(rt << 1, l, r, k);
+        upd(rt << 1 | 1, l, r, k);
+        d[rt] = h(d[rt << 1], d[rt << 1 | 1]);
     }
-    psd(x);
-    int mid = (s[x].l + s[x].r) >> 1;
-    int res = 0;
-    if (l <= mid)
-        res += qry(x << 1, l, r);
-    if (r > mid)
-        res += qry(x << 1 | 1, l, r);
-    return res;
-}
+    dat qry(ci rt, ci x)
+    {
+        if (d[rt].l == x && x == d[rt].r)
+            return d[rt];
+        pushdown(rt);
+        int mid = (d[rt].l + d[rt].r) >> 1;
+        if (x <= mid)
+            return qry(rt << 1, x);
+        return qry(rt << 1 | 1, x);
+    }
+    dat qry(ci rt, ci l, ci r)
+    {
+        if (l <= d[rt].l && d[rt].r <= r)
+            return d[rt];
+        pushdown(rt);
+        int mid = (d[rt].l + d[rt].r) >> 1;
+        if (r <= mid)
+            return qry(rt << 1, l, r);
+        if (l > mid)
+            return qry(rt << 1 | 1, l, r);
+        return h(qry(rt << 1, l, r), qry(rt << 1 | 1, l, r));
+    }
+#undef ci
+#undef ct
+#undef cd
+};
