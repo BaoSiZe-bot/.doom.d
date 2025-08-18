@@ -309,6 +309,30 @@
 :END:
 #+begin_src emacs-lisp
 ;;; config.el -*- lexical-binding: t; -*-
+(use-package clipetty
+  :hook (doom-after-init . global-clipetty-mode))
+(let ((win32yank (executable-find "win32yank.exe")))
+  (when win32yank
+    (setq select-enable-clipboard t
+          save-interprogram-paste-before-kill t)
+
+    (setq interprogram-cut-function
+          (lambda (text &optional _push)
+            (let* ((process-connection-type nil)
+                   (coding-system-for-write 'utf-8-unix)
+                   (proc (start-process "win32yank" nil
+                                        win32yank "-i" "--crlf")))
+              (process-send-string proc text)
+              (process-send-eof proc))))
+
+    (setq interprogram-paste-function
+          (lambda ()
+            (let* ((coding-system-for-read 'utf-8-unix)
+                   (out (with-output-to-string
+                          (call-process win32yank nil standard-output nil "-o" "--lf"))))
+              (unless (string= out "") out))))))
+
+
 #+end_src
 85%真透明（只透明背景，不透明文字）
 #+begin_src emacs-lisp
