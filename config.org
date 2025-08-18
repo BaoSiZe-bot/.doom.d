@@ -99,6 +99,7 @@
                             (width . 0.628)
                             (height . 0.8)
                             (fullscreen)))
+(setq use-package-always-defer t)
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
        ;;chinese
@@ -596,7 +597,6 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
   :config
   (add-hook 'org-mode-hook #'org-modern-mode))
 (use-package transient-posframe
-    :defer 2    
     :defines posframe-border-width
     :custom-face
     (transient-posframe ((t (:inherit tooltip))))
@@ -877,7 +877,6 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 添加上述模块到 =awesome-tray= 核心并挂上启动时的钩子
 #+begin_src emacs-lisp
 (use-package 'awesome-tray
-:defer t
 :hook (doom-after-init . awesome-tray-mode)
 :custom
 (awesome-tray-buffer-read-only-style "󰌾 ")
@@ -1250,7 +1249,6 @@ eaf 需要编译相关依赖
 #+begin_src emacs-lisp :tangle modules/baosize/sort-tab/config.el
 ;;; modules/baosize/sort-tab/config.el -*- lexical-binding: t; -*-
 (use-package sort-tab
-  :defer t
   :hook
   (doom-after-init . sort-tab-mode)
   :init
@@ -1293,16 +1291,15 @@ eaf 需要编译相关依赖
 加载对应应用
 #+begin_src emacs-lisp
 (use-package popweb
-  :defer t
   :bind
   ("C-c py" . popweb-dict-youdao-input)
   ("C-c pd" . popweb-dict-dictcn-input)
   ("C-c pb" . popweb-dict-bing-input)
   ("C-c pu" . popweb-url-input)
   :config
-  (use-package popweb-url)
+  (require 'popweb-url)
 ;;(use-package color-picker)
-  (use-package popweb-dict))
+  (require 'popweb-dict))
 (add-hook 'latex-mode-hook #'(lambda () (require 'popweb) (require 'popweb-latex) (popweb-latex-mode))))
 #+end_src
 **** packages.el
@@ -1422,7 +1419,6 @@ Rime 本身相关设置
 #+begin_src emacs-lisp
 ;;; modules/baosize/corfu-english-helper/config.el -*- lexical-binding: t; -*-
 (use-package corfu-english-helper
-  :defer t
   :hook (text-mode . toggle-corfu-english-helper))
 #+end_src
 **** packages.el
@@ -1694,7 +1690,6 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 #+begin_src emacs-lisp :tangle modules/baosize/symbol-overlay/config.el
 ;;; modules/baosize/symbol-overlay/config.el -*- lexical-binding: t; -*-
 (use-package symbol-overlay
-    :defer t
     :hook
     (prog-mode . symbol-overlay-mode)
     (text-mode . symbol-overlay-mode)
@@ -1717,7 +1712,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 #+begin_src emacs-lisp :tangle modules/baosize/super-save/config.el
 ;;; modules/baosize/super-save/config.el -*- lexical-binding: t; -*-
 (use-package super-save
-  :defer 0.5
+  :demand t
   :config
   (add-to-list 'super-save-triggers 'switch-window)
   (setq super-save-exclude '(".gpg"))
@@ -1739,7 +1734,6 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 #+begin_src emacs-lisp :tangle modules/baosize/keyfreq/config.el
 ;;; modules/baosize/keyfreq/config.el -*- lexical-binding: t; -*-
 (use-package keyfreq
-  :defer t
   :hook (doom-first-input . keyfreq-mode)
         (doom-first-input . keyfreq-autosave-mode))
 #+end_src
@@ -1756,7 +1750,6 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 #+begin_src emacs-lisp :tangle modules/baosize/colorful-mode/config.el
 ;;; modules/baosize/colorful-mode/config.el -*- lexical-binding: t; -*-
 (use-package colorful-mode
-  :defer t
   :hook (prog-mode text-mode))
 #+end_src
 **** packages.el
@@ -1851,10 +1844,8 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 #+begin_src emacs-lisp :tangle modules/baosize/avy-thing-edit/config.el
 ;;; modules/baosize/avy-thing-edit/config.el -*- lexical-binding: t; -*-
 (use-package thing-edit
-  :defer t
   :config
   (use-package avy-thing-edit
-    :defer t
     :custom
     (avy-thing-edit-jump-command 'avy-goto-word-0)))
 #+end_src
@@ -1883,7 +1874,6 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 面包屑导航
 #+begin_src emacs-lisp
 (use-package breadcrumb
-  :defer t
   :hook (prog-mode . breadcrumb-local-mode))
 #+end_src
 弹出文档和提示
@@ -1905,7 +1895,6 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 code-action 提示
 #+begin_src emacs-lisp
 (use-package sideline
-  :defer t
   :hook (eglot-managed-mode . sideline-mode)
   :init
   (setq sideline-backends-left-skip-current-line t   ; don't display on current line (left)
@@ -1917,7 +1906,6 @@ code-action 提示
         sideline-priority 100                        ; overlays' priority
         sideline-display-backend-name t))            ; display the backend name
 (use-package sideline-eglot
-  :defer 1
   :init
   (setq sideline-backends-right '(sideline-eglot)))
 #+end_src
