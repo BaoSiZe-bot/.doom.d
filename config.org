@@ -1070,14 +1070,65 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
                                ("google" . "http://www.google.com/search?ie=utf-8&q=%s")
                                ("duckduckgo" . "https://duckduckgo.com/?q=%s"))
 #+end_src
+配置代理
+#+begin_src emacs-lisp
+  (eaf-proxy-host "127.0.0.1")
+  (eaf-proxy-port "7897")
+  (eaf-proxy-type "http")
+#+end_src
+同步Chromium
+#+begin_src emacs-lisp
+  (eaf-browser-auto-import-chrome-cookies nil)
+  (eaf-browser-chrome-browser-name "Chromium")
+  (eaf-chrome-bookmark-file "~/.config/chromium/Default/Bookmarks")
+  (eaf-browser-chrome-history-file "~/.config/chromium/Default/History")
+  (eaf-browser-enable-autofill t)
+  (eaf-browser-enable-adblocker t)
+#+end_src
 设置为默认浏览器
 #+begin_src emacs-lisp
   (browse-url-browser-function #'eaf-open-browser)
 #+end_src
-ESC 退出焦点
+兼容 meow, 代码主要来自 eaf 的 extensions/eaf-evil.el
 #+begin_src emacs-lisp
   :config
-  (eaf-bind-key clear_focus "<escape>" eaf-browser-keybinding)
+  (defcustom eaf-meow-leader-key "M-m"
+    "Leader key trigger" )
+
+  (defcustom eaf-meow-leader-keymap #'meow-keypad
+    "Leader key bind"
+    :type 'keymap)
+
+  ;;;###autoload
+  (defun eaf-enable-meow-intergration ()
+    "EAF meow intergration."
+    (interactive)
+
+    (add-hook 'meow-normal-mode-hook
+              (lambda ()
+                (when (derived-mode-p 'eaf-mode)
+                  (define-key eaf-mode-map (kbd eaf-meow-leader-key) eaf-meow-leader-keymap)
+                  (setq emulation-mode-map-alists
+                      (delq 'meow-keypad-mode-map emulation-mode-map-alists))
+                  (setq emulation-mode-map-alists
+                      (delq 'meow-normal-mode-map emulation-mode-map-alists))
+                  (setq emulation-mode-map-alists
+                      (delq 'meow-motion-mode-map emulation-mode-map-alists))
+                  (setq emulation-mode-map-alists
+                      (delq 'meow-beacon-mode-map emulation-mode-map-alists))
+                  (setq emulation-mode-map-alists
+                      (delq 'meow-insert-mode-map emulation-mode-map-alists))
+                  ;; (setq emulation-mode-map-alists
+                  ;;       (delq 'evil-mode-map-alist emulation-mode-map-alists))
+                  )))
+    (add-hook 'eaf-edit-mode-hook #'meow-insert-mode)
+
+    ;; (add-to-list 'evil-insert-state-modes 'eaf-edit-mode) ; don't know how to adds eaf-edit-mode into meow-insert-mode
+
+    (eaf-bind-key clear_focus "<escape>"  eaf-browser-keybinding))
+
+  (with-eval-after-load "eaf"
+    (eaf-enable-meow-intergration))
 #+end_src
 洛谷小插件😅
 #+begin_src emacs-lisp
