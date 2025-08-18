@@ -956,9 +956,9 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 #+begin_src emacs-lisp
 :load-path "~/.config/doomemacs/.local/straight/repos/blink-search/"
 #+end_src
-绑定键位就使用默认的 =C-M-g= 吧。
+绑定键位。
 #+begin_src emacs-lisp
-:bind (("C-M-g" . blink-search))
+:bind (("C-c b s" . blink-search))
 #+end_src
 进入 =blink-search= 时肯定得是 =meow-insert-mode= 啊
 #+begin_src emacs-lisp
