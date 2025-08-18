@@ -1690,7 +1690,7 @@ Rime 本身相关设置
       (user-error "`toggle-window-split' only supports two windows")))
   ;; Select widnow via `M-1'...`M-9'
   (defun aw--select-window (number)
-    "Slecet the specified window."
+    "Selecet the specified window."
     (when (numberp number)
       (let ((found nil))
         (dolist (win (aw-window-list))
