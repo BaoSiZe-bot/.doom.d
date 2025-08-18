@@ -70,6 +70,8 @@
     - [[#avy-thing-edit][avy-thing-edit]]
     - [[#super-eglot][super-eglot]]
     - [[#dape][dape]]
+    - [[#gemini-cli][gemini-cli]]
+    - [[#showkey][showkey]]
 #+END_QUOTE
 
 * init.el
