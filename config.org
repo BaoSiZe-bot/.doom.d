@@ -459,10 +459,22 @@ Treesitter 默认的高亮太素了，但是定义多了影响速度，设置一
 #+end_src
 C++ 缩进和调试
 #+begin_src emacs-lisp
+(setq-default c-ts-mode-indent-offset 4)
+(setq-default c-basic-offset 4)
 (add-hook 'c++-ts-mode-hook (lambda ()
-(setq c-basic-offset 4)
-(rainbow-delimiters-mode-enable)
+;; (rainbow-delimiters-mode-enable)
 (lsp!)
+(with-eval-after-load 'eglot
+  (setq eglot-server-programs
+        '((c++-mode "clangd")
+          (c++-ts-mode "clangd")))
+  (require 'yasnippet)
+  (setq-local completion-at-point-functions
+        (list #'eglot-completion-at-point
+              #'yasnippet-capf
+              #'cape-file
+              #'cape-dabbrev
+              t)))
 (treesit-context)
 (bind-key "C-c d c" #'cpp-gdb 'c++-ts-mode-map)
  (defun cpp-gdb ()
@@ -659,6 +671,8 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
           xref-show-definitions-function #'consult-xref))
 (with-eval-after-load 'corfu
   (global-corfu-mode)
+  (setq corfu-preselect 'first)
+  (setq corfu-auto-prefix 1)
   (bind-keys :map corfu-map
    ("C-SPC"    . corfu-insert-separator)
    ("C-n"      . corfu-next)
