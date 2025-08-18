@@ -683,6 +683,39 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
    ("RET"      . corfu-insert)
    ("C-x C-k"  . cape-dict)
    ("C-x C-f"  . cape-file)))
+;; (when (and (display-graphic-p) (not (daemonp)))
+;; (require 'nova-utils)
+;; (use-package nova
+;;   :defer 1
+;;   :defer-incrementally nova-vertico nova-corfu
+;;   :config
+;;   (require 'vertico-posframe)
+;;   (require 'orderless)
+;;   (nova-vertico-mode)
+;;   (require 'corfu)
+;;   (nova-corfu-mode)
+;;   ;; (nova-corfu-popupinfo-mode)
+;;   (require 'markdown-mode)
+;;   (require 'nova-utils)
+;;   ;; (require 'eldoc-box)
+;;   ;; (nova-eldoc-mode)
+;;   ))
+#+end_src
+设置打字机模式
+#+begin_src emacs-lisp
+(define-global-minor-mode typewriter-mode centered-cursor-mode
+  (lambda ()
+    (when (not (memq major-mode
+                     (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode)))
+      (require 'centered-cursor-mode)
+      (centered-cursor-mode))))
+#+end_src
+设置 tab-out
+#+begin_src emacs-lisp
+(use-package tab-jump-out
+  :after-call doom-first-input-hook
+  :custom
+  (yas-fallback-behavior '(apply tab-jump-out 1)))
 #+end_src
 简化提示，用 y/n 代替 yes/no ，别再提醒我 "Really kill emacs?" 了。
 
@@ -727,6 +760,12 @@ Emacs 核心所需的插件
 (package! org-modern)
 (package! noflet)
 (package! transient-posframe)
+(package! clipetty)
+(package! sudoku)
+(package! tab-jump-out)
+(package! centered-cursor-mode)
+(package! catppuccin-theme)
+(package! nova  :recipe(:host github :repo "anonimitoraf/nova" :files ("*")))
 ;;(package! cal-china-x)
 ;;(package! railgun :recipe(:host github :repo "gynamics/railgun.el"))
 #+end_src
