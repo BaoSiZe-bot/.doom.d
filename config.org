@@ -115,33 +115,33 @@
        (vertico +icons +childframe)    ; the search engine of the future
 
        :ui
-       ;;deft              ; notational velocity for Emacs
+       ;; deft              ; notational velocity for Emacs
        doom                ; what makes DOOM look the way it does
-       ;;doom-dashboard    ; a nifty splash screen for Emacs
-       ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
-       ;;(emoji +ascii +github)    ; 🙂
+       ;; doom-dashboard    ; a nifty splash screen for Emacs
+       ;; doom-quit         ; DOOM quit-message prompts when you quit Emacs
+       ;; (emoji +ascii +github)    ; 🙂
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
-       indent-guides       ; highlighted indent columns
+       ;; indent-guides    ; highlighted indent columns
        ;; ligatures        ; ligatures and symbols to make your code pretty again
        ;; minimap          ; show a map of the code on the side
        modeline            ; snazzy, Atom-inspired modeline, plus API
-       nav-flash           ; blink cursor line after big motions
-       ;;neotree           ; a project drawer, like NERDTree for vim
+       ;; nav-flash           ; blink cursor line after big motions
+       ;; neotree           ; a project drawer, like NERDTree for vim
        ophints             ; highlight the region an operation acts on
        (popup +defaults)    ; tame sudden yet inevitable temporary windows
-       ;;tabs              ; a tab bar for Emacs
-       treemacs            ; a project drawer, like neotree but cooler
+       ;; tabs              ; a tab bar for Emacs
+       ;; treemacs            ; a project drawer, like neotree but cooler
        unicode             ; extended unicode support for various languages
        (vc-gutter +pretty) ; vcs diff in the fringe
-       ;;vi-tilde-fringe   ; fringe tildes to mark beyond EOB
-       ;; window-select    ; visually switch windows
-       workspaces          ; tab emulation, persistence & separate workspaces
-       zen                 ; distraction-free coding or writing
+       ;; vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       window-select    ; visually switch windows
+       ;; workspaces          ; tab emulation, persistence & separate workspaces
+       ;; zen                 ; distraction-free coding or writing
 
        :editor
        meow                ; come to the dark side, we have cookies
-       file-templates      ; auto-snippets for empty files
-       fold                ; (nigh) universal code folding
+       ;; file-templates      ; auto-snippets for empty files
+       ;; fold                ; (nigh) universal code folding
        format              ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
@@ -153,7 +153,7 @@
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       (dired +icons)      ; making dired pretty [functional]
+       ;; (dired +icons)      ; making dired pretty [functional]
        ;;electric          ; smarter, keyword-based electric-indent
        ;;eww               ; the internet is gross
        (ibuffer +icons)    ; interactive buffer management
@@ -281,25 +281,26 @@
 
        :baosize
        chinese
-       ;;awesome-tray
+       ;; awesome-tray
        holo-layer
        eaf
        popweb
-       ;;blink-search
+       blink-search
        sort-tab
        corfu-english-helper
        color-rg
-       ;;nyan
+       nyan
        treesit-context
        symbol-overlay
-       winum                          
+       winum
        super-save
        ;; keyfreq
-       ;; emacs-lsp-booster
+       emacs-lsp-booster
        colorful-mode
-       ;; avy-thing-edit
+       avy-thing-edit
        super-eglot
        vterm-run
+       gemini-cli
        dape)
 #+end_src
 * config.el
@@ -616,17 +617,17 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
         (when (posframe-workable-p)
           (let* ((posframe
                       (posframe-show buffer
-        		                     :font transient-posframe-font
-        		                     :position (point)
-        		                     :poshandler transient-posframe-poshandler
-        		                     :background-color (face-attribute 'transient-posframe :background nil t)
-        		                     :foreground-color (face-attribute 'transient-posframe :foreground nil t)
-                                             :initialize #'transient-posframe--initialize
-        		                     :min-width transient-posframe-min-width
-        		                     :min-height transient-posframe-min-height
-        		                     :internal-border-width transient-posframe-border-width
-        		                     :internal-border-color (face-attribute 'transient-posframe-border :background nil t)
-        		                     :override-parameters transient-posframe-parameters)))
+                                           :font transient-posframe-font
+                                           :position (point)
+                                           :poshandler transient-posframe-poshandler
+                                           :background-color (face-attribute 'transient-posframe :background nil t)
+                                           :foreground-color (face-attribute 'transient-posframe :foreground nil t)
+                                           :initialize #'transient-posframe--initialize
+                                           :min-width transient-posframe-min-width
+                                           :min-height transient-posframe-min-height
+                                           :internal-border-width transient-posframe-border-width
+                                           :internal-border-color (face-attribute 'transient-posframe-border :background nil t)
+                                           :override-parameters transient-posframe-parameters)))
             (frame-selected-window posframe))))
       (advice-add #'transient-posframe--show-buffer :override #'my-transient-posframe--show-buffer)
 
