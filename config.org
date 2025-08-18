@@ -1217,8 +1217,6 @@ eaf 需要编译相关依赖
 #+end_src
 *** holo-layer
 懒猫开发的各种特效，没有准 =Linux= 环境所以目前唯一成功的环境是 =wslg+sway= 。
-
-这个模块会破坏 =blink-search= 的窗口，不建议启用。
 **** config.el
 :PROPERTIES:
 :header-args: :tangle modules/baosize/holo-layer/config.el
