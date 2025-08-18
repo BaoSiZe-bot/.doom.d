@@ -546,25 +546,6 @@ C++ 缩进和调试
 (add-hook 'prog-mode-hook #'prettify-symbols-mode)
 (add-hook 'org-mode-hook #'+org-pretty-mode)
 #+end_src
-彩色缩进
-#+begin_src emacs-lisp
-(use-package indent-bars
-  :custom
-  (indent-bars-color '(highlight :face-bg t :blend 0.225))
-  (indent-bars-treesit-support t)
-  (indent-bars-pattern ".")
-  (indent-bars-no-descend-string t)
-  (indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1))
-  (indent-bars-highlight-current-depth t)
-  (indent-bars-pattern "|")  
-  (indent-bars-display-on-blank-lines nil)
-  (indent-bars-treesit-ignore-blank-lines-types '("module"))
-  (indent-bars-prefer-character t)
-  (indent-bars-treesit-scope '((python function_definition class_definition for_statement
-				                       if_statement with_statement while_statement)))
-  :hook ((prog-mode yaml-mode) . indent-bars-mode)
-  :config (require 'indent-bars-ts))
-#+end_src
 支持 FooBar 类 subword 移动
 #+begin_src emacs-lisp
 (global-subword-mode)
