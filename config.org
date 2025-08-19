@@ -184,7 +184,7 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        eval                ; run code, run (also, repls)
        lookup              ; navigate your code and its documentation
-       (lsp +eglot)        ; M-x vscode
+       ;;(lsp +eglot)        ; M-x vscode
        magit               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -297,7 +297,7 @@
        winum
        super-save
        ;; keyfreq
-       emacs-lsp-booster
+       ;; emacs-lsp-booster
        colorful-mode
        avy-thing-edit
        super-eglot
@@ -461,30 +461,34 @@ C++ 缩进和调试
 #+begin_src emacs-lisp
 (setq-default c-ts-mode-indent-offset 4)
 (setq-default c-basic-offset 4)
+(use-package eglot
+     :hook ((prog-mode . (lambda ()
+                           (unless (derived-mode-p
+                                    'emacs-lisp-mode 'lisp-mode
+                                    'makefile-mode 'snippet-mode
+                                    'ron-mode)
+                             (eglot-ensure))))
+            ((markdown-mode yaml-mode yaml-ts-mode) . eglot-ensure))
+     :bind (("C-c c a" . eglot-code-actions)
+            ("C-c c r" . eglot-rename)
+            ("C-c c j" . consult-eglot-symbols))
+     :init
+     (setq read-process-output-max (* 1024 1024)) ; 1MB
+     (setq eglot-autoshutdown t
+           eglot-events-buffer-size 0
+           eglot-send-changes-idle-time 0.5))
 (add-hook 'c++-ts-mode-hook (lambda ()
 ;; (rainbow-delimiters-mode-enable)
-(lsp!)
-(with-eval-after-load 'eglot
-  (setq eglot-server-programs
-        '((c++-mode "clangd")
-          (c++-ts-mode "clangd")))
-  (require 'yasnippet)
-  (setq-local completion-at-point-functions
-        (list #'eglot-completion-at-point
-              #'yasnippet-capf
-              #'cape-file
-              #'cape-dabbrev
-              t)))
 (treesit-context)
 (bind-key "C-c d c" #'cpp-gdb 'c++-ts-mode-map)
- (defun cpp-gdb ()
-   "open compile and C++ debug"
-   (interactive)
-   (if buffer-file-name
-       (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name))))
-         (when (eq 0 (shell-command (concat "g++ -g3 -std=c++17 " buffer-file-name " -o /tmp/cpp-" filename)))
-           (gdb (concat "gdb -i=mi /tmp/cpp-" filename))))
-     (message "buffer-file-name is nil")))))
+(defun cpp-gdb ()
+  "open compile and C++ debug"
+  (interactive)
+  (if buffer-file-name
+      (let ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name))))
+        (when (eq 0 (shell-command (concat "g++ -g3 -std=c++17 " buffer-file-name " -o /tmp/cpp-" filename)))
+          (gdb (concat "gdb -i=mi /tmp/cpp-" filename))))
+    (message "buffer-file-name is nil")))))
 #+end_src
 键绑定
 #+begin_src emacs-lisp
@@ -670,9 +674,36 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
     (setq xref-show-xrefs-function #'consult-xref
           xref-show-definitions-function #'consult-xref))
 (with-eval-after-load 'corfu
-  (global-corfu-mode)
-  (setq corfu-preselect 'first)
-  (setq corfu-auto-prefix 1)
+(use-package corfu
+  :custom
+  (corfu-preselect 'first)
+  (corfu-auto t)
+  (corfu-auto-prefix 2)
+  (corfu-count 12)
+  (corfu-preview-current nil)
+  (corfu-on-exact-match nil)
+  (corfu-auto-delay 0.2)
+  (corfu-popupinfo-delay '(0.4 . 0.2))
+  (global-corfu-modes '((not erc-mode
+                             circe-mode
+                             help-mode
+                             gud-mode
+                             vterm-mode)
+                        t))
+  :custom-face
+  (corfu-border ((t (:inherit region :background unspecified))))
+  :hook ((after-init . global-corfu-mode)
+         (global-corfu-mode . corfu-popupinfo-mode)
+         (global-corfu-mode . corfu-history-mode))
+  :config
+  (add-hook 'before-save-hook #'corfu-quit)
+  (defun my-eglot-capf-with-yasnippet ()
+    (setq-local completion-at-point-functions
+                (list
+	             (cape-capf-super
+		          #'eglot-completion-at-point
+		          #'yasnippet-capf))))
+  (add-hook 'eglot-managed-mode-hook #'my-eglot-capf-with-yasnippet)
   (bind-keys :map corfu-map
    ("C-SPC"    . corfu-insert-separator)
    ("C-n"      . corfu-next)
@@ -681,25 +712,68 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
    ("M-n"      . corfu-popupinfo-scroll-down)
    ("M-d"      . corfu-popupinfo-toggle)
    ("RET"      . corfu-insert)
-   ("C-x C-k"  . cape-dict)
    ("C-x C-f"  . cape-file)))
-;; (when (and (display-graphic-p) (not (daemonp)))
-;; (require 'nova-utils)
-;; (use-package nova
-;;   :defer 1
-;;   :defer-incrementally nova-vertico nova-corfu
-;;   :config
-;;   (require 'vertico-posframe)
-;;   (require 'orderless)
-;;   (nova-vertico-mode)
-;;   (require 'corfu)
-;;   (nova-corfu-mode)
-;;   ;; (nova-corfu-popupinfo-mode)
-;;   (require 'markdown-mode)
-;;   (require 'nova-utils)
-;;   ;; (require 'eldoc-box)
-;;   ;; (nova-eldoc-mode)
-;;   ))
+;; A few more useful configurations...
+(use-package emacs
+  :custom
+  ;; TAB cycle if there are only few candidates
+  ;; (completion-cycle-threshold 3)
+
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (tab-always-indent 'complete)
+
+  ;; Emacs 30 and newer: Disable Ispell completion function. As an alternative,
+  ;; try `cape-dict'.
+  (text-mode-ispell-word-completion nil)
+
+  ;; Emacs 28 and newer: Hide commands in M-x which do not apply to the current
+  ;; mode.  Corfu commands are hidden, since they are not used via M-x. This
+  ;; setting is useful beyond Corfu.
+  (read-extended-command-predicate #'command-completion-default-include-p))
+
+(use-package nerd-icons-corfu
+  :autoload nerd-icons-corfu-formatter
+  :after corfu
+  :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+;; Add extensions
+(use-package cape
+  :commands (cape-file cape-elisp-block cape-keyword)
+  :autoload (cape-wrap-noninterruptible cape-wrap-nonexclusive cape-wrap-buster)
+  :autoload (cape-wrap-silent cape-wrap-purify)
+  :init
+  ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
+
+  ;; Make these capfs composable.
+  (advice-add 'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
+  (advice-add 'lsp-completion-at-point :around #'cape-wrap-nonexclusive)
+  (advice-add 'comint-completion-at-point :around #'cape-wrap-nonexclusive)
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-nonexclusive)
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-nonexclusive)))
+
+(when (and (display-graphic-p) (not (daemonp)))
+(require 'nova-utils)
+(use-package nova
+  :defer 3
+  :defer-incrementally nova-vertico nova-corfu
+  :config
+  (require 'vertico-posframe)
+  (require 'orderless)
+  (nova-vertico-mode)
+  (require 'corfu)
+  (nova-corfu-mode)
+  ;; (nova-corfu-popupinfo-mode)
+  (require 'markdown-mode)
+  (require 'nova-utils)
+  (require 'eldoc-box)
+  (nova-eldoc-mode)
+  ))
 #+end_src
 设置打字机模式
 #+begin_src emacs-lisp
