@@ -839,7 +839,7 @@ Emacs 核心所需的插件
 (package! tab-jump-out)
 (package! centered-cursor-mode)
 (package! catppuccin-theme)
-(package! nova  :recipe(:host github :repo "anonimitoraf/nova" :files ("*")))
+(package! nova  :recipe(:host github :repo "anonimitoraf/nova" :files ("*") :build (:not compile)))
 ;;(package! cal-china-x)
 ;;(package! railgun :recipe(:host github :repo "gynamics/railgun.el"))
 #+end_src
@@ -1898,8 +1898,8 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
   :config
   (add-to-list 'super-save-triggers 'switch-window)
   (setq super-save-exclude '(".gpg"))
-  (setq super-save-idle-duration 1)
-  (setq super-save-all-buffers 1)
+  (setq super-save-idle-duration 3)
+  ;;(setq super-save-all-buffers 1)       ; save all buffer will affect nova temp buffer
   (setq super-save-auto-save-when-idle t)
   (setq super-save-silent t)
   (super-save-mode 1))
