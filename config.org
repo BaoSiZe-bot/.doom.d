@@ -2049,7 +2049,7 @@ code-action 提示
 (package! dape)
 #+end_src
 *** gemini-cli
-Ê·ÉÏ×îÇ¿°×æÎ AI ¹¤¾ß
+史上最强白嫖 AI 工具
 **** config.el
 #+begin_src emacs-lisp :tangle modules/baosize/gemini-cli/config.el
 (use-package gemini-cli
@@ -2065,7 +2065,7 @@ code-action 提示
   :recipe (:host github :repo "linchen2chris/gemini-cli.el" :branch "main" :files ("*.el" (:exclude "demo.gif"))))
 #+end_src
 *** showkey
-screenkey ÔÚ emacs ÉÏµÄÊµÏÖ
+screenkey 在 emacs 上的实现
 **** autoload.el
 #+begin_src emacs-lisp :tangle modules/baosize/showkey/autoload.el
 ;;; showkey.el --- Show keys as you use them.
