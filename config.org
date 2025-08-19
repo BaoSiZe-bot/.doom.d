@@ -1592,21 +1592,44 @@ Rime 本身相关设置
 (when (modulep! :editor evil) (package! evil-pinyin))
 #+end_src
 *** corfu-english-helper
-用 corfu 输入英文单词
+用 corfu 输入英文单词，原本使用的实现是 manateelazycat 的 corfu-english-helper, 但是秉承着尽量缩减包数的理念，使用 cape-dict 代替。
 **** config.el
 :PROPERTIES:
 :header-args: :tangle modules/baosize/corfu-english-helper/config.el
 :END:
 #+begin_src emacs-lisp
 ;;; modules/baosize/corfu-english-helper/config.el -*- lexical-binding: t; -*-
-(use-package corfu-english-helper
-  :hook (text-mode . toggle-corfu-english-helper))
+(with-eval-after-load 'corfu
+(setq cape-dict-file
+      (if (file-exists-p "/usr/share/dict/words")
+          "/usr/share/dict/words"
+        "/usr/share/dict/cracklib-small"))
+(defvar-local cape-dict-mode--enabled nil
+  "Internal flag whether `cape-dict-mode` is enabled in this buffer.")
+
+(defun cape-dict-mode--toggle ()
+  "Toggle `cape-dict` in `completion-at-point-functions`."
+  (if cape-dict-mode--enabled
+      (setq completion-at-point-functions
+            (remove #'cape-dict completion-at-point-functions))
+    (let ((rest (cdr completion-at-point-functions)))
+      (setq completion-at-point-functions
+            (cons (car completion-at-point-functions)
+                  (cons #'cape-dict rest)))))
+  (setq cape-dict-mode--enabled (not cape-dict-mode--enabled)))
+
+(define-minor-mode cape-dict-mode
+  "Toggle inserting `cape-dict` after the first CAPF."
+  :init-value nil
+  :lighter " CAPE-Dict"
+  (cape-dict-mode--toggle))
+(add-hook 'org-mode-hook #'cape-dict-mode))
 #+end_src
 **** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/corfu-english-helper/packages.el
 ;; -*- no-byte-compile: t; -*-
 ;;; modules/baosize/corfu-english-helper/packages.el
-(package! corfu-english-helper :recipe(:host github :repo "manateelazycat/corfu-english-helper" :files ("*")))
+;;(package! corfu-english-helper :recipe(:host github :repo "manateelazycat/corfu-english-helper" :files ("*")))
 #+end_src
 *** treesit-context
 :PROPERTIES:
