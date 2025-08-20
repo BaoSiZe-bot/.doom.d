@@ -682,7 +682,7 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
   (corfu-count 12)
   (corfu-preview-current nil)
   (corfu-on-exact-match nil)
-  (corfu-auto-delay 0.2)
+  (corfu-auto-delay 0)
   (corfu-popupinfo-delay '(0.4 . 0.2))
   (global-corfu-modes '((not erc-mode
                              circe-mode
