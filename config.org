@@ -1793,7 +1793,7 @@ Rime 本身相关设置
                                         " -o /tmp/c-" file-name
                                         " && /tmp/c-" file-name)))
         ('c++-ts-mode (run-in-vterm (concat "cd " dir " && "
-                                          "g++ -O2 -std=gnu++17 -g3 "
+                                          "g++ -O2 -std=c++2c -g3 "
                                           file-path
                                           " -o /tmp/cpp-" file-name
                                           " && /tmp/cpp-" file-name)))
