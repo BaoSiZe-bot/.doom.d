@@ -554,6 +554,7 @@ C++ 缩进和调试
 (setq prettify-symbols-unprettify-at-point 'right-edge)
 (global-prettify-symbols-mode 1)
 (add-hook 'prog-mode-hook #'prettify-symbols-mode)
+(add-hook 'org-mode-hook #'prettify-symbols-mode)
 (add-hook 'org-mode-hook #'+org-pretty-mode)
 #+end_src
 支持 FooBar 类 subword 移动
