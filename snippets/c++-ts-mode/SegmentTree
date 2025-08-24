@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# key: bld
+# key: seg
 # name: SegmentTree
 # --
 struct dat
