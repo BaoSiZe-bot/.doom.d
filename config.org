@@ -1733,9 +1733,9 @@ Rime 本身相关设置
 	  (when (posframe-workable-p)
 	    (posframe-show treesit-context--buffer
 			   :poshandler #'posframe-poshandler-window-top-right-corner
-			   :background-color "#454545"
+			   :background-color (face-attribute 'default :background)
 			   :border-width 5
-			   :border-color "#454545")))
+			   :border-color (face-attribute 'default :background))))
       (posframe-hide treesit-context--buffer))))
 #+end_src
 *** vterm-run
