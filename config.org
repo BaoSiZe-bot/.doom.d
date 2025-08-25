@@ -297,7 +297,7 @@
        winum
        super-save
        ;; keyfreq
-       ;; emacs-lsp-booster
+       (emacs-lsp-booster +eglot)
        colorful-mode
        avy-thing-edit
        super-eglot
@@ -1976,11 +1976,17 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 没啥好说的，都是从项目主页抄的。
 #+begin_src emacs-lisp :tangle modules/baosize/emacs-lsp-booster/config.el
   ;;; modules/baosize/emacs-lsp-booster/config.el
-(if (modulep! :tools lsp +eglot)
-  (when (<= emacs-major-version 29)
-    (use-package eglot-booster
-      :after eglot
-      :config (eglot-booster-mode)))
+(if (modulep! +eglot)
+  (use-package! eglot-booster
+    :after eglot
+    :init
+    (setq eglot-booster-io-only
+      ;; JSON parser on 30+ is faster, so we only exploit eglot-booster's IO
+      ;; buffering (benefits more talkative LSP servers).
+      (and (> emacs-major-version 29)
+           (not (functionp 'json-rpc-connection))))
+    :config
+    (eglot-booster-mode +1))
 (progn (defun lsp-booster--advice-json-parse (old-fn &rest args)
   "Try to parse bytecode instead of json."
   (or
@@ -2016,7 +2022,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 #+begin_src emacs-lisp :tangle modules/baosize/emacs-lsp-booster/packages.el
 ;; -*- no-byte-compile: t; -*-
 ;;; modules/baosize/emacs-lsp-booster/packages.el
-(when (and (modulep! :tools lsp +eglot) (<= emacs-major-version 29))
+(when (modulep! +eglot)
   (package! eglot-booster
     :recipe(:host github
             :repo "jdtsmith/eglot-booster")))
