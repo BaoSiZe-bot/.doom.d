@@ -338,12 +338,14 @@
 #+end_src
 85%真透明（只透明背景，不透明文字）
 #+begin_src emacs-lisp
-(add-to-list 'default-frame-alist '(alpha-background . 85))
+;; (add-to-list 'default-frame-alist '(alpha-background . 85))
 #+end_src
 nord 主题
 #+begin_src emacs-lisp
 (setq catppuccin-flavor 'frappe) 
+(if (or (display-graphic-p) (daemonp))
 (setq doom-theme 'catppuccin)
+(setq doom-theme 'doom-dracula))
 #+end_src
 JetBrains Mono & 霞鹜文楷，emoji设置特殊字体
 #+begin_src emacs-lisp
