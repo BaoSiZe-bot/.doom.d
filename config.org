@@ -783,7 +783,7 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
 #+end_src
 设置打字机模式
 #+begin_src emacs-lisp
-(define-global-minor-mode typewriter-mode centered-cursor-mode
+(define-globalized-minor-mode typewriter-mode centered-cursor-mode
   (lambda ()
     (when (not (memq major-mode
                      (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode)))
