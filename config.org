@@ -578,9 +578,8 @@ C++ 缩进和调试
   :hook (after-init . show-paren-mode)
   :init (setq show-paren-when-point-inside-paren t
               show-paren-when-point-in-periphery t)
-  :config
-  (setq blink-matching-paren-highlight-offscreen t
-        show-paren-context-when-offscreen 'child-frame))
+  :custom
+  (blink-matching-paren-highlight-offscreen t))
 #+end_src
 设置 doom-modeline
 #+begin_src emacs-lisp
