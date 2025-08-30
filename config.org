@@ -11,7 +11,7 @@
 
 如果你在浏览器中打开这个文件，你可以考虑在 Emacs Org mode 中打开它以获得更好的阅读体验 :).
 
-在更改各种package.el和init.el后，请记得运行 =doom sync= 。
+在更改各种packages.el和init.el后，请记得运行 =doom sync= 。
 
 这个配置仍在不断优化中，目前启动速度极慢，达 0.7s （在 WSL 中测试）。
 ** 灵感
