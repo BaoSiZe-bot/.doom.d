@@ -349,8 +349,7 @@
 nord 主题
 #+begin_src emacs-lisp
 (setq catppuccin-flavor 'frappe) 
-(if (or (display-graphic-p) (daemonp))
-(setq doom-theme 'catppuccin)
+(if (display-graphic-p) (setq doom-theme 'catppuccin)
 (setq doom-theme 'doom-dracula))
 #+end_src
 JetBrains Mono & 霞鹜文楷，emoji设置特殊字体
@@ -851,6 +850,8 @@ Emacs 核心所需的插件
 (package! tab-jump-out)
 (package! centered-cursor-mode)
 (package! catppuccin-theme)
+(package! spacemacs-theme)
+(package! base16-theme)
 (package! nova  :recipe(:host github :repo "anonimitoraf/nova" :files ("*") :build (:not compile)))
 ;;(package! cal-china-x)
 ;;(package! railgun :recipe(:host github :repo "gynamics/railgun.el"))
