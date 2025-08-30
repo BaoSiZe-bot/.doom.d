@@ -105,6 +105,24 @@
                             (height . 0.8)
                             (fullscreen)))
 (setq use-package-always-defer t)
+(defgroup abalone nil
+  "Abalonmacs customization."
+  :group 'convenience
+  :link '(url-link :tag "Homepage" "https://github.com/baosize-bot/.doom.d"))
+(defcustom abalone-lsp 'eglot
+  "Set language server.
+`lsp-mode': See https://github.com/emacs-lsp/lsp-mode.
+`eglot': See https://github.com/joaotavora/eglot.
+`lspce': See https://github.com/zbelial/lspce
+`lsp-proxy': See https://github.com/jadestrong/lsp-proxy
+`lsp-bridge': See https://github.com/manateelazycat/lsp-bridge
+"
+  :group 'abalone
+  :type '(choice (const :tag "LSP Mode" lsp-mode)
+                 (const :tag "Eglot" eglot)
+                 (const :tag "Lspce" lspce)
+                 (const :tag "Lsp Proxy" lsp-proxy)
+                 (const :tag "Lsp Bridge" lsp-bridge)))
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
        ;;chinese
@@ -708,13 +726,14 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
          (global-corfu-mode . corfu-history-mode))
   :config
   (add-hook 'before-save-hook #'corfu-quit)
+  (when (eq abalone-lsp 'eglot)
   (defun my-eglot-capf-with-yasnippet ()
     (setq-local completion-at-point-functions
                 (list
 	             (cape-capf-super
 		          #'eglot-completion-at-point
 		          #'yasnippet-capf))))
-  (add-hook 'eglot-managed-mode-hook #'my-eglot-capf-with-yasnippet)
+  (add-hook 'eglot-managed-mode-hook #'my-eglot-capf-with-yasnippet))
   (bind-keys :map corfu-map
    ("C-SPC"    . corfu-insert-separator)
    ("C-n"      . corfu-next)
