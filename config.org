@@ -139,7 +139,7 @@
        unicode             ; extended unicode support for various languages
        (vc-gutter +pretty) ; vcs diff in the fringe
        ;; vi-tilde-fringe   ; fringe tildes to mark beyond EOB
-       window-select    ; visually switch windows
+       ;; window-select    ; visually switch windows
        ;; workspaces          ; tab emulation, persistence & separate workspaces
        ;; zen                 ; distraction-free coding or writing
 
@@ -1975,7 +1975,8 @@ shell exits, the buffer is killed."
   :bind (([remap other-window] . ace-window))
   :hook (emacs-startup . ace-window-display-mode)
   :config
-  (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
+  (setq aw-scope 'frame
+        aw-background t)
   (defun toggle-window-split ()
     (interactive)
     (if (= (count-windows) 2)
@@ -2025,7 +2026,7 @@ shell exits, the buffer is killed."
 #+begin_src emacs-lisp :tangle modules/baosize/winum/packages.el
 ;; -*- no-byte-compile: t; -*-
 ;;; modules/baosize/winum/packages.el
-;; (package! winum)
+(package! ace-window)
 #+end_src
 *** symbol-overlay
 Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多种功能
