@@ -74,6 +74,7 @@
     - [[#dape][dape]]
     - [[#gemini-cli][gemini-cli]]
     - [[#showkey][showkey]]
+    - [[#eee][eee]]
 #+END_QUOTE
 
 * init.el
@@ -2740,4 +2741,30 @@ PREDICATE must be a function with two required arguments."
 **** config.el
 #+begin_src emacs-lisp :tangle modules/baosize/showkey/config.el
 (add-hook 'doom-first-input-hook #'showkey-log-mode)
+#+end_src
+*** eee
+在 Emacs 中嵌入无边框终端以实现 fzf 等功能
+**** config.el
+#+begin_src emacs-lisp :tangle modules/baosize/eee/config.el
+;;; modules/baosize/eee/config.el -*- lexical-binding: t; -*-
+(use-package eee
+  :defer 2
+  :custom
+  (setq ee-terminal-command "st")
+  :config
+  (define-key global-map (kbd "C-c u") ee-keymap)
+  ;; (global-definer "f" 'ee-find)
+  ;; (global-definer "g" 'ee-lazygit)
+  ;; (global-definer "y" 'ee-yazi-project)
+  ;; (general-def "C-x C-f" 'ee-yazi)
+  ;; (general-def "C-S-f" 'ee-rg)
+  )
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/eee/packages.el
+;; -*- no-byte-compile: t; -*-
+;;; packages.el
+(package! eee
+  :recipe (:host github :repo "eval-exec/eee.el"
+           :files (:defaults "*.el" "*.sh")))
 #+end_src
