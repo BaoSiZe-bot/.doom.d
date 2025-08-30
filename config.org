@@ -166,7 +166,8 @@
        eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
-       vterm               ; the best terminal emulation in Emacs
+       ;;vterm               ; the best terminal emulation in Emacs
+       eat
 
        :checkers
        (syntax +flymake)             ; tasing you for every semicolon you forget
@@ -301,8 +302,10 @@
        colorful-mode
        avy-thing-edit
        super-eglot
-       vterm-run
+       ;;vterm-run
+       eat-run
        gemini-cli
+       eee
        dape)
 #+end_src
 * config.el
@@ -950,6 +953,25 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
    'normal
    '("s" . avy-goto-char)
    '("F" . avy-goto-char-2)))
+#+end_src
+** eat
+=vterm= 的安装比较麻烦，而且有些奇怪的 bug, 所以我考虑使用 =eat= 进行替代。
+另外，在 =eat= 中运行 =chafa= 等命令显示出的图像是清晰的，而 =vterm= 中则是像素的。
+#+begin_src emacs-lisp :tangle modules/term/eat/config.el
+;;; modules/term/eat/config.el -*- lexical-binding: t; -*-
+(use-package eat
+  :hook (eat-mode . doom-mark-buffer-as-real-h)
+  :hook (eat-mode . hide-mode-line-mode) ; modeline serves no purpose in vterm
+  :config
+    (set-popup-rule! "^\\*eat" :size 0.25 :vslot -4 :select t :quit nil :ttl 0)
+    (setq-hook! 'eat-mode-hook
+      confirm-kill-processes nil
+      hscroll-margin 0))
+#+end_src
+#+begin_src emacs-lisp :tangle modules/term/eat/packages.el
+;; -*- no-byte-compile: t; -*-
+;;; modules/term/eat/packages.el
+(package! eat)
 #+end_src
 ** baosize
 *** awesome-tray
@@ -1830,6 +1852,113 @@ Rime 本身相关设置
         ("C-c ot" . +vterm/toggle)
         ("C-c oF" . run-cpp-fsanitize)))
 #+end_src
+*** eat-run
+**** autoload.el
+:PROPERTIES:
+:header-args: :tangle modules/baosize/eat-run/autoload.el
+:END:
+判断是否开启了 =eat= 模块
+#+begin_src emacs-lisp
+;;; modules/baosize/eat-run/autoload.el -*- lexical-binding: t; -*-
+;;;###if (modulep! :term eat)
+#+end_src
+将内容发送给 =eat=
+#+begin_src emacs-lisp
+;;;###autoload
+(defun run-in-eat (command)
+  "Execute string COMMAND in a new vterm.
+Interactively, prompt for COMMAND with the current buffer's file
+name supplied. When called from Dired, supply the name of the
+file at point.
+Like `async-shell-command`, but run in a vterm for full terminal features.
+The new vterm buffer is named in the form `*foo bar.baz*`, the
+command and its arguments in earmuffs.
+When the command terminates, the shell remains open, but when the
+shell exits, the buffer is killed."
+  (interactive
+    (list
+      (let* ((f (cond (buffer-file-name)
+                    ((eq major-mode 'dired-mode)
+                      (dired-get-filename nil t))))
+                (filename (if f
+                            (concat " " (shell-quote-argument f))
+                            "")))
+          (read-shell-command "Terminal command: "
+            (cons filename 0)
+            (cons 'shell-command-history 1)
+            (list filename)))))
+  (let ((buf (eat-make "eat" (getenv "SHELL"))))
+    (with-current-buffer buf
+      (let ((proc (get-buffer-process buf)))
+          (when proc
+            (process-send-string proc (concat command "\n"))))))
+    (pop-to-buffer "*eat*"))
+#+end_src
+运行代码
+#+begin_src emacs-lisp
+;;;###autoload
+(defun run-code ()
+  "运行代码."
+  (interactive)
+  (if buffer-file-name
+    (let* ((file-name (shell-quote-argument
+                       (file-name-sans-extension
+                        (file-name-nondirectory buffer-file-name))))
+           (file-path (shell-quote-argument buffer-file-name))
+           (dir (shell-quote-argument
+                 (file-name-directory buffer-file-name)))
+           (cmd (pcase major-mode
+                  ('c-ts-mode (concat "cd " dir " && "
+                                    "gcc -O2 -std=c11 -g3 "
+                                    file-path
+                                    " -o /tmp/c-" file-name
+                                    " && /tmp/c-" file-name))
+                  ('c++-ts-mode (concat "cd " dir " && "
+                                      "g++ -O2 -std=c++2c -g3 "
+                                      file-path
+                                      " -o /tmp/cpp-" file-name
+                                      " && /tmp/cpp-" file-name))
+                  ('python-ts-mode (concat "cd " dir " && "
+                                         "python " file-path))
+                  (_ nil))))
+      (if cmd (run-in-eat cmd)
+      (message "not supported")))
+  (message "buffer-file-name is nil")))
+#+end_src
+进行代码错误检查
+#+begin_src emacs-lisp
+;;;###autoload
+(defun run-cpp-fsanitize ()
+  "检查未定义行为."
+  (interactive)
+  (if buffer-file-name
+      (let* ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+             (dir (file-name-directory buffer-file-name)))
+             (cmd (concat "cd " dir " && "
+                        "clang++ -O2 -std=c++17 -fsanitize=undefined "
+                        buffer-file-name
+                        " -o /tmp/cpp-" filename
+                        " && /tmp/cpp-" filename))
+        (run-in-eat cmd))
+  (message "buffer-file-name is nil")))
+#+end_src
+**** config.el
+绑定一些快捷键
+#+begin_src emacs-lisp :tangle modules/baosize/eat-run/config.el
+;;; modules/baosize/vterm-run/config.el -*- lexical-binding: t; -*-
+(when (modulep! :term eat)
+  (bind-keys ("C-c o TAB" . run-in-eat)
+        ("C-c oo" . run-code)
+        ("C-c ot" . eat)
+        ("C-c oF" . run-cpp-fsanitize)))
+#+end_src
+**** doctor.el
+由于快捷键问题与 vterm-run 不兼容
+#+begin_src emacs-lisp :tangle modules/baosize/eat-run/doctor.el
+;;; modules/baosize/eat-run/doctor.el
+(when (and (modulep! :baosize eat-run) (modulep! :baosize vterm-run))
+  (warn! "eat-run and vterm-run are incompatible!"))
+#+end_src
 *** winum
 切换窗口时更高效的选择（ Alt + 数字键）
 ***** config.el
@@ -2165,7 +2294,7 @@ code-action 提示
   :defer 2
   :config
   (define-key global-map (kbd "C-c g") gemini-cli-command-map)
-  (setq gemini-cli-terminal-backend 'vterm)
+  (setq gemini-cli-terminal-backend 'eat)
   (gemini-cli-mode))
 #+end_src
 **** packages.el
