@@ -333,6 +333,7 @@
 :PROPERTIES:
 :header-args: :tangle config.el
 :END:
+设置剪切板
 #+begin_src emacs-lisp
 ;;; config.el -*- lexical-binding: t; -*-
 (use-package clipetty
