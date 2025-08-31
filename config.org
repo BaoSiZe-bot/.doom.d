@@ -361,6 +361,15 @@
 
 
 #+end_src
+设置环境变量
+#+begin_src emacs-lisp
+(use-package exec-path-from-shell
+  :demand t
+  :config
+  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "PATH" "MANPATH"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  (exec-path-from-shell-initialize))
+#+end_src
 85%真透明（只透明背景，不透明文字）
 #+begin_src emacs-lisp
 ;; (add-to-list 'default-frame-alist '(alpha-background . 85))
@@ -866,6 +875,7 @@ Emacs 核心所需的插件
 (package! noflet)
 (package! transient-posframe)
 (package! clipetty)
+(package! exec-path-from-shell)
 (package! sudoku)
 (package! tab-jump-out)
 (package! centered-cursor-mode)
