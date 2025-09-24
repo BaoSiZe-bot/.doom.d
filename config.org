@@ -496,6 +496,12 @@ Treesitter 默认的高亮太素了，但是定义多了影响速度，设置一
 #+begin_src emacs-lisp
 (setq flymake-show-diagnostics-at-end-of-line t)
 #+end_src
+设置 rust-ts-mode 自动启动，避免 fundamental-mode 时 eglot 没有检测到 lsp 的情况
+#+begin_src emacs-lisp
+(use-package rust-ts-mode
+  :mode "\\.rs\\'")
+#+end_src
+
 C++ 缩进和调试
 #+begin_src emacs-lisp
 (setq-default c-ts-mode-indent-offset 4)
@@ -2143,7 +2149,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
   ;;; modules/baosize/emacs-lsp-booster/config.el
 (if (modulep! +eglot)
   (use-package! eglot-booster
-    :after eglot
+    :after-call doom-first-input-hook
     :init
     (setq eglot-booster-io-only
       ;; JSON parser on 30+ is faster, so we only exploit eglot-booster's IO
