@@ -350,7 +350,7 @@ emacs -Q ~/.config/doom/config.org
        super-eglot
        ;;vterm-run
        eat-run
-       gemini-cli
+       ;;gemini-cli
        eee
        ;;dape
        )
