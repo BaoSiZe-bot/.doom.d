@@ -331,7 +331,7 @@ emacs -Q ~/.config/doom/config.org
        :baosize
        chinese
        ;; awesome-tray
-       holo-layer
+       ;; holo-layer
        eaf
        popweb
        blink-search
@@ -1499,21 +1499,22 @@ eaf 需要编译相关依赖
 #+begin_src emacs-lisp
 (use-package holo-layer
   :custom
-  (holo-layer-enable-cursor-animation t)
-  (holo-layer-enable-type-animation t)
-  (holo-layer-cursor-animation-type "jelly easing")
-  (holo-layer-cursor-animation-interval 10)
-  (holo-layer-cursor-animation-duration 80)
-  (holo-layer-enable-window-border t)
+  ;; (holo-layer-enable-cursor-animation t)
+  ;; (holo-layer-enable-type-animation t)
+  ;; (holo-layer-cursor-animation-type "jelly easing")
+  ;; (holo-layer-cursor-animation-interval 10)
+  ;; (holo-layer-cursor-animation-duration 80)
+  ;; (holo-layer-enable-window-border t)
   ;; (holo-layer-enable-place-info t)
-  (holo-layer-enable-window-number-background t)
+  ;; (holo-layer-enable-window-number-background t)
   ;; (holo-layer-hide-mode-line t)
-  (holo-layer-enable-indent-rainbow t)
+  ;; (holo-layer-enable-indent-rainbow t)
+  ;; (holo-layer-indent-colors '("#E78284" "#E5C890" "#8CAAEE" "#EF9F76" "#A6D189" "#CA9EE6" "#81C8BE"))
   ;; (holo-layer-indent-colors '())
-  (holo-layer-cursor-color nil)
-  (holo-layer-cursor-alpha 255)
-  (holo-layer-type-animation-style "supernova")
-  (holo-layer-sort-tab-ui t)
+  ;; (holo-layer-cursor-color nil)
+  ;; (holo-layer-cursor-alpha 255)
+  ;; (holo-layer-type-animation-style "supernova")
+  ;; (holo-layer-sort-tab-ui t)
   :hook
   (doom-after-init . holo-layer-enable)))
 #+end_src
