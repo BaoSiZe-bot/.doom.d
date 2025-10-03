@@ -835,25 +835,25 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
   (advice-add 'comint-completion-at-point :around #'cape-wrap-nonexclusive)
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-nonexclusive)
-  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-nonexclusive)))
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-nonexclusive))
 
-(when (and (display-graphic-p) (not (daemonp)))
-(require 'nova-utils)
-(use-package nova
-  :defer 3
-  :defer-incrementally nova-vertico nova-corfu
-  :config
-  (require 'vertico-posframe)
-  (require 'orderless)
-  (nova-vertico-mode)
-  (require 'corfu)
-  (nova-corfu-mode)
-  ;; (nova-corfu-popupinfo-mode)
-  (require 'markdown-mode)
-  (require 'nova-utils)
-  (require 'eldoc-box)
-  (nova-eldoc-mode)
-  ))
+;; (when (and (display-graphic-p) (not (daemonp)))
+;; (require 'nova-utils)
+;; (use-package nova
+;;   :defer 3
+;;   :defer-incrementally nova-vertico nova-corfu
+;;   :config
+;;   (require 'vertico-posframe)
+;;   (require 'orderless)
+;;   (nova-vertico-mode)
+;;   (require 'corfu)
+;;   (nova-corfu-mode)
+;;   ;; (nova-corfu-popupinfo-mode)
+;;   (require 'markdown-mode)
+;;   (require 'nova-utils)
+;;   (require 'eldoc-box)
+;;   (nova-eldoc-mode)
+;;   ))
 #+end_src
 设置打字机模式
 #+begin_src emacs-lisp
@@ -922,7 +922,7 @@ Emacs 核心所需的插件
 (package! catppuccin-theme)
 (package! spacemacs-theme)
 (package! base16-theme)
-(package! nova  :recipe(:host github :repo "anonimitoraf/nova" :files ("*") :build (:not compile)))
+;; (package! nova  :recipe(:host github :repo "anonimitoraf/nova" :files ("*") :build (:not compile)))
 ;;(package! cal-china-x)
 ;;(package! railgun :recipe(:host github :repo "gynamics/railgun.el"))
 #+end_src
