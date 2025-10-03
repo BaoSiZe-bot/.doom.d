@@ -1967,6 +1967,7 @@ shell exits, the buffer is killed."
             (cons filename 0)
             (cons 'shell-command-history 1)
             (list filename)))))
+  (require 'eat)
   (let ((buf (eat-make "eat" (getenv "SHELL"))))
     (with-current-buffer buf
       (let ((proc (get-buffer-process buf)))
@@ -2013,12 +2014,16 @@ shell exits, the buffer is killed."
   (interactive)
   (if buffer-file-name
       (let* ((filename (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
-             (dir (file-name-directory buffer-file-name)))
-             (cmd (concat "cd " dir " && "
+             (dir (file-name-directory buffer-file-name))
+             (cmd (concat "cd "
+                        dir
+                        " && "
                         "clang++ -O2 -std=c++17 -fsanitize=undefined "
                         buffer-file-name
-                        " -o /tmp/cpp-" filename
-                        " && /tmp/cpp-" filename))
+                        " -o /tmp/cpp-"
+                        filename
+                        " && /tmp/cpp-"
+                        filename)))
         (run-in-eat cmd))
   (message "buffer-file-name is nil")))
 #+end_src
