@@ -1381,7 +1381,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 目前存在没修好的 bug 的一些包
 #+begin_src emacs-lisp
 (with-eval-after-load 'eaf
-  (use-package eaf-pdf-viewer))
+  (require 'eaf-pdf-viewer))
 ;; (use-package eaf-git :bind (("C-c e g" . eaf-open-git)))
 )
 #+end_src
