@@ -397,7 +397,8 @@ emacs -Q ~/.config/doom/config.org
 #+end_src
 85%真透明（只透明背景，不透明文字）
 #+begin_src emacs-lisp
-;; (add-to-list 'default-frame-alist '(alpha-background . 85))
+(add-to-list 'default-frame-alist '(alpha-background . 80))
+#+end_src
 设置终端使用鼠标
 #+begin_src emacs-lisp
 (when (not (display-graphic-p))
@@ -405,9 +406,9 @@ emacs -Q ~/.config/doom/config.org
 #+end_src
 nord 主题
 #+begin_src emacs-lisp
-(setq catppuccin-flavor 'frappe) 
+(setq catppuccin-flavor 'frappe)
 (if (display-graphic-p) (setq doom-theme 'catppuccin)
-(setq doom-theme 'doom-dracula))
+(setq doom-theme 'catppuccin))
 #+end_src
 JetBrains Mono & 霞鹜文楷，emoji设置特殊字体
 如果不用 =unicode= 模块的话，霞鹜的设置是不起作用的，但是 =unicode= 实在是太慢了
@@ -572,10 +573,10 @@ C++ 缩进和调试
 #+end_src
 显示时间
 #+begin_src emacs-lisp
-(use-package time
-  :init (setq display-time-default-load-average nil
-              display-time-format "%H:%M"))
-(display-time-mode)
+;; (use-package time
+;;   :init (setq display-time-default-load-average nil
+;;               display-time-format "%H:%M"))
+;; (display-time-mode)
 #+end_src
 让符号更漂亮
 #+begin_src emacs-lisp
@@ -1171,6 +1172,10 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 #+begin_src emacs-lisp
 :bind (("C-c b s" . blink-search))
 #+end_src
+启用 =posframe=
+#+begin_src emacs-lisp
+;; :custom (blink-search-enable-posframe t)
+#+end_src
 进入 =blink-search= 时肯定得是 =meow-insert-mode= 啊
 #+begin_src emacs-lisp
 :config (add-hook 'blink-search-mode-hook #'meow-insert))
@@ -1236,7 +1241,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 自定义外观
 #+begin_src emacs-lisp
   :custom
-  ;;eaf-browser-dark-mode t
+  (eaf-browser-dark-mode nil)
   (eaf-browser-default-search-engine "bing")
   (eaf-webengine-font-family "JetBrainsMono Nerd Font")
   (eaf-webengine-fixed-font-family "JetBrainsMono Nerd Font")
