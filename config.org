@@ -2142,7 +2142,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
   :config
   (add-to-list 'super-save-triggers 'switch-window)
   (setq super-save-exclude '(".gpg"))
-  (setq super-save-idle-duration 3)
+  (setq super-save-idle-duration 1)
   ;;(setq super-save-all-buffers 1)       ; save all buffer will affect nova temp buffer
   (setq super-save-auto-save-when-idle t)
   (setq super-save-silent t)
@@ -2833,7 +2833,7 @@ PREDICATE must be a function with two required arguments."
 (use-package eee
   :defer 2
   :custom
-  (setq ee-terminal-command "st")
+  (ee-terminal-command "foot")
   :config
   (define-key global-map (kbd "C-c u") ee-keymap)
   ;; (global-definer "f" 'ee-find)
