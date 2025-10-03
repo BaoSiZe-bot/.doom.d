@@ -410,6 +410,7 @@ nord 主题
 (setq doom-theme 'doom-dracula))
 #+end_src
 JetBrains Mono & 霞鹜文楷，emoji设置特殊字体
+如果不用 =unicode= 模块的话，霞鹜的设置是不起作用的，但是 =unicode= 实在是太慢了
 #+begin_src emacs-lisp
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 18 :weight 'Regular)
       doom-symbol-font (font-spec :family "LXGW WenKai Mono GB" :size 18 :weight 'Regular)
