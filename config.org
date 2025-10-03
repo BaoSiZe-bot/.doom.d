@@ -738,30 +738,44 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
 (with-eval-after-load 'xref
     (setq xref-show-xrefs-function #'consult-xref
           xref-show-definitions-function #'consult-xref))
-(with-eval-after-load 'corfu
 (use-package corfu
-  :custom
-  (corfu-preselect 'first)
-  (corfu-auto t)
-  (corfu-auto-prefix 2)
-  (corfu-count 12)
-  (corfu-preview-current nil)
-  (corfu-on-exact-match nil)
-  (corfu-auto-delay 0)
-  (corfu-popupinfo-delay '(0.4 . 0.2))
-  (global-corfu-modes '((not erc-mode
+  ;; :custom
+  ;; (corfu-preselect 'prompt)
+  ;; (corfu-auto t)
+  ;; (corfu-auto-prefix 2)
+  ;; (corfu-count 12)
+  ;; (corfu-preview-current #'insert)
+  ;; (corfu-on-exact-match nil)
+  ;; (corfu-auto-delay 0)
+  ;; (corfu-popupinfo-delay '(0.4 . 0.2))
+  ;; (global-corfu-modes '((not erc-mode
+  ;;                            circe-mode
+  ;;                            help-mode
+  ;;                            gud-mode
+  ;;                            vterm-mode)
+  ;;                       t))
+  :custom-face
+  (corfu-border ((t (:inherit region :background unspecified))))
+  :hook ((doom-first-input . global-corfu-mode)
+         (global-corfu-mode . corfu-popupinfo-mode)
+         (global-corfu-mode . corfu-history-mode))
+  :config
+  ;; (add-hook 'before-save-hook #'corfu-quit)
+  (setq! corfu-preselect 'first
+         corfu-auto t
+         corfu-auto-prefix 2
+         corfu-count 16
+         corfu-preview-current #'insert
+         corfu-on-exact-match nil
+         corfu-auto-delay 0
+         corfu-popupinfo-delay '(0.4 . 0.2)
+         global-corfu-modes '((not erc-mode
                              circe-mode
                              help-mode
                              gud-mode
                              vterm-mode)
                         t))
-  :custom-face
-  (corfu-border ((t (:inherit region :background unspecified))))
-  :hook ((after-init . global-corfu-mode)
-         (global-corfu-mode . corfu-popupinfo-mode)
-         (global-corfu-mode . corfu-history-mode))
-  :config
-  (add-hook 'before-save-hook #'corfu-quit)
+
   (when (eq abalone-lsp 'eglot)
   (defun my-eglot-capf-with-yasnippet ()
     (setq-local completion-at-point-functions
@@ -777,7 +791,7 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
    ("M-p"      . corfu-popupinfo-scroll-up)
    ("M-n"      . corfu-popupinfo-scroll-down)
    ("M-d"      . corfu-popupinfo-toggle)
-   ("RET"      . corfu-insert)
+   ("RET"      . corfu-complete)
    ("C-x C-f"  . cape-file)))
 ;; A few more useful configurations...
 (use-package emacs
