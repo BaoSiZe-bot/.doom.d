@@ -1259,7 +1259,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 配置代理
 #+begin_src emacs-lisp
   (eaf-proxy-host "127.0.0.1")
-  (eaf-proxy-port "7897")
+  (eaf-proxy-port "7890")
   (eaf-proxy-type "http")
 #+end_src
 同步Chromium
