@@ -398,6 +398,10 @@ emacs -Q ~/.config/doom/config.org
 85%真透明（只透明背景，不透明文字）
 #+begin_src emacs-lisp
 ;; (add-to-list 'default-frame-alist '(alpha-background . 85))
+设置终端使用鼠标
+#+begin_src emacs-lisp
+(when (not (display-graphic-p))
+  (xterm-mouse-mode +1))
 #+end_src
 nord 主题
 #+begin_src emacs-lisp
