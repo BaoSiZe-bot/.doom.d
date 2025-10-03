@@ -1754,7 +1754,7 @@ Rime 本身相关设置
 (defgroup treesit-context nil
   "Show the context of the currently visible buffer contents."
   :group 'treesit)
-(defvar treesit-context--buffer (generate-new-buffer "*treesit-context-posframe-buffer*")
+(defvar treesit-context--buffer (generate-new-buffer " *treesit-context-posframe-buffer*")
   "Buffer used to display the context.")
 (defvar treesit-context--list nil
   "List used to store the context needs showing.")
