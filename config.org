@@ -37,12 +37,37 @@
 [[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot15.png]]
 [[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot16.png]]
 [[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot17.png]]
+** 安装
+*** 先决条件
+ - fd
+ - fzf
+ - npm
+ - git
+ - python3
+ - ripgrep
+ - tree-sitter
+ - 当然，一份 Native-compiled 的 Emacs
+*** 使用方式
+在使用此配置前，请先仔细阅读 =Doom= 的安装、使用、配置方法。
+请先自行备份好您的配置文件，确保不存在目录 =$HOME/.emacs.d= 和文件 =$HOME/.emacs=.
+#+BEGIN_SRC bash :tangle /dev/null
+git clone https://github.com/doomemacs/doomemacs ~/.config/emacs
+git clone https://github.com/baosize-bot/.doom.d ~/.config/doom
+emacs -Q ~/.config/doom/config.org
+#+END_SRC
+此时请键入命令 =C-c C-v t= 以进行首次 tangle 操作，然后键入 =C-x C-c= 退出 Emacs。
+#+BEGIN_SRC bash :tangle /dev/null
+~/.config/doomemacs/bin/doom install
+#+END_SRC
 
 * 目录 :QUOTE:TOC_3:
 #+BEGIN_QUOTE
 - [[#概述][概述]]
   - [[#灵感][灵感]]
   - [[#截图][截图]]
+  - [[#安装][安装]]
+    - [[#先决条件][先决条件]]
+    - [[#使用方式][使用方式]]
 - [[#initel][init.el]]
 - [[#configel][config.el]]
 - [[#packagesel][packages.el]]
