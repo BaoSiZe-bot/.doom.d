@@ -7,18 +7,19 @@
 “I'm rarely happier than when spending an entire day programming my computer to perform automatically a task that would otherwise take me a good ten seconds to do by hand.” - Douglas Adams
 #+end_quote
 
-我用 [[https://github.com/doomemacs/doomemacs/][Doom Emacs]]（以下简称Doom）作为 Emacs 基本配置。这是一个literate配置文件, 指定了Doom的所有配置并包含了文档。如果将这个文件导入到 =~/.doom.d/config.org= ，Doom 会在启动或此文件变动时时自动 tangle 此文件中的代码到对应的文件中。
+我使用 [[https://github.com/doomemacs/doomemacs/][Doom Emacs]]（以下简称Doom）作为 Emacs 的配置框架。
+这是一个文学性配置文件, 指定了Doom的所有配置并包含了对每一段配置的解释。如果将这个文件导入到 =~/.doom.d/config.org= ，Doom 会在启动或此文件变动时时自动 tangle 此文件中的代码到对应的文件中。
 
 如果你在浏览器中打开这个文件，你可以考虑在 Emacs Org mode 中打开它以获得更好的阅读体验 :).
 
-在更改各种packages.el和init.el后，请记得运行 =doom sync= 。
+在更改本文件中的各种 packages.el 和 init.el 部分后，请记得运行 =doom sync= 。
 
-这个配置仍在不断优化中，目前启动速度极慢，达 0.7s （在 WSL 中测试）。
+这个配置仍在不断优化中，目前启动速度一般，约 0.7s （在 WSL 中测试）。
 ** 灵感
 - [[https://github.com/cnsunyour/.doom.d][cnsunyour's Doom Emacs]] 本配置中中文输入法部分借鉴了此处的写法。
 - [[https://github.com/manateelazycat/lazycat-emacs][Lazycat Emacs]] 本配置中半数插件取材于此。
 - [[https://seagle0128.github.io/.emacs.d][Centaur Emacs]] 本配置中 UI 配置绝大多数由此而来。
-- [[https://github.com/h0cheung/doom-emacs-config][H-cheung's Doom Emacs]] 本配置基于此修改而来。
+- [[https://github.com/h0cheung/doom-emacs-config][H-cheung's Doom Emacs]] 本配置基于此框架。
 ** 截图
 [[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot1.png]]
 [[https://raw.githubusercontent.com/BaoSiZe-bot/.doom.d/screenshots/assets/screenshot2.png]]
@@ -105,7 +106,7 @@ emacs -Q ~/.config/doom/config.org
 * init.el
 本部分决定了 Doom 所启用的模块和加载顺序。
 
-这是我个人的配置，不客制化，而我已经熟练了 Doom 的快捷键，所以 Dashboard 对我来说并不重要。
+这是我个人的配置，在设计的时候并没有考虑客制化，对于熟悉 Doom 的快捷键的人来说，Dashboard 或许并不重要。
 
 在 C++ 中自动格式化不是个好想法，尤其当设置了自动保存时。
 #+begin_src emacs-lisp :tangle init.el
@@ -359,7 +360,7 @@ emacs -Q ~/.config/doom/config.org
 :PROPERTIES:
 :header-args: :tangle config.el
 :END:
-设置剪切板
+在 wsl 环境中时，设置 win32yank 作为系统剪切板
 #+begin_src emacs-lisp
 ;;; config.el -*- lexical-binding: t; -*-
 (use-package clipetty
@@ -386,7 +387,7 @@ emacs -Q ~/.config/doom/config.org
 
 
 #+end_src
-设置环境变量
+避免 emacs 的环境变量与 shell 不一致的问题
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
   :demand t
@@ -395,23 +396,23 @@ emacs -Q ~/.config/doom/config.org
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 #+end_src
-85%真透明（只透明背景，不透明文字）
+设置 85% 的 alpha 透明（只透明背景，不透明文字）
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(alpha-background . 80))
 #+end_src
-设置终端使用鼠标
+设置 xterm 终端中的鼠标
 #+begin_src emacs-lisp
 (when (not (display-graphic-p))
   (xterm-mouse-mode +1))
 #+end_src
-nord 主题
+启用主题
 #+begin_src emacs-lisp
 (setq catppuccin-flavor 'frappe)
 (if (display-graphic-p) (setq doom-theme 'catppuccin)
 (setq doom-theme 'catppuccin))
 #+end_src
 JetBrains Mono & 霞鹜文楷，emoji设置特殊字体
-如果不用 =unicode= 模块的话，霞鹜的设置是不起作用的，但是 =unicode= 实在是太慢了
+如果不用 =unicode= 模块的话，霞鹜的设置是不起作用的，但是 =unicode= 拖慢了不少启动速度，只好做个取舍了
 #+begin_src emacs-lisp
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 18 :weight 'Regular)
       doom-symbol-font (font-spec :family "LXGW WenKai Mono GB" :size 18 :weight 'Regular)
@@ -422,7 +423,7 @@ JetBrains Mono & 霞鹜文楷，emoji设置特殊字体
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (add-hook 'after-setting-font-hook #'+font-set-emoji)
 #+end_src
-平滑滚动
+启用平滑滚动
 #+begin_src emacs-lisp
 (when (display-graphic-p)
   (setq mouse-wheel-scroll-amount '(1 ((shift) . hscroll))
@@ -436,7 +437,7 @@ JetBrains Mono & 霞鹜文楷，emoji设置特殊字体
 (if (fboundp 'pixel-scroll-precision-mode)
     (pixel-scroll-precision-mode t))
 #+end_src
-Centaur Emacs 中的一些基础设置
+从 Centaur Emacs 中借鉴来的一些基础设置
 #+begin_src emacs-lisp
 (use-package simple
   :hook ((after-init . size-indication-mode)
@@ -481,7 +482,7 @@ Centaur Emacs 中的一些基础设置
 		          tabulated-list-entries)))))
     (advice-add #'list-processes--refresh :after #'my-list-processes--prettify)))
 #+end_src
-Treesitter 默认的高亮太素了，但是定义多了影响速度，设置一下jit-lock-defer-time
+Treesitter 默认的高亮过于朴素，但是定义多了影响速度，通过设置 jit-lock-defer-time 可以解决
 #+begin_src emacs-lisp
 (setq treesit-font-lock-level 4
       major-mode-remap-alist
@@ -533,7 +534,7 @@ Treesitter 默认的高亮太素了，但是定义多了影响速度，设置一
   :mode "\\.rs\\'")
 #+end_src
 
-C++ 缩进和调试
+针对C 家族的缩进和调试设置
 #+begin_src emacs-lisp
 (setq-default c-ts-mode-indent-offset 4)
 (setq-default c-basic-offset 4)
@@ -566,25 +567,25 @@ C++ 缩进和调试
           (gdb (concat "gdb -i=mi /tmp/cpp-" filename))))
     (message "buffer-file-name is nil")))))
 #+end_src
-键绑定
+设置一些个人比较习惯的键绑定
 #+begin_src emacs-lisp
 (bind-keys ("C-c f o" . consult-org-agenda)
            ("C-s" . consult-line))
 #+end_src
-由于本人使用fish作为默认shell所以要做一点操作才行
+由于本人使用fish作为默认shell所以需要设置不同的 default-shell 才能兼容
 #+begin_src emacs-lisp
 (setq shell-file-name (executable-find "bash"))
 (setq-default vterm-shell (executable-find "fish"))
 (setq-default explicit-shell-file-name (executable-find "fish"))
 #+end_src
-显示时间
+显示时间，这似乎在某些版本的 emacs 中不起作用
 #+begin_src emacs-lisp
 ;; (use-package time
 ;;   :init (setq display-time-default-load-average nil
 ;;               display-time-format "%H:%M"))
 ;; (display-time-mode)
 #+end_src
-让符号更漂亮
+用一些特殊字符替换掉普通字面量
 #+begin_src emacs-lisp
 (setq-default prettify-symbols-alist
   '(("[ ]"            . ?)
@@ -633,13 +634,13 @@ C++ 缩进和调试
 (add-hook 'org-mode-hook #'prettify-symbols-mode)
 (add-hook 'org-mode-hook #'+org-pretty-mode)
 #+end_src
-支持 FooBar 类 subword 移动
+支持 FooBar 这种 subword 移动
 #+begin_src emacs-lisp
 (global-subword-mode)
 #+end_src
-设置括号匹配，用绿色高亮
-#+begin_src emacs-lisp 
-(use-package paren
+设置括号匹配，用绿色高亮匹配
+#+begin_src emacs-lisp
+  (use-package paren
   :custom-face
   (show-paren-match ((((class color) (background light))
                       (:box (:line-width (-1 . -1) :color "gray70")))
@@ -662,10 +663,10 @@ C++ 缩进和调试
 (when (modulep! :tools lsp +lsp)
   (add-hook 'lsp-mode-hook #'lsp-headerline-breadcrumb-mode))
 #+end_src
-悬浮窗口
+设置悬浮窗口
 
 corfu 貌似不应该出现在这里，但是不放这里就没法工作
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
 (standard-display-unicode-special-glyphs) ; 终端中的弹窗不设置会使用ASCII边框
 (use-package posframe
     :init
@@ -900,7 +901,7 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
 #+end_src
 自定义Variables和Faces
 
-我不知道这是干嘛用的，但它既然在这里……
+我不知道这是干嘛用的，但它既然在这里，那还是留着吧……
 #+begin_src emacs-lisp
 (custom-set-variables
 ;; custom-set-variables was added by Custom.
@@ -915,7 +916,7 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
 ;; If there is more than one, they won't work right.
 #+end_src
 * packages.el
-Emacs 核心所需的插件
+在 config.el 中直接用到的插件
 #+begin_src emacs-lisp :tangle packages.el
 ;; -*- no-byte-compile: t; -*-
 ;;; packages.el
@@ -1041,7 +1042,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
    '("F" . avy-goto-char-2)))
 #+end_src
 ** eat
-=vterm= 的安装比较麻烦，而且有些奇怪的 bug, 所以我考虑使用 =eat= 进行替代。
+=vterm= 的安装有些麻烦，而且有时候会触发奇怪的 bug, 所以我考虑使用 =eat= 进行替代。
 另外，在 =eat= 中运行 =chafa= 等命令显示出的图像是清晰的，而 =vterm= 中则是像素的。
 #+begin_src emacs-lisp :tangle modules/term/eat/config.el
 ;;; modules/term/eat/config.el -*- lexical-binding: t; -*-
@@ -1158,7 +1159,8 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
   :recipe (:host github :repo "manateelazycat/awesome-tray"))
 #+end_src
 *** blink-search
-懒猫的多源搜索，据说很快就可以取代 =vertico+consult= 全家桶了。
+懒猫的多源搜索，在查找文件等情况下比较有用，类似于 nvim 中的 picker 。
+至于 vertico 它更像是一个把所有 input 都变成 picker 的 completion 框架。
 **** config.el
 :PROPERTIES:
 :header-args: :tangle modules/baosize/blink-search/config.el
@@ -1168,7 +1170,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 ;;; modules/baosize/blink-search/config.el -*- lexical-binding: t; -*-
 (use-package blink-search
 #+end_src
-由于某种原因， =blink-search= 不能正常加载，需要指定 =load-path= 。
+由于未知原因， =blink-search= 不能正常加载，需要指定 =load-path= 。
 
 注意如果把 Doom 安装在 =~/.config/emacs= 需要更改位置。
 #+begin_src emacs-lisp
@@ -1217,7 +1219,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
   :recipe (:host github :repo "manateelazycat/color-rg"))
 #+end_src
 *** EAF
-=Emacs Application Frames= ，由懒猫开发的使 "Live in Emacs" 成为现实的超级应用框架，也是本配置的核心之一。
+=Emacs Application Frames= ，由懒猫开发的使 "Live in Emacs" 成为现实的超级应用框架。
 **** config.el
 :PROPERTIES:
 :header-args: :tangle modules/baosize/eaf/config.el
@@ -1240,7 +1242,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
              ("C-c ef" . eaf-open)
              ("C-c em" . eaf-open-bookmark)))
 #+end_src
-启动浏览器（这么大一个包，肯定得懒加载）
+启动浏览器
 #+begin_src emacs-lisp
 (use-package eaf-browser
 #+end_src
@@ -1755,7 +1757,7 @@ Rime 本身相关设置
 :header-args: :tangle modules/baosize/treesit-context/autoload.el
 :END:
 类似于 [[https://github.com/nvim-treesitter/nvim-treesitter-context][Nvim Treesitter Context]] 的显示代码层级的插件，代码高度借鉴[[https://emacs-china.org/t/treesit-context-tree-sitter-topsy/25162][Emacs China]]
-
+与 =nvim-treesitter-context= 的区别在于 nvim-treesitter-context 会占满一整个上半窗口，而 nvim-treesitter-context 只是一个悬浮窗口。
 试着整理一下，当学习 =Emacs Lisp= 了。
 
 定义基本变量，以及文件头
@@ -1785,7 +1787,7 @@ Rime 本身相关设置
     (setq treesit-context--timer (run-with-idle-timer 0.1 t 'treesit-context--update))
     (treesit-context--update)))
 #+end_src
-声明删除窗口的函数（不知道该怎么称呼这东西了）
+声明窗口删除函数
 #+begin_src emacs-lisp
 ;;;###autoload
 (defun treesit-context-abort ()
@@ -1827,7 +1829,7 @@ Rime 本身相关设置
       (setq context (concat context text "\n")))
     context))
 #+end_src
-光标是会动的，层级是会变化的，窗口是要更新的。
+光标移动时，层级变化，此时窗口更新。
 #+begin_src emacs-lisp
 ;;;###autoload
 (defun treesit-context--update ()
@@ -2255,7 +2257,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
             :repo "jdtsmith/eglot-booster")))
 #+end_src
 **** doctor.el
-要是没有 emacs-lsp-booster 可执行文件的话……
+emacs-lsp-booster 可执行文件必须存在
 #+begin_src emacs-lisp :tangle modules/baosize/emacs-lsp-booster/doctor.el
 ;;; modules/baosize/emacs-lsp-booster/doctor.el
 (unless (or (executable-find "emacs-lsp-booster") (>= emacs-major-version 30))
@@ -2282,7 +2284,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
            :files ("*")))
 #+end_src
 *** avy-thing-edit
- 类似于 neovim 中 flash.nvim 的远程跳转编辑（ =Operator-PENDING mode= 下的 r 键）
+类似于 neovim 中 flash.nvim 的远程跳转编辑（ =Operator-PENDING mode= 下的 r 键）
 **** config.el
 #+begin_src emacs-lisp :tangle modules/baosize/avy-thing-edit/config.el
 ;;; modules/baosize/avy-thing-edit/config.el -*- lexical-binding: t; -*-
@@ -2304,7 +2306,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
            :repo "manateelazycat/thing-edit"))
 #+end_src
 *** super-eglot
-我尝试用这个模块以将 eglot 打造得和 vscode 一样优秀（ lsp-mode 提供了一个基于 lsp 的高亮，这对于 eglot 来说是极为困难的）
+我尝试用这个模块以将 eglot 打造得和 vscode 一样优秀 (lsp-mode 提供了一个基于 lsp 的高亮，这对于 eglot 来说是极为困难的)
 
 它目前包含了 breadcrumb 和 eldoc-box 。
 **** config.el
