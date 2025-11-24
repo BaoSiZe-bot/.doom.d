@@ -899,22 +899,6 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
   (setq confirm-kill-emacs nil)
   (noflet (process-list) ad-do-it))
 #+end_src
-自定义Variables和Faces
-
-我不知道这是干嘛用的，但它既然在这里，那还是留着吧……
-#+begin_src emacs-lisp
-(custom-set-variables
-;; custom-set-variables was added by Custom.
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
- )
-(custom-set-faces)
-;; custom-set-faces was added by Custom.
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
-#+end_src
 * packages.el
 在 config.el 中直接用到的插件
 #+begin_src emacs-lisp :tangle packages.el
