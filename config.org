@@ -2292,7 +2292,7 @@ emacs-lsp-booster 可执行文件必须存在
 *** super-eglot
 我尝试用这个模块以将 eglot 打造得和 vscode 一样优秀 (lsp-mode 提供了一个基于 lsp 的高亮，这对于 eglot 来说是极为困难的)
 
-它目前包含了 breadcrumb 和 eldoc-box 。
+它目前包含了 breadcrumb 和 eldoc。
 **** config.el
 :PROPERTIES:
 :header-args: :tangle modules/baosize/super-eglot/config.el
@@ -2319,7 +2319,9 @@ emacs-lsp-booster 可执行文件必须存在
   :config
   ;; Prettify `eldoc-box' frame
   (setf (alist-get 'left-fringe eldoc-box-frame-parameters) 8
-  (alist-get 'right-fringe eldoc-box-frame-parameters) 8))
+        (alist-get 'right-fringe eldoc-box-frame-parameters) 8))
+
+(use-package eldoc-mouse :hook (eglot-managed-mode emacs-lisp-mode)) ;; enable mouse hover for eglot managed buffers, and emacs lisp buffers.
 #+end_src
 code-action 提示
 #+begin_src emacs-lisp
@@ -2344,6 +2346,7 @@ code-action 提示
 ;;; modules/baosize/super-eglot/packages.el
 (package! breadcrumb)
 (package! eldoc-box)
+(package! eldoc-mouse)
 (package! sideline)
 (package! sideline-eglot
   :recipe (:host github
