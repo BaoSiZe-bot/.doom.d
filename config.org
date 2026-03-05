@@ -101,6 +101,8 @@ emacs -Q ~/.config/doom/config.org
     - [[#gemini-cli][gemini-cli]]
     - [[#showkey][showkey]]
     - [[#eee][eee]]
+    - [[#lsp-proxy][lsp-proxy]]
+    - [[#lspce][lspce]]
 #+END_QUOTE
 
 * init.el
@@ -135,7 +137,7 @@ emacs -Q ~/.config/doom/config.org
   "Abalonmacs customization."
   :group 'convenience
   :link '(url-link :tag "Homepage" "https://github.com/baosize-bot/.doom.d"))
-(defcustom abalone-lsp 'eglot
+(defcustom abalone-lsp 'lsp-proxy
   "Set language server.
 `lsp-mode': See https://github.com/emacs-lsp/lsp-mode.
 `eglot': See https://github.com/joaotavora/eglot.
@@ -539,6 +541,7 @@ Treesitter 默认的高亮过于朴素，但是定义多了影响速度，通过
 #+begin_src emacs-lisp
 (setq-default c-ts-mode-indent-offset 4)
 (setq-default c-basic-offset 4)
+(if (eq abalone-lsp 'eglot)
 (use-package eglot
      :hook ((prog-mode . (lambda ()
                            (unless (derived-mode-p
@@ -555,6 +558,14 @@ Treesitter 默认的高亮过于朴素，但是定义多了影响速度，通过
      (setq eglot-autoshutdown t
            eglot-events-buffer-size 0
            eglot-send-changes-idle-time 0.5))
+(when (eq abalone-lsp 'lsp-proxy)
+  (use-package! lsp-proxy
+    :hook ((prog-mode . (lambda () (unless (derived-mode-p
+                                       'emacs-lisp-mode 'lisp-mode
+                                       'makefile-mode 'snippet-mode
+                                       'ron-mode)
+                               (lsp-proxy-mode))))
+           ))))
 (add-hook 'c++-ts-mode-hook (lambda ()
 ;; (rainbow-delimiters-mode-enable)
 (treesit-context)
@@ -2316,18 +2327,21 @@ emacs-lsp-booster 可执行文件必须存在
   :custom-face
   (eldoc-box-border ((t (:inherit posframe-border :background unspecified))))
   (eldoc-box-body ((t (:inherit tooltip))))
-  :hook (eglot-managed-mode . eldoc-box-hover-at-point-mode)
+  :hook ((eglot-managed-mode . eldoc-box-hover-at-point-mode)
+         (emacs-lisp-mode . eldoc-box-hover-at-point-mode)
+         (lsp-proxy-mode . eldoc-box-hover-at-point-mode))
   :config
   ;; Prettify `eldoc-box' frame
   (setf (alist-get 'left-fringe eldoc-box-frame-parameters) 8
         (alist-get 'right-fringe eldoc-box-frame-parameters) 8))
 
-(use-package eldoc-mouse :hook (eglot-managed-mode emacs-lisp-mode)) ;; enable mouse hover for eglot managed buffers, and emacs lisp buffers.
+(use-package eldoc-mouse :hook (eglot-managed-mode emacs-lisp-mode lsp-proxy-mode)) ;; enable mouse hover for eglot managed buffers, and emacs lisp buffers.
 #+end_src
 code-action 提示
 #+begin_src emacs-lisp
 (use-package sideline
-  :hook (eglot-managed-mode . sideline-mode)
+  :hook ((eglot-managed-mode . sideline-mode)
+         (lsp-proxy-mode . sideline-mode))
   :init
   (setq sideline-backends-left-skip-current-line t   ; don't display on current line (left)
         sideline-backends-right-skip-current-line t  ; don't display on current line (right)
@@ -2851,4 +2865,69 @@ PREDICATE must be a function with two required arguments."
 (package! eee
   :recipe (:host github :repo "eval-exec/eee.el"
            :files (:defaults "*.el" "*.sh")))
+#+end_src
+*** lsp-proxy
+用 Rust 写的高性能 lsp
+**** config.el
+#+begin_src emacs-lisp :tangle modules/baosize/lsp-proxy/config.el
+(use-package! lsp-proxy
+  :config (progn
+           (setq lsp-proxy-enable-org-babel t)
+           (setq lsp-proxy-org-edit-special-enable-lsp t)
+           (setq lsp-proxy-max-completion-item 16)
+           (set-lookup-handlers! 'lsp-proxy-mode
+            :definition '(lsp-proxy-find-definition :async t)
+            :references '(lsp-proxy-find-references :async t)
+            :implementations '(lsp-proxy-find-implementations :async t)
+            :type-definition '(lsp-proxy-find-type-definition :async t)
+            :documentation '(lsp-proxy-describe-thing-at-point :async t))))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/lsp-proxy/packages.el
+(package! lsp-proxy :recipe (:host github :repo "jadestrong/lsp-proxy"
+                :files ("*.el")))
+#+end_src
+*** lspce
+动态模块 lsp
+**** config.el
+#+begin_src emacs-lisp :tangle modules/baosize/lspce/config.el
+(use-package lspce
+  :hook ((prog-mode . (lambda () (unless (derived-mode-p
+                                     'emacs-lisp-mode 'lisp-mode
+                                     'makefile-mode 'snippet-mode
+                                     'ron-mode)
+                             (lspce-mode))))
+         ((markdown-mode yaml-mode yaml-ts-mode) . eglot-ensure))
+  :config (progn
+            (setq lspce-send-changes-idle-time 0)
+            (setq lspce-show-log-level-in-modeline nil) ;; show log level in mode line
+
+            ;; You should call this first if you want lspce to write logs
+            (lspce-set-log-file "/tmp/lspce.log")
+
+            ;; By default, lspce will not write log out to anywhere. 
+            ;; To enable logging, you can add the following line
+            ;; (lspce-enable-logging)
+            ;; You can enable/disable logging on the fly by calling `lspce-enable-logging' or `lspce-disable-logging'.
+
+            ;; enable lspce in particular buffers
+            ;; (add-hook 'rust-mode-hook 'lspce-mode)
+
+            ;; modify `lspce-server-programs' to add or change a lsp server, see document
+            ;; of `lspce-lsp-type-function' to understand how to get buffer's lsp type.
+            ;; Bellow is what I use
+            (setq lspce-server-programs `(("rust"  "rust-analyzer" "" lspce-ra-initializationOptions)
+                                          ("python" "basedpyright" "--stdio" )
+                                          ("C" "clangd" "--background-index --clang-tidy --header-insertion=iwyu --completion-style=detailed --function-org-placeholders --fallback-style=llvm")
+                                          ("cpp" "clangd" "--background-index --clang-tidy --header-insertion=iwyu --completion-style=detailed --function-org-placeholders --fallback-style=llvm")
+                                          ("java" lspce-jdtls-cmd-args lspce-jdtls-initializationOptions)
+                                          ))
+            ))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/lspce/packages.el
+(package! lspce
+ :recipe(:host github :repo "zbelial/lspce"
+         :files ("*")
+         :post-build (progn (shell-command "cargo build --release") (shell-command "cp ./target/release/liblspce_module.so ./lspce-module.so"))))
 #+end_src
