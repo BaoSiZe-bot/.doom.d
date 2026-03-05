@@ -204,7 +204,7 @@ emacs -Q ~/.config/doom/config.org
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       ;; (dired +icons)      ; making dired pretty [functional]
+       (dired +icons +dirvish)      ; making dired pretty [functional]
        ;;electric          ; smarter, keyword-based electric-indent
        ;;eww               ; the internet is gross
        (ibuffer +icons)    ; interactive buffer management
