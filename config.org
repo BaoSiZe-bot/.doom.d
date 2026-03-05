@@ -583,7 +583,8 @@ Treesitter 默认的高亮过于朴素，但是定义多了影响速度，通过
 设置一些个人比较习惯的键绑定
 #+begin_src emacs-lisp
 (bind-keys ("C-c f o" . consult-org-agenda)
-           ("C-s" . consult-line))
+           ("C-s" . consult-line)
+           ("C-c d" . flymake-show-buffer-diagnostics))
 #+end_src
 由于本人使用fish作为默认shell所以需要设置不同的 default-shell 才能兼容
 #+begin_src emacs-lisp
