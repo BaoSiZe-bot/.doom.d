@@ -766,15 +766,15 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
     (setq xref-show-xrefs-function #'consult-xref
           xref-show-definitions-function #'consult-xref))
 (use-package corfu
-  ;; :custom
+  :custom
   ;; (corfu-preselect 'prompt)
   ;; (corfu-auto t)
-  ;; (corfu-auto-prefix 2)
+  (corfu-auto-prefix 1)
   ;; (corfu-count 12)
   ;; (corfu-preview-current #'insert)
   ;; (corfu-on-exact-match nil)
-  ;; (corfu-auto-delay 0)
-  ;; (corfu-popupinfo-delay '(0.4 . 0.2))
+  (corfu-auto-delay 0)
+  (corfu-popupinfo-delay '(0.5 . 0.1))
   ;; (global-corfu-modes '((not erc-mode
   ;;                            circe-mode
   ;;                            help-mode
@@ -790,8 +790,8 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
   ;; (add-hook 'before-save-hook #'corfu-quit)
   (setq! corfu-preselect 'first
          corfu-auto t
-         corfu-auto-prefix 2
-         corfu-count 16
+         corfu-auto-prefix 1
+         corfu-count 12
          corfu-preview-current #'insert
          corfu-on-exact-match nil
          corfu-auto-delay 0
