@@ -2316,8 +2316,8 @@ emacs-lsp-booster 可执行文件必须存在
 #+end_src
 面包屑导航
 #+begin_src emacs-lisp
-(use-package breadcrumb
-  :hook (prog-mode . breadcrumb-local-mode))
+;; (use-package breadcrumb
+;;   :hook (prog-mode . breadcrumb-local-mode))
 #+end_src
 弹出文档和提示
 #+begin_src emacs-lisp
@@ -2361,7 +2361,7 @@ code-action 提示
 #+begin_src emacs-lisp :tangle modules/baosize/super-eglot/packages.el
 ;; -*- no-byte-compile: t -*-
 ;;; modules/baosize/super-eglot/packages.el
-(package! breadcrumb)
+;; (package! breadcrumb)
 (package! eldoc-box)
 (package! eldoc-mouse)
 (package! sideline)
