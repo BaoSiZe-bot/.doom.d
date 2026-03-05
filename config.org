@@ -417,11 +417,11 @@ emacs -Q ~/.config/doom/config.org
 JetBrains Mono & 霞鹜文楷，emoji设置特殊字体
 如果不用 =unicode= 模块的话，霞鹜的设置是不起作用的，但是 =unicode= 拖慢了不少启动速度，只好做个取舍了
 #+begin_src emacs-lisp
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 18 :weight 'Regular)
+(setq doom-font (font-spec :family "ComicShannsMono Nerd Font" :size 18 :weight 'Regular)
       doom-symbol-font (font-spec :family "LXGW WenKai Mono GB" :size 18 :weight 'Regular)
       doom-variable-pitch-font (font-spec :family "LXGW WenKai Mono GB" :size 18 :weight 'Regular)
-      doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 22  :weight 'Regular)
-      nerd-icons-font-family "JetBrainsMono Nerd Font")
+      doom-big-font (font-spec :family "ComicShannsMono Nerd Font" :size 22  :weight 'Regular)
+      nerd-icons-font-family "ComicShannsMono Nerd Font")
 (defun +font-set-emoji (&rest _)
   (set-fontset-font t 'emoji "Noto Color Emoji" nil 'prepend))
 (add-hook 'after-setting-font-hook #'+font-set-emoji)
@@ -1247,9 +1247,9 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
   :custom
   (eaf-browser-dark-mode nil)
   (eaf-browser-default-search-engine "bing")
-  (eaf-webengine-font-family "JetBrainsMono Nerd Font")
-  (eaf-webengine-fixed-font-family "JetBrainsMono Nerd Font")
-  (eaf-webengine-serif-font-family "JetBrainsMono Nerd Font")
+  (eaf-webengine-font-family "ComicShannsMono Nerd Font")
+  (eaf-webengine-fixed-font-family "ComicShannsMono Nerd Font")
+  (eaf-webengine-serif-font-family "ComicShannsMono Nerd Font")
   (eaf-webengine-font-size 18)
   (eaf-webengine-fixed-font-size 18)
 #+end_src
@@ -1368,7 +1368,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 #+begin_src emacs-lisp
   :custom
   (eaf-pyqterminal-font-size 18)
-  (eaf-pyqterminal-font-family "JetBrainsMono Nerd Font")
+  (eaf-pyqterminal-font-family "ComicShannsMono Nerd Font")
 #+end_src
 终端键绑定
 #+begin_src emacs-lisp
