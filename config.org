@@ -51,13 +51,13 @@
 *** 使用方式
 在使用此配置前，请先仔细阅读 =Doom= 的安装、使用、配置方法。
 请先自行备份好您的配置文件，确保不存在目录 =$HOME/.emacs.d= 和文件 =$HOME/.emacs=.
-#+BEGIN_SRC bash :tangle /dev/null
+#+BEGIN_SRC bash :tangle no
 git clone https://github.com/doomemacs/doomemacs ~/.config/emacs
 git clone https://github.com/baosize-bot/.doom.d ~/.config/doom
 emacs -Q ~/.config/doom/config.org
 #+END_SRC
 此时请键入命令 =C-c C-v t= 以进行首次 tangle 操作，然后键入 =C-x C-c= 退出 Emacs。
-#+BEGIN_SRC bash :tangle /dev/null
+#+BEGIN_SRC bash :tangle no
 ~/.config/doomemacs/bin/doom install
 #+END_SRC
 
