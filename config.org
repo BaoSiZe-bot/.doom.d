@@ -1341,6 +1341,32 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
          ("C-c elt" . luogu-open-training)
          ("C-c elu" . luogu-open-user-home)))
 #+end_src
+设为 markdown preview 默认方式
+#+begin_src emacs-lisp
+(defun eaf-open-file-in-browser (url)
+  "使用 eaf 打开本地文件，并强制重命名 buffer 为文件名"
+  (interactive "Url: ")
+  (let ((filename (file-name-nondirectory url))
+        (full-url (concat "file://" url)))
+    (eaf-open-browser full-url)
+    (let ((waited 0)
+          (created-buffer nil))
+      (while (and (not created-buffer) (< waited 30))
+        (sit-for 0.05)
+        (setq waited (1+ waited))
+        (eaf-for-each-eaf-buffer
+         (when (and (string= (buffer-local-value 'eaf--buffer-url (get-buffer buffer))
+                             full-url)
+                    (string= (buffer-local-value 'eaf--buffer-app-name (get-buffer buffer))
+                             "browser"))
+           (setq created-buffer buffer))))
+      (when created-buffer
+        (with-current-buffer created-buffer
+          (eaf-py-proxy-refresh_page)  ; 只刷新一次
+          (rename-buffer filename t)))
+      filename)))
+(setq markdown-live-preview-window-function #'eaf-open-file-in-browser)
+#+end_src
 启动终端
 #+begin_src emacs-lisp
 (use-package eaf-pyqterminal
