@@ -1035,6 +1035,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 ;; -*- no-byte-compile: t; -*-
 ;;; modules/term/eat/packages.el
 (package! eat)
+(package! hide-mode-line)
 #+end_src
 ** baosize
 *** awesome-tray
