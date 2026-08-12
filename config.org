@@ -1775,7 +1775,7 @@ Rime 本身相关设置
 (defvar treesit-context--timer nil
   "Timer for updating the context.")
 #+end_src
-声明显示函数（ =Emacs Lisp= 加载的时候会先读取所有源码，然后在源码中查找定义，也就是说无需计较声明顺序，不像某些 C 语言）
+声明显示函数
 #+begin_src emacs-lisp
 ;;;###autoload
 (defun treesit-context ()
