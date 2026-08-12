@@ -563,6 +563,8 @@ Treesitter 默认的高亮过于朴素，但是定义多了影响速度，通过
 ;; (rainbow-delimiters-mode-enable)
 (treesit-context)
 (bind-key "C-c d c" #'cpp-gdb 'c++-ts-mode-map)
+(with-eval-after-load 'gdb-mi
+  (gdb-many-windows 1))
 (defun cpp-gdb ()
   "open compile and C++ debug"
   (interactive)
