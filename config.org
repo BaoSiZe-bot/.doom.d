@@ -1151,7 +1151,7 @@ Evil实在是太重了，但我又无法适应Emacs原生按键，就使用轻�
 #+end_src
 启用 =posframe=
 #+begin_src emacs-lisp
-;; :custom (blink-search-enable-posframe t)
+:custom (blink-search-enable-posframe t)
 #+end_src
 进入 =blink-search= 时肯定得是 =meow-insert-mode= 啊
 #+begin_src emacs-lisp
