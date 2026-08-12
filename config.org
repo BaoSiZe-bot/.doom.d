@@ -680,9 +680,83 @@ Treesitter 默认的高亮过于朴素，但是定义多了影响速度，通过
 (when (modulep! :tools lsp +lsp)
   (add-hook 'lsp-mode-hook #'lsp-headerline-breadcrumb-mode))
 #+end_src
-设置悬浮窗口
+设置补全
+#+begin_src emacs-lisp
+(use-package corfu
+  :custom-face
+  (corfu-border ((t (:inherit region :background unspecified))))
+  :hook ((doom-first-input . global-corfu-mode)
+         (global-corfu-mode . corfu-popupinfo-mode)
+         (global-corfu-mode . corfu-history-mode))
+  :config
+  ;; (add-hook 'before-save-hook #'corfu-quit)
+  (setq! corfu-preselect 'first
+         corfu-auto t
+         corfu-auto-prefix 1
+         corfu-count 12
+         corfu-preview-current #'insert
+         corfu-on-exact-match nil
+         corfu-popupinfo-delay '(0.4 . 0.2)
+         global-corfu-modes '((not erc-mode
+                             circe-mode
+                             help-mode
+                             gud-mode
+                             vterm-mode)
+                        t))
 
-corfu 貌似不应该出现在这里，但是不放这里就没法工作
+   (bind-keys :map corfu-map
+   ("C-SPC"    . corfu-insert-separator)
+   ("C-n"      . corfu-next)
+   ("C-p"      . corfu-previous)
+   ("M-p"      . corfu-popupinfo-scroll-up)
+   ("M-n"      . corfu-popupinfo-scroll-down)
+   ("M-d"      . corfu-popupinfo-toggle)
+   ("RET"      . corfu-complete)
+   ("C-x C-f"  . cape-file)))
+
+(use-package nerd-icons-corfu
+  :autoload nerd-icons-corfu-formatter
+  :after corfu
+  :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package cape
+  :commands (cape-file cape-elisp-block cape-keyword)
+  :autoload (cape-wrap-noninterruptible cape-wrap-nonexclusive cape-wrap-buster)
+  :autoload (cape-wrap-silent cape-wrap-purify)
+  :init
+  ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
+
+  ;; Make these capfs composable.
+  (advice-add 'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
+  (advice-add 'lsp-completion-at-point :around #'cape-wrap-nonexclusive)
+  (advice-add 'comint-completion-at-point :around #'cape-wrap-nonexclusive)
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-nonexclusive)
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-nonexclusive))
+
+(use-package emacs
+  :custom
+  ;; TAB cycle if there are only few candidates
+  ;; (completion-cycle-threshold 3)
+
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (tab-always-indent 'complete)
+
+  ;; Emacs 30 and newer: Disable Ispell completion function. As an alternative,
+  ;; try `cape-dict'.
+  (text-mode-ispell-word-completion nil)
+
+  ;; Emacs 28 and newer: Hide commands in M-x which do not apply to the current
+  ;; mode.  Corfu commands are hidden, since they are not used via M-x. This
+  ;; setting is useful beyond Corfu.
+  (read-extended-command-predicate #'command-completion-default-include-p))
+#+end_src
+设置悬浮窗口
 #+begin_src emacs-lisp
 (standard-display-unicode-special-glyphs) ; 终端中的弹窗不设置会使用ASCII边框
 (use-package posframe
@@ -768,80 +842,6 @@ corfu 貌似不应该出现在这里，但是不放这里就没法工作
 (with-eval-after-load 'xref
     (setq xref-show-xrefs-function #'consult-xref
           xref-show-definitions-function #'consult-xref))
-(use-package corfu
-  :custom-face
-  (corfu-border ((t (:inherit region :background unspecified))))
-  :hook ((doom-first-input . global-corfu-mode)
-         (global-corfu-mode . corfu-popupinfo-mode)
-         (global-corfu-mode . corfu-history-mode))
-  :config
-  ;; (add-hook 'before-save-hook #'corfu-quit)
-  (setq! corfu-preselect 'first
-         corfu-auto t
-         corfu-auto-prefix 1
-         corfu-count 12
-         corfu-preview-current #'insert
-         corfu-on-exact-match nil
-         corfu-popupinfo-delay '(0.4 . 0.2)
-         global-corfu-modes '((not erc-mode
-                             circe-mode
-                             help-mode
-                             gud-mode
-                             vterm-mode)
-                        t))
-
-   (bind-keys :map corfu-map
-   ("C-SPC"    . corfu-insert-separator)
-   ("C-n"      . corfu-next)
-   ("C-p"      . corfu-previous)
-   ("M-p"      . corfu-popupinfo-scroll-up)
-   ("M-n"      . corfu-popupinfo-scroll-down)
-   ("M-d"      . corfu-popupinfo-toggle)
-   ("RET"      . corfu-complete)
-   ("C-x C-f"  . cape-file)))
-;; A few more useful configurations...
-(use-package emacs
-  :custom
-  ;; TAB cycle if there are only few candidates
-  ;; (completion-cycle-threshold 3)
-
-  ;; Enable indentation+completion using the TAB key.
-  ;; `completion-at-point' is often bound to M-TAB.
-  (tab-always-indent 'complete)
-
-  ;; Emacs 30 and newer: Disable Ispell completion function. As an alternative,
-  ;; try `cape-dict'.
-  (text-mode-ispell-word-completion nil)
-
-  ;; Emacs 28 and newer: Hide commands in M-x which do not apply to the current
-  ;; mode.  Corfu commands are hidden, since they are not used via M-x. This
-  ;; setting is useful beyond Corfu.
-  (read-extended-command-predicate #'command-completion-default-include-p))
-
-(use-package nerd-icons-corfu
-  :autoload nerd-icons-corfu-formatter
-  :after corfu
-  :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
-
-;; Add extensions
-(use-package cape
-  :commands (cape-file cape-elisp-block cape-keyword)
-  :autoload (cape-wrap-noninterruptible cape-wrap-nonexclusive cape-wrap-buster)
-  :autoload (cape-wrap-silent cape-wrap-purify)
-  :init
-  ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-  (add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
-
-  ;; Make these capfs composable.
-  (advice-add 'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
-  (advice-add 'lsp-completion-at-point :around #'cape-wrap-nonexclusive)
-  (advice-add 'comint-completion-at-point :around #'cape-wrap-nonexclusive)
-  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
-  (advice-add 'eglot-completion-at-point :around #'cape-wrap-nonexclusive)
-  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-nonexclusive))
 
 ;; (when (and (display-graphic-p) (not (daemonp)))
 ;; (require 'nova-utils)
