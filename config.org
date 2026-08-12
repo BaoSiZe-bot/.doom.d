@@ -679,7 +679,7 @@ Treesitter 默认的高亮过于朴素，但是定义多了影响速度，通过
          (global-corfu-mode . corfu-history-mode))
   :config
   ;; (add-hook 'before-save-hook #'corfu-quit)
-  (setq! corfu-preselect 'first
+  (setq corfu-preselect 'first
          corfu-auto t
          corfu-auto-prefix 1
          corfu-count 12
