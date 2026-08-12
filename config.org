@@ -875,6 +875,7 @@ Treesitter 默认的高亮过于朴素，但是定义多了影响速度，通过
 #+begin_src emacs-lisp
 (use-package tab-jump-out
   :after-call doom-first-input-hook
+  :hook (prog-mode text-mode)
   :custom
   (yas-fallback-behavior '(apply tab-jump-out 1)))
 #+end_src
