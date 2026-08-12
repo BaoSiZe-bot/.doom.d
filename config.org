@@ -1487,9 +1487,6 @@ eaf 需要编译相关依赖
           :post-build
           (+eaf-install-deps-for-app
            (concat straight-base-dir "/straight/" straight-build-dir "/eaf-markdown-previewer"))))
-#+end_src
-一些有 bug 的包
-#+begin_src emacs-lisp
 (package! eaf-pdf-viewer
  :recipe (:host github :repo "emacs-eaf/eaf-pdf-viewer"
           :files ("*")
