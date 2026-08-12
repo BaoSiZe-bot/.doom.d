@@ -2190,7 +2190,7 @@ Emacs 杀器之一，高亮多个匹配单词并提供重命名、跳转等多�
 #+begin_src emacs-lisp :tangle modules/baosize/colorful-mode/config.el
 ;;; modules/baosize/colorful-mode/config.el -*- lexical-binding: t; -*-
 (use-package colorful-mode
-  :hook (prog-mode text-mode))
+  :hook (lisp-mode emacs-lisp-mode javascript-mode typescript-ts-mode css-mode conf-mode lua-mode text-mode))
 #+end_src
 **** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/colorful-mode/packages.el
