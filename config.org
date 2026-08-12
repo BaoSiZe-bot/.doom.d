@@ -391,17 +391,6 @@ emacs -Q ~/.config/doom/config.org
 
 
 #+end_src
-避免 emacs 的环境变量与 shell 不一致的问题
-#+begin_src emacs-lisp
-(when (and (display-graphic-p) (not (daemonp)))
-; (use-package exec-path-from-shell
-;   :demand t
-;   :config
-;   (dolist (var '("PATH"))
-;     (add-to-list 'exec-path-from-shell-variables var))
-;  (exec-path-from-shell-initialize))
-)
-#+end_src
 设置 85% 的 alpha 透明（只透明背景，不透明文字）
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(alpha-background . 80))
