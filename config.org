@@ -1666,25 +1666,14 @@ eaf 需要编译相关依赖
            rime-predicate-hydra-p
            rime-predicate-prog-in-code-p
            rime-predicate-space-after-cc-p
-           ;; rime-predicate-org-in-src-block-p
            rime-predicate-org-latex-mode-p
            rime-predicate-punctuation-after-space-cc-p
            rime-predicate-punctuation-after-ascii-p
            rime-predicate-punctuation-line-begin-p
-           ;; rime-predicate-space-after-ascii-p
-           ;; rime-predicate-space-after-cc-p
            rime-predicate-after-ascii-char-p))
 #+end_src
 Rime 本身相关设置
 #+begin_src emacs-lisp
-  ;; (rime-share-data-dir
-  ;;  (cl-some (lambda (dir)
-  ;;             (let ((abs-dir (expand-file-name dir)))
-  ;;               (when (file-directory-p abs-dir)
-  ;;                 abs-dir)))
-  ;;           '("/usr/share/rime-data"
-  ;;             "/usr/share/local"
-  ;;             "/usr/share")))
   (rime-user-data-dir (expand-file-name "~/.local/share/emacs-rime"))
   (rime-show-candidate 'posframe)
   (rime-posframe-style 'vertical)
