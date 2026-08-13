@@ -357,7 +357,7 @@ emacs -Q ~/.config/doom/config.org
        eee
        ;;lspce
        ;; lsp-proxy
-       ;;dape
+       dape
        )
 #+end_src
 * config.el
@@ -2378,6 +2378,20 @@ code-action 提示
     (add-hook 'dape-on-start-hooks
               (defun dape--save-on-start ()
                 (save-some-buffers t t))))
+(with-eval-after-load 'dape
+  ;; 1. 获取现有的 lldb-dap 配置 plist
+  (let* ((old-config (cdr (assoc 'lldb-dap dape-configs)))
+         (new-program '(lambda ()
+                         (concat "/tmp/" 
+                                 (file-name-extension (buffer-file-name)) 
+                                 "-" 
+                                 (shell-quote-argument (file-name-sans-extension (file-name-nondirectory (buffer-file-name)))))))
+         ;; 2. 更新 plist 中的属性
+         (updated-config (thread-first old-config
+                           (plist-put :console "externalTerminal")
+                           (plist-put :program new-program))))
+    ;; 3. 将更新后的配置写回 dape-configs
+    (setf (alist-get 'lldb-dap dape-configs) updated-config)))
 #+end_src
 **** packages.el
 #+begin_src emacs-lisp :tangle modules/baosize/dape/packages.el
