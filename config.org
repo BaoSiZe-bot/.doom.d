@@ -710,7 +710,8 @@ or:
 (treesit-context)
 (bind-key "C-c d c" #'cpp-gdb 'c++-ts-mode-map)
 (with-eval-after-load 'gdb-mi
-  (gdb-many-windows 1))
+  (gdb-many-windows 1)
+  (setq gdb-debuginfod-enable-setting nil))
 (defun cpp-gdb ()
   "open compile and C++ debug"
   (interactive)
