@@ -529,7 +529,153 @@ Treesitter 默认的高亮过于朴素，但是定义多了影响速度，通过
 (use-package rust-ts-mode
   :mode "\\.rs\\'")
 #+end_src
+添加 cppcheck 作为 flymake 后端
+#+begin_src emacs-lisp
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-stay-out-of 'flymake))
+(defgroup cppcheck-flymake nil
+  "Flymake backend for Cppcheck."
+  :group 'flymake)
+(defvar-local cppcheck-flymake--process nil)
+(defvar-local cppcheck-flymake--generation 0)
+(defcustom cppcheck-flymake-template
+  "{file}:{line}:{column}: {severity}: {message} [{id}]"
+  "Template passed to Cppcheck.
 
+The template is intentionally limited to one argument so that the
+Cppcheck invocation remains essentially:
+
+  cppcheck FILE
+
+or:
+
+  cppcheck --template=TEMPLATE FILE"
+  :type 'string
+  :group 'cppcheck-flymake)
+
+(defvar-local cppcheck-flymake--process nil)
+
+(defun cppcheck-flymake--parse (source output)
+  "Parse Cppcheck OUTPUT into Flymake diagnostics for SOURCE."
+  (let (diags)
+    (with-temp-buffer
+      (insert output)
+      (goto-char (point-min))
+      (while (re-search-forward
+              "^\\(.+?\\):\\([0-9]+\\):\\([0-9]+\\): \\(error\\|warning\\|style\\|performance\\|portability\\|information\\): \\(.*?\\) \\[\\([^]]+\\)\\]$"
+              nil t)
+        (let* ((file (match-string 1))
+               (line (string-to-number (match-string 2)))
+               (column (string-to-number (match-string 3)))
+               (severity (match-string 4))
+               (message (match-string 5))
+               (id (match-string 6))
+               (location
+                (if (file-name-absolute-p file)
+                    file
+                  (expand-file-name file default-directory)))
+               (type
+                (cond
+                 ((member severity '("error"))
+                  :error)
+                 ((member severity
+                          '("warning"
+                            "style"
+                            "performance"
+                            "portability"))
+                  :warning)
+                 (t
+                  :note)))
+               (region
+                (flymake-diag-region source line column)))
+          (when region
+            (push
+             (flymake-make-diagnostic
+              source
+              (car region)
+              (cdr region)
+              type
+              (format "%s [%s]" message id))
+             diags))))
+      (nreverse diags))))
+
+(defun cppcheck-flymake-backend (report-fn &rest _more)
+  "A Flymake backend for Cppcheck."
+  (when (process-live-p cppcheck-flymake--process)
+    (delete-process cppcheck-flymake--process))
+
+  (setq cppcheck-flymake--process nil)
+  (cl-incf cppcheck-flymake--generation)
+
+  (let ((generation cppcheck-flymake--generation))
+    (if (not (buffer-file-name))
+        (funcall report-fn nil)
+
+      (let* ((source (current-buffer))
+             (file (buffer-file-name))
+             (output (generate-new-buffer " *cppcheck-flymake*"))
+             (template cppcheck-flymake-template)
+             (command
+              (append
+               (list "cppcheck")
+               (when cppcheck-flymake-enable
+                 (list (concat
+                        "--enable="
+                        cppcheck-flymake-enable)))
+               (when (and template
+                          (not (string-empty-p template)))
+                 (list (concat "--template=" template)))
+               (list file))))
+
+        (setq cppcheck-flymake--process
+              (make-process
+               :name "cppcheck-flymake"
+               :buffer output
+               :stderr output
+               :command command
+               :noquery t
+
+               :sentinel
+               (lambda (process _event)
+                 (when (memq (process-status process)
+                             '(exit signal))
+
+                   (unwind-protect
+                       (when (and
+                              (buffer-live-p source)
+                              (eq generation
+                                  (buffer-local-value
+                                   'cppcheck-flymake--generation
+                                   source))
+                              (eq process
+                                  (buffer-local-value
+                                   'cppcheck-flymake--process
+                                   source)))
+
+                         (with-current-buffer source
+                           (setq cppcheck-flymake--process nil)
+
+                           (let ((text
+                                  (with-current-buffer output
+                                    (buffer-string))))
+                             (funcall
+                              report-fn
+                              (cppcheck-flymake--parse
+                               source
+                               text)))))
+
+                     (when (buffer-live-p output)
+                       (kill-buffer output)))))))
+
+        cppcheck-flymake--process))))
+(defun my/eglot-flymake-setup ()
+  (interactive)
+  (require 'flymake-cppcheck)
+  (add-hook 'flymake-diagnostic-functions #'eglot-flymake-backend nil t)
+  (add-hook 'flymake-diagnostic-functions #'cppcheck-flymake-backend nil t)
+  (flymake-mode 1))
+(add-hook 'eglot-managed-mode-hook #'my/eglot-flymake-setup)
+#+end_src
 针对C 家族的缩进和调试设置
 #+begin_src emacs-lisp
 (setq-default c-ts-mode-indent-offset 4)
