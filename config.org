@@ -681,7 +681,6 @@ or:
         cppcheck-flymake--process))))
 (defun my/eglot-flymake-setup ()
   (interactive)
-  (require 'flymake-cppcheck)
   (add-hook 'flymake-diagnostic-functions #'eglot-flymake-backend nil t)
   (add-hook 'flymake-diagnostic-functions #'cppcheck-flymake-backend nil t)
   (flymake-mode 1))
