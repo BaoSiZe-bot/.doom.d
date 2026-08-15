@@ -103,6 +103,7 @@ emacs -Q ~/.config/doom/config.org
     - [[#eee][eee]]
     - [[#lsp-proxy][lsp-proxy]]
     - [[#lspce][lspce]]
+    - [[#copilot-el][copilot-el]]
 #+END_QUOTE
 
 * init.el
@@ -335,6 +336,7 @@ emacs -Q ~/.config/doom/config.org
        chinese
        ;; awesome-tray
        ;; holo-layer
+       copilot-el
        eaf
        popweb
        blink-search
@@ -3089,4 +3091,25 @@ PREDICATE must be a function with two required arguments."
  :recipe(:host github :repo "zbelial/lspce"
          :files ("*")
          :post-build (progn (shell-command "cargo build --release") (shell-command "cp ./target/release/liblspce_module.so ./lspce-module.so"))))
+#+end_src
+*** copilot-el
+Emacs 怎么能没有 copilot 集成呢
+**** config.el
+#+begin_src emacs-lisp :tangle modules/baosize/copilot-el/config.el
+(use-package copilot
+  :hook ((prog-mode . copilot-mode)
+         (prog-mode . copilot-nes-mode))
+  :bind (:map copilot-completion-map
+              ("<tab>" . copilot-accept-completion)
+              ("TAB" . copilot-accept-completion)
+              ("C-<tab>" . copilot-accept-completion-by-word)
+              ("C-TAB" . copilot-accept-completion-by-word)
+              ("C-n" . copilot-next-completion)
+              ("C-p" . copilot-previous-completion)))
+#+end_src
+
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/copilot-el/packages.el
+(package! copilot
+  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 #+end_src
