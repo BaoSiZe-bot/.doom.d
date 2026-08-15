@@ -1024,9 +1024,7 @@ or:
 #+begin_src emacs-lisp
 (use-package tab-jump-out
   :after-call doom-first-input-hook
-  :hook (prog-mode text-mode)
-  :custom
-  (yas-fallback-behavior '(apply tab-jump-out 1)))
+  :hook ((prog-mode text-mode) . tab-jump-out-mode))
 #+end_src
 简化提示，用 y/n 代替 yes/no ，别再提醒我 "Really kill emacs?" 了。
 
