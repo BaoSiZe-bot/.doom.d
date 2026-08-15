@@ -339,7 +339,7 @@ emacs -Q ~/.config/doom/config.org
        ;; holo-layer
        copilot-el
        eaf
-       popweb
+       ;; popweb
        blink-search
        sort-tab
        corfu-english-helper
