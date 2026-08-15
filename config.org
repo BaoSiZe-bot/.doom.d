@@ -549,6 +549,10 @@ Treesitter 默认的高亮过于朴素，但是定义多了影响速度，通过
   :group 'flymake)
 (defvar-local cppcheck-flymake--process nil)
 (defvar-local cppcheck-flymake--generation 0)
+(defcustom cppcheck-flymake-enable nil
+  "Cppcheck enable option."
+  :type 'string
+  :group 'cppcheck-flymake)
 (defcustom cppcheck-flymake-template
   "{file}:{line}:{column}: {severity}: {message} [{id}]"
   "Template passed to Cppcheck.
