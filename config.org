@@ -533,7 +533,7 @@ Treesitter 默认的高亮过于朴素，但是定义多了影响速度，通过
 #+end_src
 设置 flymake 行末显示 diagnostics
 #+begin_src emacs-lisp
-(setq flymake-show-diagnostics-at-end-of-line t)
+(setq flymake-show-diagnostics-at-end-of-line 'short)
 #+end_src
 设置 rust-ts-mode 自动启动，避免 fundamental-mode 时 eglot 没有检测到 lsp 的情况
 #+begin_src emacs-lisp
