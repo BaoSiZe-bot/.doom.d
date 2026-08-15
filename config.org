@@ -103,6 +103,7 @@ emacs -Q ~/.config/doom/config.org
     - [[#eee][eee]]
     - [[#lsp-proxy][lsp-proxy]]
     - [[#lspce][lspce]]
+    - [[#markdown-previewer][markdown-previewer]]
     - [[#copilot-el][copilot-el]]
 #+END_QUOTE
 
@@ -360,6 +361,7 @@ emacs -Q ~/.config/doom/config.org
        ;;lspce
        ;; lsp-proxy
        dape
+       markdown-previewer
        )
 #+end_src
 * config.el
@@ -3092,6 +3094,115 @@ PREDICATE must be a function with two required arguments."
          :files ("*")
          :post-build (progn (shell-command "cargo build --release") (shell-command "cp ./target/release/liblspce_module.so ./lspce-module.so"))))
 #+end_src
+*** markdown-previewer
+前面用的 markdown-mode 和 eaf-markdown-previewer 都依赖于保存，非常不利于公式书写
+感谢 taxodium 提供的实现
+**** config.el
+#+begin_src emacs-lisp :tangle modules/baosize/markdown-previewer/config.el
+(defun impatient-markdown-filter (buffer)
+  "Define imp markdown filter with KaTeX support and Highlight.js syntax highlighting.
+Wrap BUFFER with HTML, render with marked.js, style with github-markdown-css,
+render LaTeX math with KaTeX auto-render, and highlight code with Highlight.js."
+  (princ (with-current-buffer buffer
+           (format "<!DOCTYPE html>
+<html>
+  <title>Markdown Preview</title>
+  <head>
+    <meta charset=\"UTF-8\">
+    <link
+      rel=\"stylesheet\"
+      href=\"https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown-dark.min.css\"
+      crossorigin=\"anonymous\"
+      referrerpolicy=\"no-referrer\"
+    />
+    <link
+      rel=\"stylesheet\"
+      href=\"https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.css\"
+    />
+    <link
+      rel=\"stylesheet\"
+      href=\"https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/tokyo-night-dark.css\"
+    />
+    <style>
+      html, body {
+        background-color: #0d1117; /* GitHub dark 背景色，避免容器外露白 */
+        color-scheme: dark;        /* 顺便告诉浏览器原生控件（滚动条等）也用暗色 */
+      }
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+      }
+      @media (max-width: 767px) {
+        .markdown-body {
+          padding: 15px;
+        }
+      }
+    </style>
+    <script src=\"https://cdn.jsdelivr.net/npm/marked/marked.min.js\"></script>
+    <script src=\"https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js\"></script>
+    <script src=\"https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js\"></script>
+    <script src=\"https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js\"></script>
+  </head>
+  <body>
+    <div id=\"markdown-body\" class=\"markdown-body\"></div>
+    <script>
+      (function() {
+        var markdownText = %s;
+        var container = document.getElementById('markdown-body');
+        
+        // 渲染 Markdown
+        container.innerHTML = marked.parse(markdownText);
+        
+        // 1. 代码高亮处理
+        if (typeof hljs !== 'undefined') {
+          container.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block);
+          });
+        }
+
+        // 2. 渲染数学公式 —— 使用 $ 和 $$
+        if (typeof renderMathInElement === 'function') {
+          renderMathInElement(container, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},   // 块级公式
+              {left: '$', right: '$', display: false},    // 行内公式
+              {left: '\\\\(', right: '\\\\)', display: false},
+              {left: '\\\\[', right: '\\\\]', display: true}
+            ],
+            throwOnError: false,
+            strict: false
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>"
+                   (json-encode (buffer-substring-no-properties (point-min) (point-max)))))
+         (current-buffer)))
+
+(defun impatient-enable-preview-markdown ()
+  "Live Preview markdown."
+  (interactive)
+  (require 'impatient-mode)
+  (imp-visit-buffer)
+  (imp-set-user-filter 'impatient-markdown-filter))
+
+(defun impatient-disable-preview-markdown ()
+  "Disable preview markdown."
+  (interactive)
+  (progn
+    (httpd-stop)
+    (impatient-mode -1)
+    (imp-remove-user-filter)))
+#+end_src
+**** packages.el
+#+begin_src emacs-lisp :tangle modules/baosize/markdown-previewer/packages.el
+(package! impatient-mode)
+#+end_src
+
 *** copilot-el
 Emacs 怎么能没有 copilot 集成呢
 **** config.el
