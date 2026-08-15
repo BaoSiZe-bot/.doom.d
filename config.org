@@ -436,6 +436,13 @@ JetBrains Mono & 霞鹜文楷，emoji设置特殊字体
 (if (fboundp 'pixel-scroll-precision-mode)
     (pixel-scroll-precision-mode t))
 #+end_src
+四方向窗口切换
+#+begin_src emacs-lisp
+(bind-keys ("C-c w h" . windmove-left)
+           ("C-c w l" . windmove-right)
+           ("C-c w k" . windmove-up)
+           ("C-c w j" . windmove-down))
+#+end_src
 从 Centaur Emacs 中借鉴来的一些基础设置
 #+begin_src emacs-lisp
 (use-package simple
